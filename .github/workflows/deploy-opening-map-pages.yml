@@ -42,7 +42,9 @@ jobs:
       - name: Test
         run: pnpm test
       - name: Build
-        run: pnpm build
+        # The checked-in puzzle export is the public, sanitized snapshot. The
+        # source SQLite database is intentionally local-only and never uploaded.
+        run: pnpm generate:data && pnpm generate:engine && pnpm typecheck && pnpm exec vite build
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload Pages artifact
