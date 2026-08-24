@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="西洋棋開局地圖">
+  <rect width="64" height="64" rx="15" fill="#17385e"/>
+  <path fill="#fff" d="M19 51h30v6H15v-4c0-1.1.9-2 2-2h2Zm4-6h22l3 4H20l3-4Zm6-35 14 7-5 6c7 5 8 12 7 20H23c1-7 4-12 10-16l-4-5-7 5-4-8 11-9Zm4 8 3 4 3-4-6-3v3Z"/>
+  <circle cx="34" cy="17" r="1.8" fill="#17385e"/>
+</svg>

@@ -1,0 +1,26 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.coverage
+.notion-chess-key
+build/*.log
+build/notion-state.json
+build/notion-import-result.json
+build/opening-popularity-cache.json
+build/opening-engine-cache.json
+build/
+node_modules/
+.pnpm-store/
+.wrangler/
+node_modules/.cache/wrangler/
+.env
+.env.*
+!.env.example
+dist/
+public/opening-map.json
+public/stockfish/
+
+# This sibling application deploys independently and is not part of the
+# chess-opening-map GitHub Pages source repository.
+西洋棋學習題庫/

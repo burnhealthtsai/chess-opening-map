@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "notion-chess-library"
+version = "1.0.0"
+description = "繁體中文 Notion 西洋棋開局圖庫、匯入器與 En Croissant 橋接器"
+requires-python = ">=3.11"
+dependencies = ["python-chess==1.999", "certifi>=2025.1.31"]
+
+[project.scripts]
+chess-library = "chess_library.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

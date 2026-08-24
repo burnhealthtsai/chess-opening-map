@@ -1,0 +1,4 @@
+node_modules/
+dist/
+public/opening-map.json
+public/stockfish/

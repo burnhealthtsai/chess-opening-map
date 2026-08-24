@@ -1,0 +1,2 @@
+python-chess==1.999
+certifi>=2025.1.31
