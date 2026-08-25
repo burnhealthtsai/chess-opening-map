@@ -113,7 +113,7 @@ test("Old Indian keeps the official family recognition line", () => {
 
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildMapData(catalog, variationCatalog);
-  assert.equal(data.schema_version, 4);
+  assert.equal(data.schema_version, 5);
   assert.ok(data.transpositionGroups.length >= 6);
   for (const group of data.transpositionGroups) {
     assert.equal(group.relation, "exact");
@@ -125,5 +125,28 @@ test("transposition routes reach the exact same normalized FEN", () => {
       for (const move of sanMoves(route.line)) game.move(move);
       assert.equal(game.fen().split(" ").slice(0, 4).join(" "), group.targetFen);
     }
+  }
+});
+
+test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
+  const data = buildMapData(catalog, variationCatalog);
+  assert.ok(data.analogyGroups.length >= 6);
+  const openingById = new Map(data.nodes.map((opening) => [opening.id, opening]));
+  const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
+  assert.ok(sicilianEnglish);
+  assert.equal(sicilianEnglish.relation, "reversed");
+  assert.ok(sicilianEnglish.blackIds.includes("b-sicilian-defense"));
+  assert.ok(sicilianEnglish.whiteIds.includes("w-english-opening"));
+
+  for (const group of data.analogyGroups) {
+    assert.ok(["reversed", "structure", "plan"].includes(group.relation));
+    assert.ok(group.blackIds.length >= 1);
+    assert.ok(group.whiteIds.length >= 1);
+    assert.ok(group.sharedIdeas.length >= 2);
+    assert.ok(group.difference.length > 0);
+    assert.equal(group.blackIds.length, new Set(group.blackIds).size);
+    assert.equal(group.whiteIds.length, new Set(group.whiteIds).size);
+    assert.ok(group.blackIds.every((id) => openingById.get(id)?.side === "黑方"));
+    assert.ok(group.whiteIds.every((id) => openingById.get(id)?.side === "白方"));
   }
 });

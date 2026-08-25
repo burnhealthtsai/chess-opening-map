@@ -17,6 +17,17 @@ export type TranspositionGroup = {
   source: "curated" | "lichess-epd";
 };
 
+export type AnalogyGroup = {
+  id: string;
+  title: string;
+  summary: string;
+  relation: "reversed" | "structure" | "plan";
+  blackIds: string[];
+  whiteIds: string[];
+  sharedIdeas: string[];
+  difference: string;
+};
+
 export type Opening = {
   id: string;
   title_zh: string;
@@ -60,6 +71,7 @@ export type OpeningMapData = {
   nodes: Opening[];
   edges: Record<RelationMode, Edge[]>;
   transpositionGroups: TranspositionGroup[];
+  analogyGroups: AnalogyGroup[];
   navigation: {
     sides: { id: Opening["side"]; count: number }[];
     first_moves: { side: Opening["side"]; value: string; count: number }[];

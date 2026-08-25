@@ -6,7 +6,7 @@ import { gamesForOpening, openingMemory, phaseGuides } from "./openingKnowledge"
 import { openingIcon } from "./openingIcon";
 import type { Opening, OpeningMapData, RelationMode } from "./types";
 
-type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions";
+type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
 const all = "全部";
 const firstMoveOrder = ["e4", "d4", "c4", "Nf3", "其他"];
 const pieceStyles = [
@@ -97,7 +97,7 @@ export function App() {
 
   // Let the atlas be explored without needing to aim at every small opening node.
   useEffect(() => {
-    const lenses: Lens[] = ["family", "concept", "opponent", "puzzles", "style", "transpositions"];
+    const lenses: Lens[] = ["family", "concept", "opponent", "puzzles", "style", "transpositions", "analogies"];
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
       if (target?.matches("input, textarea, select") || target?.isContentEditable) return;
@@ -133,6 +133,7 @@ export function App() {
       <button className={lens === "puzzles" ? "active" : ""} onClick={() => switchLens("puzzles")}><span>◆</span><b>謎題訓練</b><small>從自己的失誤建立複習題</small></button>
       <button className={lens === "style" ? "active" : ""} onClick={() => switchLens("style")}><span>✦</span><b>學習風格</b><small>從局面、戰術與計畫找到開局</small></button>
       <button className={lens === "transpositions" ? "active" : ""} onClick={() => switchLens("transpositions")}><span>⇄</span><b>體系轉換</b><small>比較不同走序如何進入同一局面</small></button>
+      <button className={lens === "analogies" ? "active" : ""} onClick={() => switchLens("analogies")}><span>≈</span><b>類似比較</b><small>黑方防禦對照白方進攻體系</small></button>
     </nav>
 
     <section className="compact-toolbar" aria-label="搜尋與篩選">
@@ -151,7 +152,8 @@ export function App() {
           : lens === "opponent" ? <OpponentExplorer data={data} />
           : lens === "puzzles" ? <PuzzleExplorer />
           : lens === "style" ? <StyleExplorer data={data} category={category} side={styleSide} style={selectedStyle} selectedId={selectedId} onStyle={(value) => { setSelectedStyle(value); setSelectedId(null); }} onSelect={selectOpening} />
-          : <TranspositionExplorer data={data} onSelect={selectOpening} />}
+          : lens === "transpositions" ? <TranspositionExplorer data={data} onSelect={selectOpening} />
+          : <AnalogyExplorer data={data} onSelect={selectOpening} />}
       </section>
       {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite"><OpeningDetail key={selected.id} opening={selected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></aside>}
     </div>}
@@ -290,6 +292,39 @@ function TranspositionExplorer({ data, onSelect }: { data: OpeningMapData; onSel
       <section className="transposition-detail" aria-live="polite"><header><div><span className="exact-badge">⇄ 精確同局面</span><h3>{group.title}</h3><p>{group.summary}</p></div><FenPositionPreview fen={group.targetFen} label="共同目標局面" /></header>
         <div className="transposition-routes">{group.routes.map((route, index) => <article key={`${route.line}-${index}`}><span>{index + 1}</span><div><b>{route.label}</b><p>{route.line}</p></div></article>)}</div>
         <div className="transposition-members"><h4>這些開局在此群組互相連接</h4><div>{members.map((opening) => <button key={opening.id} onClick={() => onSelect(opening.id)}><span>{opening.eco}</span><b>{opening.title_zh}</b><small>{opening.title_en}</small></button>)}</div></div>
+      </section>
+    </div>
+  </div>;
+}
+
+const analogyRelationLabels = {
+  reversed: "反色對應",
+  structure: "結構相似",
+  plan: "計畫相似",
+} as const;
+
+function AnalogyExplorer({ data, onSelect }: { data: OpeningMapData; onSelect: (id: string) => void }) {
+  const [activeGroup, setActiveGroup] = useState(data.analogyGroups[0]?.id ?? null);
+  const group = data.analogyGroups.find((item) => item.id === activeGroup) ?? data.analogyGroups[0];
+  if (!group) return <Empty />;
+  const blackOpenings = group.blackIds.map((id) => data.nodes.find((node) => node.id === id)).filter((node): node is Opening => Boolean(node));
+  const whiteOpenings = group.whiteIds.map((id) => data.nodes.find((node) => node.id === id)).filter((node): node is Opening => Boolean(node));
+  const openingCard = (opening: Opening) => <button className="analogy-opening-card" key={opening.id} onClick={() => onSelect(opening.id)}>
+    <span>{opening.eco}</span><b>{opening.title_zh}</b><small>{opening.title_en}</small><OpeningPositionPreview opening={opening} /><em>開啟主頁 →</em>
+  </button>;
+  return <div className="analogy-explorer">
+    <div className="directory-heading with-summary"><div><p className="eyebrow">OPENING ANALOGY LAB</p><h2>黑方防禦 × 白方進攻類似比較</h2><p>把可以共用兵形判斷、出子配置或進攻計畫的開局放在一起。這裡比較的是「可移植的思考方式」，不是精確轉置，也不代表招法能逐手照搬。</p></div><aside className="map-summary"><span><b>{data.analogyGroups.length}</b><small>比較群組</small></span><i /><span><b>{data.analogyGroups.reduce((sum, item) => sum + item.blackIds.length + item.whiteIds.length, 0)}</b><small>開局對照</small></span></aside></div>
+    <div className="analogy-layout">
+      <nav className="analogy-group-list" aria-label="黑白開局類似比較群組">{data.analogyGroups.map((item) => <button className={item.id === group.id ? "active" : ""} key={item.id} onClick={() => setActiveGroup(item.id)}><span>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav>
+      <section className="analogy-detail" aria-live="polite">
+        <header><span className={`analogy-badge ${group.relation}`}>≈ {analogyRelationLabels[group.relation]}・非精確轉置</span><h3>{group.title}</h3><p>{group.summary}</p></header>
+        <div className="analogy-ideas"><h4>可以互相借用的觀念</h4><div>{group.sharedIdeas.map((idea) => <span key={idea}>{idea}</span>)}</div></div>
+        <div className="analogy-comparison">
+          <section className="analogy-side black"><header><span>♚</span><div><small>BLACK DEFENSE</small><h4>黑方防禦</h4></div></header><div>{blackOpenings.map(openingCard)}</div></section>
+          <div className="analogy-arrow" aria-hidden="true"><b>≈</b><small>觀念映射</small></div>
+          <section className="analogy-side white"><header><span>♔</span><div><small>WHITE SYSTEM</small><h4>白方進攻／體系</h4></div></header><div>{whiteOpenings.map(openingCard)}</div></section>
+        </div>
+        <aside className="analogy-difference"><b>不能直接照抄的地方</b><p>{group.difference}</p></aside>
       </section>
     </div>
   </div>;

@@ -256,6 +256,80 @@ export function buildTranspositionGroups(catalog, variationCatalog = { variation
   ];
 }
 
+const curatedAnalogies = [
+  {
+    id: "sicilian-english-reversed",
+    title: "西西里防禦 ↔ 英國式開局",
+    relation: "reversed",
+    summary: "英國式的 1.c4 e5 常被稱為反色西西里：白方用側翼 c 兵挑戰中心，得到西西里型的不對稱局面。",
+    blackIds: ["b-sicilian-defense", "b-sicilian-defense-dragon-variation"],
+    whiteIds: ["w-english-opening", "w-english-opening-four-knights-system"],
+    sharedIdeas: ["c 兵從側翼挑戰中心", "不對稱兵形與兩翼競爭", "保留 d 兵，等待 d4／…d5 突破"],
+    difference: "英國式白方多一個先手，但對手的配置也不同；可移植兵形判斷與突破時機，不能逐手照抄西西里主線。",
+  },
+  {
+    id: "kings-indian-defense-attack",
+    title: "王翼印度防禦 ↔ 王翼印度攻擊",
+    relation: "reversed",
+    summary: "王翼印度攻擊把黑方王翼印度的 Nf6、g6、Bg7、d6、e5 配置換成白方的 Nf3、g3、Bg2、d3、e4。",
+    blackIds: ["b-kings-indian-defense", "b-kings-indian-defense-orthodox-variation"],
+    whiteIds: ["w-kings-indian-attack", "w-kings-indian-attack-with-e6"],
+    sharedIdeas: ["王翼象翼與安全易位", "先讓對手建立中心再反擊", "以 e、f 兵推進製造王翼攻勢"],
+    difference: "同一套子力配置換色後，攻擊速度與中心責任會改變；白方多一手，通常先穩定完成 e4、d3 再準備 e5。",
+  },
+  {
+    id: "dutch-bird-reversed",
+    title: "荷蘭防禦 ↔ 伯德開局",
+    relation: "reversed",
+    summary: "1.f4 是荷蘭防禦的反色思路：提早用 f 兵控制 e5，並把棋局導向王翼空間與攻勢。",
+    blackIds: ["b-dutch-defense", "b-dutch-defense-leningrad-variation"],
+    whiteIds: ["w-bird-opening"],
+    sharedIdeas: ["f 兵控制關鍵中心格", "Nf3、g3、Bg2 的列寧格勒式配置", "王翼攻擊與 e 兵突破"],
+    difference: "f 兵提前移動會削弱王翼與 e3／e6 格；白方的額外先手不會自動消除這項風險。",
+  },
+  {
+    id: "queenside-fianchetto-reversed",
+    title: "歐文／英國式防禦 ↔ 尼姆佐－拉森攻擊",
+    relation: "structure",
+    summary: "黑方以 …b6、…Bb7 從后翼象翼壓迫中心；白方的 b3、Bb2 用同一條長斜線思想建立彈性布局。",
+    blackIds: ["b-owen-defense", "b-english-defense", "b-queens-indian-defense"],
+    whiteIds: ["w-nimzo-larsen-attack", "w-basque-opening"],
+    sharedIdeas: ["后翼象翼控制長斜線", "延後決定中央兵形", "以 c 兵或 e 兵攻擊對手中心"],
+    difference: "這是發展配置與長斜線計畫相似，不是相同兵形；中心兵放在 e4／d4 後，象的目標與突破方向會不同。",
+  },
+  {
+    id: "caro-slav-london-colle",
+    title: "Caro–Slav 家族 ↔ 倫敦／科勒體系",
+    relation: "structure",
+    summary: "Caro-Kann、斯拉夫與倫敦／科勒都偏好可靠兵鏈、自然出子，再選擇 …c5／c4 或 …e5／e4 的中心突破。",
+    blackIds: ["b-caro-kann-defense", "b-slav-defense", "b-semi-slav-defense"],
+    whiteIds: ["w-london-system", "w-colle-system", "w-reti-opening-anglo-slav-variation"],
+    sharedIdeas: ["先建立穩固中央支點", "避免壞象被鎖在兵鏈內", "完成發展後才進行中心突破"],
+    difference: "這一組比較的是兵鏈管理與出子次序；Caro-Kann 面對 e4、Slav 面對 d4，而倫敦／科勒由白方主動搭建體系。",
+  },
+  {
+    id: "nimzo-trompowsky-pin",
+    title: "尼姆佐印度防禦 ↔ 特龍普夫斯基／托雷攻擊",
+    relation: "plan",
+    summary: "兩邊都用象提早釘住保護中心的馬，迫使對手決定是否接受雙兵、失去象對或花時間解除釘住。",
+    blackIds: ["b-nimzo-indian-defense", "b-nimzo-indian-defense-rubinstein-system"],
+    whiteIds: ["w-trompowsky-attack", "w-torre-attack", "w-richter-veresov-attack"],
+    sharedIdeas: ["象釘馬後施壓中心", "以象對交換結構弱點", "根據對手驅象方式改變中心計畫"],
+    difference: "尼姆佐印度的 Bb4 釘住 Nc3 與白王，特龍普夫斯基／托雷的 Bg5 針對 Nf6；戰術目標相似，但攻擊的中心格不同。",
+  },
+];
+
+export function buildAnalogyGroups(catalog) {
+  const openingById = new Map(catalog.openings.map((opening) => [opening.id, opening]));
+  return curatedAnalogies.map((group) => {
+    const missingIds = [...group.blackIds, ...group.whiteIds].filter((id) => !openingById.has(id));
+    if (missingIds.length) throw new Error(`${group.id}: missing analogy members ${missingIds.join(", ")}`);
+    if (group.blackIds.some((id) => openingById.get(id).side !== "黑方")) throw new Error(`${group.id}: black member has wrong side`);
+    if (group.whiteIds.some((id) => openingById.get(id).side !== "白方")) throw new Error(`${group.id}: white member has wrong side`);
+    return group;
+  });
+}
+
 export function buildMapData(catalog, variationCatalog = { variations: [] }) {
   const items = catalog.openings;
   const nodes = items.map((item) => ({
@@ -300,7 +374,7 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }) {
   }
   const styleNames = ["局面", "戰術", "主動", "穩健", "發展"];
   return {
-    schema_version: 4,
+    schema_version: 5,
     generated_at: new Date().toISOString(),
     nodes,
     edges: {
@@ -308,6 +382,7 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }) {
       style: strongestEdges(items, styleScore),
     },
     transpositionGroups: buildTranspositionGroups(catalog, variationCatalog),
+    analogyGroups: buildAnalogyGroups(catalog),
     navigation: {
       sides: ["白方", "黑方"].map((id) => ({ id, count: nodes.filter((node) => node.side === id).length })),
       first_moves: ["白方", "黑方"].flatMap((side) => [...new Set(nodes.filter((node) => node.side === side).map((node) => node.first_move))].map((value) => ({ side, value, count: nodes.filter((node) => node.side === side && node.first_move === value).length }))),
