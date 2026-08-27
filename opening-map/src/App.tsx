@@ -248,12 +248,25 @@ export function App() {
     const lenses: Lens[] = ["family", "concept", "opponent", "puzzles", "style", "transpositions", "analogies"];
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target as HTMLElement | null;
-      if (target?.matches("input, textarea, select") || target?.isContentEditable) return;
-      if (event.key === "Tab" && !event.shiftKey) {
+      const isFormField = target?.matches("input, textarea, select") || target?.isContentEditable;
+      if (event.key === "Tab") {
+        if (isFormField) return;
+        const tabButton = target?.closest(".lens-tabs button");
+        const currentIndex = lenses.indexOf(lens);
+        const direction = event.shiftKey ? -1 : 1;
+        let nextIndex = currentIndex + direction;
+        if (tabButton) {
+          if (nextIndex < 0 || nextIndex >= lenses.length) return;
+        } else {
+          if (event.shiftKey) return;
+          nextIndex = (currentIndex + 1) % lenses.length;
+        }
         event.preventDefault();
-        switchLens(lenses[(lenses.indexOf(lens) + 1) % lenses.length]);
+        switchLens(lenses[nextIndex]);
+        requestAnimationFrame(() => document.querySelectorAll<HTMLButtonElement>(".lens-tabs button")[nextIndex]?.focus());
         return;
       }
+      if (isFormField) return;
       if (!data || !["w", "a", "s", "d", "W", "A", "S", "D"].includes(event.key)) return;
       const candidates = data.nodes.filter((node) => (category === all || node.category === category) && (lens !== "family" || node.side === selectedSide))
         .sort((a, b) => a.eco.localeCompare(b.eco) || a.title_zh.localeCompare(b.title_zh, "zh-Hant"));
