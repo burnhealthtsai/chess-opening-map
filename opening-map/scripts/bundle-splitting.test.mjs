@@ -12,6 +12,8 @@ const transpositions = await readFile(new URL("../src/TranspositionExplorer.tsx"
 const analogies = await readFile(new URL("../src/AnalogyExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const globalCss = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
 const puzzleCss = await readFile(new URL("../src/PuzzleExplorer.css", import.meta.url), "utf8").catch(() => "");
+const conceptCss = await readFile(new URL("../src/ConceptExplorer.css", import.meta.url), "utf8").catch(() => "");
+const opponentCss = await readFile(new URL("../src/OpponentExplorer.css", import.meta.url), "utf8").catch(() => "");
 const styleCss = await readFile(new URL("../src/StyleExplorer.css", import.meta.url), "utf8").catch(() => "");
 const transpositionCss = await readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8").catch(() => "");
 const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8").catch(() => "");
@@ -80,4 +82,21 @@ test("the puzzle browser CSS follows its lazy JavaScript chunk", () => {
   assert.doesNotMatch(globalCss, /\.(?:puzzle-browser|notion-puzzle-preview|puzzle-answer)/);
   assert.doesNotMatch(globalCss, /\.puzzle-portal/);
   assert.doesNotMatch(puzzleCss, /\.puzzle-portal/);
+});
+
+test("concept lessons and opponent practice CSS follow their lazy chunks", () => {
+  assert.match(concepts, /import "\.\/ConceptExplorer\.css"/);
+  assert.match(opponents, /import "\.\/OpponentExplorer\.css"/);
+  assert.match(conceptCss, /\.concept-phase-grid/);
+  assert.match(conceptCss, /\.passed-pawn-practice-layout/);
+  assert.match(conceptCss, /\.tactics-practice-layout/);
+  assert.match(conceptCss, /@media \(max-width: 520px\)/);
+  assert.match(opponentCss, /\.opponent-layout/);
+  assert.match(opponentCss, /\.opening-recognition/);
+  assert.match(opponentCss, /\.match-mode-selector/);
+  assert.match(opponentCss, /\.blind-live-board/);
+  assert.match(opponentCss, /@media \(max-width: 520px\)/);
+  assert.doesNotMatch(globalCss, /\.(?:concept-phase-grid|passed-pawn-practice-layout|tactics-practice-layout|opponent-layout|opening-recognition|match-mode-selector|blind-live-board)/);
+  assert.doesNotMatch(globalCss, /\.new-practice/);
+  assert.doesNotMatch(opponentCss, /\.new-practice/);
 });

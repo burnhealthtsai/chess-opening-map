@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Chessboard } from "./Chessboard";
+import "./OpponentExplorer.css";
 import { openingIcon } from "./openingIcon";
 import type { Opening, OpeningMapData } from "./types";
 

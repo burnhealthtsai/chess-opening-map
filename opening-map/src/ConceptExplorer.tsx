@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Chess } from "chess.js";
 import { Chessboard } from "./Chessboard";
+import "./ConceptExplorer.css";
 
 function sideFromFen(fen: string) {
   return new Chess(fen).turn() === "w" ? "white" : "black";
@@ -114,4 +115,3 @@ export default function ConceptExplorer() {
     </div>}
   </section>;
 }
-
