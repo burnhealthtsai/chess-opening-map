@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { openingIcon } from "./openingIcon";
+import { readStoredBoolean, readStoredChoice, writeStoredPreference } from "./preferences";
 import { shouldStartLiveBoardMinimized } from "./responsive";
 import type { DetailedOpening, Opening, OpeningDetailsData, OpeningExplorerData, OpeningMapData, OpeningVariationNotesData, RelationMode } from "./types";
 
@@ -64,6 +65,10 @@ const boardStyles = [
   ["wood", "經典木棋盤"], ["walnut", "胡桃木"], ["ocean", "海洋藍"], ["forest", "森林綠"], ["slate", "石板灰"],
   ["royal", "皇家紫"], ["rose", "玫瑰粉"], ["sand", "沙漠金"], ["mint", "薄荷綠"], ["night", "午夜棋盤"],
 ] as const;
+type PieceStyle = (typeof pieceStyles)[number][0];
+type BoardStyle = (typeof boardStyles)[number][0];
+const pieceStyleValues = pieceStyles.map(([value]) => value);
+const boardStyleValues = boardStyles.map(([value]) => value);
 export function App() {
   const [data, setData] = useState<OpeningMapData | null>(null);
   const [mapError, setMapError] = useState<string | null>(null);
@@ -87,9 +92,9 @@ export function App() {
   const [variationNotesRequested, setVariationNotesRequested] = useState(false);
   const [variationNoteError, setVariationNoteError] = useState<string | null>(null);
   const [variationNoteRetry, setVariationNoteRetry] = useState(0);
-  const [dark, setDark] = useState(false);
-  const [pieceStyle, setPieceStyle] = useState<(typeof pieceStyles)[number][0]>("original");
-  const [boardStyle, setBoardStyle] = useState<(typeof boardStyles)[number][0]>("wood");
+  const [dark, setDark] = useState(() => readStoredBoolean("dark", false));
+  const [pieceStyle, setPieceStyle] = useState<PieceStyle>(() => readStoredChoice("piece-style", pieceStyleValues, "original"));
+  const [boardStyle, setBoardStyle] = useState<BoardStyle>(() => readStoredChoice("board-style", boardStyleValues, "wood"));
 
   useEffect(() => {
     let active = true;
@@ -112,9 +117,13 @@ export function App() {
       });
     return () => { active = false; };
   }, [mapRetry]);
-  useEffect(() => { document.documentElement.dataset.theme = dark ? "dark" : "light"; }, [dark]);
+  useEffect(() => {
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    writeStoredPreference("dark", dark);
+  }, [dark]);
   useEffect(() => {
     document.documentElement.dataset.pieceStyle = pieceStyle;
+    writeStoredPreference("piece-style", pieceStyle);
     if (pieceStyle === "original") {
       document.querySelector("style[data-generated-piece-theme]")?.remove();
       return;
@@ -125,7 +134,10 @@ export function App() {
     }).catch(() => { if (active) setPieceStyle("original"); });
     return () => { active = false; };
   }, [pieceStyle]);
-  useEffect(() => { document.documentElement.dataset.boardStyle = boardStyle; }, [boardStyle]);
+  useEffect(() => {
+    document.documentElement.dataset.boardStyle = boardStyle;
+    writeStoredPreference("board-style", boardStyle);
+  }, [boardStyle]);
 
   useEffect(() => {
     if (!selectedId || openingDetails || !data) return;
