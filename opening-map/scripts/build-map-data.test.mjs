@@ -229,6 +229,35 @@ test("major Indian defenses keep opening-specific teaching instead of one shared
   assert.match(byId.get("b-grunfeld-defense").ideas, /早期…d5/);
 });
 
+test("major white systems keep opening-specific plans and the Colle uses its standard formation", () => {
+  const ids = [
+    "w-center-game",
+    "w-london-system",
+    "w-rapport-jobava-system",
+    "w-colle-system",
+    "w-torre-attack",
+    "w-trompowsky-attack",
+    "w-richter-veresov-attack",
+    "w-polish-opening",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  const colle = byId.get("w-colle-system");
+  assert.equal(colle.eco, "D05");
+  assert.equal(colle.mainline, "1. d4 d5 2. Nf3 Nf6 3. e3 e6 4. Bd3");
+  assert.equal(colle.source.name, "Queen's Pawn Game: Colle System");
+  assert.ok(colle.variations.every((variation) => !/Pterodactyl|Rhamphorhynchus/.test(variation.name)));
+  assert.match(byId.get("w-london-system").ideas, /象.*f4.*e3/);
+  assert.match(byId.get("w-rapport-jobava-system").ideas, /后馬.*c3.*象.*f4/);
+  assert.match(byId.get("w-trompowsky-attack").ideas, /2\.Bg5/);
+  assert.match(byId.get("w-polish-opening").ideas, /1\.b4/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
