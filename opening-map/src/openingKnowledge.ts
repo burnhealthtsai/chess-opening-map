@@ -1,4 +1,4 @@
-import type { Opening } from "./types";
+import type { DetailedOpening } from "./types";
 
 export type FamousGame = {
   event: string;
@@ -49,7 +49,7 @@ export const famousGames: FamousGame[] = [
   { event: "人機大戰第 6 局", site: "New York", year: 1997, white: "Deep Blue", black: "Garry Kasparov", result: "1–0", families: ["Caro-Kann", "卡羅康"], line: "e4 c6 d4 d5 Nc3 dxe4 Nxe4 Nd7 Ng5 Ngf6 Bd3 e6 N1f3 h6 Nxe6 Qe7" },
 ];
 
-export function openingMemory(opening: Opening) {
+export function openingMemory(opening: DetailedOpening) {
   const title = `${opening.title_en} ${opening.title_zh}`;
   const origin = originNotes.find(({ keys }) => keys.some((key) => title.includes(key)))?.note;
   const variation = opening.title_zh.match(/[:：](.+)$/)?.[1]?.trim();
@@ -57,7 +57,7 @@ export function openingMemory(opening: Opening) {
   return `目前沒有足夠可靠的獨立詞源資料，因此不替「${opening.title_zh}」編造人物或地名故事。請把名稱和辨識棋路 ${opening.mainline.split(/\s+/).slice(0, 8).join(" ")} 一起記；實際局面比未經證實的故事更可靠。`;
 }
 
-export function gamesForOpening(opening: Opening) {
+export function gamesForOpening(opening: DetailedOpening) {
   const title = `${opening.title_en} ${opening.title_zh}`;
   return famousGames.filter((game) => game.families.some((family) => title.includes(family))).slice(0, 10);
 }
@@ -71,7 +71,7 @@ export type PhaseGuide = {
   tips: string[];
 };
 
-export function phaseGuides(opening: Opening): PhaseGuide[] {
+export function phaseGuides(opening: DetailedOpening): PhaseGuide[] {
   const identity = `${opening.title_zh} ${opening.title_en}`;
   const context = `${identity} ${opening.ideas} ${opening.plans.join(" ")} ${opening.styles.join(" ")}`;
   const firstPlans = opening.plans.slice(0, 2);

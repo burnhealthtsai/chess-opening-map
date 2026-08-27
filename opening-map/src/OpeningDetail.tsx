@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Chessboard } from "./Chessboard";
 import { gamesForOpening, openingMemory, phaseGuides } from "./openingKnowledge";
 import { openingIcon } from "./openingIcon";
-import type { Opening } from "./types";
+import type { DetailedOpening, Opening } from "./types";
 import "./OpeningDetail.css";
 
 type OpeningDetailProps = {
-  opening: Opening;
+  opening: DetailedOpening;
   neighbours: Opening[];
   onSelect: (id: string) => void;
   onCopy: (line: string) => void;
@@ -79,7 +79,7 @@ const playerProfiles = [
   { keys: ["倫敦", "London", "魯賓斯坦", "Rubinstein"], name: "阿基巴・魯賓斯坦", years: "1882–1961", icon: "♖", summary: "以精準位置棋與車兵殘局著稱；多個魯賓斯坦體系和變例以他命名。" },
 ];
 
-function playersForOpening(opening: Opening) {
+function playersForOpening(opening: DetailedOpening) {
   const text = `${opening.title_zh} ${opening.title_en}`;
   return playerProfiles.filter((player) => player.keys.some((key) => text.includes(key))).slice(0, 4);
 }

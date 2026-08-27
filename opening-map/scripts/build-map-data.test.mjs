@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Chess } from "chess.js";
-import { buildMapData, sanMoves } from "./build-map-data.mjs";
+import { buildMapData, buildOpeningDetails, sanMoves } from "./build-map-data.mjs";
 
 const catalog = JSON.parse(await readFile(resolve("..", "openings.yaml"), "utf8"));
 const variationCatalog = JSON.parse(await readFile(resolve("..", "variations.json"), "utf8"));
@@ -23,6 +23,27 @@ test("keeps every opening as one valid node", () => {
     assert.equal(node.first_move_san, sanMoves(node.mainline)[0]);
     assert.equal(node.reply_san, sanMoves(node.mainline)[1] ?? "起手");
     assert.equal(node.first_move, ["e4", "d4", "c4", "Nf3"].includes(node.first_move_san) ? node.first_move_san : "其他");
+    assert.ok(!("ideas" in node));
+    assert.ok(!("plans" in node));
+    assert.ok(!("mistakes" in node));
+    assert.ok(!("difficulty" in node));
+  }
+});
+
+test("keeps detail-only opening content in a paired lazy catalog", () => {
+  const generatedAt = "2026-08-28T00:00:00.000Z";
+  const map = buildMapData(catalog, variationCatalog, generatedAt);
+  const details = buildOpeningDetails(catalog, generatedAt);
+  assert.equal(map.schema_version, 6);
+  assert.equal(details.schema_version, map.schema_version);
+  assert.equal(details.generated_at, map.generated_at);
+  assert.equal(Object.keys(details.openings).length, map.nodes.length);
+  assert.deepEqual(Object.keys(details.openings).sort(), map.nodes.map((opening) => opening.id).sort());
+  for (const detail of Object.values(details.openings)) {
+    assert.ok(detail.difficulty);
+    assert.ok(detail.ideas);
+    assert.ok(detail.plans.length >= 1);
+    assert.ok(Array.isArray(detail.mistakes));
   }
 });
 
@@ -113,7 +134,7 @@ test("Old Indian keeps the official family recognition line", () => {
 
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildMapData(catalog, variationCatalog);
-  assert.equal(data.schema_version, 5);
+  assert.equal(data.schema_version, 6);
   assert.ok(data.transpositionGroups.length >= 6);
   for (const group of data.transpositionGroups) {
     assert.equal(group.relation, "exact");

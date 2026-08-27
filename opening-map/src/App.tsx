@@ -5,15 +5,26 @@ import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { openingIcon } from "./openingIcon";
 import { installPieceTheme } from "./pieceThemes";
 import { shouldStartLiveBoardMinimized } from "./responsive";
-import type { Opening, OpeningMapData, RelationMode } from "./types";
+import type { DetailedOpening, Opening, OpeningDetailsData, OpeningMapData, RelationMode } from "./types";
 
-const OpeningDetail = lazy(() => import("./OpeningDetail"));
+const openingDetailModule = () => import("./OpeningDetail");
+const OpeningDetail = lazy(openingDetailModule);
 const PuzzleExplorer = lazy(() => import("./PuzzleExplorer"));
 const ConceptExplorer = lazy(() => import("./ConceptExplorer"));
 const OpponentExplorer = lazy(() => import("./OpponentExplorer"));
 const StyleExplorer = lazy(() => import("./StyleExplorer"));
 const TranspositionExplorer = lazy(() => import("./TranspositionExplorer"));
 const AnalogyExplorer = lazy(() => import("./AnalogyExplorer"));
+
+let openingDetailsRequest: Promise<OpeningDetailsData> | null = null;
+function loadOpeningDetails() {
+  if (!openingDetailsRequest) {
+    openingDetailsRequest = fetch("./opening-details.json")
+      .then((response) => response.ok ? response.json() as Promise<OpeningDetailsData> : Promise.reject(new Error(`HTTP ${response.status}`)))
+      .catch((error) => { openingDetailsRequest = null; throw error; });
+  }
+  return openingDetailsRequest;
+}
 
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
 const all = "全部";
@@ -38,6 +49,9 @@ export function App() {
   const [selectedFamily, setSelectedFamily] = useState<string | null>(null);
   const [selectedStyle, setSelectedStyle] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [openingDetails, setOpeningDetails] = useState<OpeningDetailsData | null>(null);
+  const [detailError, setDetailError] = useState<string | null>(null);
+  const [detailRetry, setDetailRetry] = useState(0);
   const [dark, setDark] = useState(false);
   const [pieceStyle, setPieceStyle] = useState<(typeof pieceStyles)[number][0]>("original");
   const [boardStyle, setBoardStyle] = useState<(typeof boardStyles)[number][0]>("wood");
@@ -52,7 +66,25 @@ export function App() {
   }, [pieceStyle]);
   useEffect(() => { document.documentElement.dataset.boardStyle = boardStyle; }, [boardStyle]);
 
+  useEffect(() => {
+    if (!selectedId || openingDetails || !data) return;
+    let active = true;
+    setDetailError(null);
+    loadOpeningDetails().then((details) => {
+      if (details.schema_version !== data.schema_version || details.generated_at !== data.generated_at) {
+        openingDetailsRequest = null;
+        throw new Error("開局地圖與詳情資料版本不一致");
+      }
+      if (active) setOpeningDetails(details);
+    }).catch(() => { if (active) setDetailError("開局詳情載入失敗，請重新載入。"); });
+    return () => { active = false; };
+  }, [data, detailRetry, openingDetails, selectedId]);
+
   const selected = data?.nodes.find((node) => node.id === selectedId) ?? null;
+  const detailedSelected = useMemo<DetailedOpening | null>(() => {
+    const details = selected && openingDetails?.openings[selected.id];
+    return selected && details ? { ...selected, ...details } : null;
+  }, [openingDetails, selected]);
   const relationMode: RelationMode = lens === "family" ? "family" : "style";
   const neighbours = useMemo(() => {
     if (!selected || !data) return [] as Opening[];
@@ -78,7 +110,17 @@ export function App() {
   function openSide(side: Opening["side"]) { setSelectedSide(side); setSelectedFirstMove(null); setSelectedFamily(null); setSelectedId(null); }
   function openFirstMove(move: string) { setSelectedFirstMove(move); setSelectedFamily(null); setSelectedId(null); }
   function openFamily(id: string) { setSelectedFamily(id); setSelectedId(null); }
-  function selectOpening(id: string) { prepareChessSound(); setSelectedId(id); }
+  function selectOpening(id: string) {
+    prepareChessSound();
+    void openingDetailModule();
+    void loadOpeningDetails().catch(() => undefined);
+    setSelectedId(id);
+  }
+  function retryOpeningDetails() {
+    openingDetailsRequest = null;
+    setDetailError(null);
+    setDetailRetry((value) => value + 1);
+  }
   async function copyLine(line: string) { await navigator.clipboard?.writeText(line); }
 
   // Let the atlas be explored without needing to aim at every small opening node.
@@ -141,10 +183,14 @@ export function App() {
           : lens === "transpositions" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer data={data} onSelect={selectOpening} /></Suspense>
           : <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer data={data} onSelect={selectOpening} /></Suspense>}
       </section>
-      {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite"><Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={selected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense></aside>}
+      {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
     </div>}
-    {query.trim() && selected && <aside className="detail modal-detail" aria-live="polite"><Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={selected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense></aside>}
+    {query.trim() && selected && <aside className="detail modal-detail" aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
   </main>;
+}
+
+function DetailLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return <div className="detail-load-error" role="alert"><b>{message}</b><button onClick={onRetry}>重新載入</button></div>;
 }
 
 function FamilyExplorer({ data, category, side, firstMove, familyId, selectedId, onHome, onSide, onFirstMove, onFamily, onSelect }: {

@@ -7,6 +7,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const source = resolve(root, "..", "openings.yaml");
 const variationsSource = resolve(root, "..", "variations.json");
 const destination = resolve(root, "public", "opening-map.json");
+const detailsDestination = resolve(root, "public", "opening-details.json");
 
 export function sanMoves(line) {
   return line
@@ -330,7 +331,7 @@ export function buildAnalogyGroups(catalog) {
   });
 }
 
-export function buildMapData(catalog, variationCatalog = { variations: [] }) {
+export function buildMapData(catalog, variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
   const items = catalog.openings;
   const nodes = items.map((item) => ({
     ...(() => {
@@ -357,12 +358,8 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }) {
     category: item.category,
     eco: item.eco,
     styles: item.styles,
-    difficulty: item.difficulty,
     mainline: item.mainline.replace(/\s+/g, " ").trim(),
     variations: item.variations.map((variation) => ({ ...variation, line: variation.line.replace(/\s+/g, " ").trim() })),
-    ideas: item.ideas,
-    plans: item.plans,
-    mistakes: item.mistakes,
     style: styleGroup(item),
   }));
   const familyBuckets = new Map();
@@ -374,8 +371,8 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }) {
   }
   const styleNames = ["局面", "戰術", "主動", "穩健", "發展"];
   return {
-    schema_version: 5,
-    generated_at: new Date().toISOString(),
+    schema_version: 6,
+    generated_at: generatedAt,
     nodes,
     edges: {
       family: strongestEdges(items, familyScore),
@@ -407,6 +404,19 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }) {
   };
 }
 
+export function buildOpeningDetails(catalog, generatedAt = new Date().toISOString()) {
+  return {
+    schema_version: 6,
+    generated_at: generatedAt,
+    openings: Object.fromEntries(catalog.openings.map((item) => [item.id, {
+      difficulty: item.difficulty,
+      ideas: item.ideas,
+      plans: item.plans,
+      mistakes: item.mistakes,
+    }])),
+  };
+}
+
 function normalizedChineseTitle(item) {
   if (!/Sicilian Defense/i.test(item.title_en) || item.title_zh.startsWith("西西里防禦")) return item.title_zh;
   if (item.title_zh === "封閉式西西里") return "西西里防禦：封閉變例";
@@ -418,10 +428,13 @@ function normalizedChineseTitle(item) {
 async function main() {
   const catalog = JSON.parse(await readFile(source, "utf8"));
   const variationCatalog = JSON.parse(await readFile(variationsSource, "utf8"));
-  const data = buildMapData(catalog, variationCatalog);
+  const generatedAt = new Date().toISOString();
+  const data = buildMapData(catalog, variationCatalog, generatedAt);
+  const details = buildOpeningDetails(catalog, generatedAt);
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, `${JSON.stringify(data)}\n`, "utf8");
-  console.log(`Generated ${data.nodes.length} opening nodes at ${destination}`);
+  await writeFile(detailsDestination, `${JSON.stringify(details)}\n`, "utf8");
+  console.log(`Generated ${data.nodes.length} opening nodes at ${destination} and ${detailsDestination}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) main();

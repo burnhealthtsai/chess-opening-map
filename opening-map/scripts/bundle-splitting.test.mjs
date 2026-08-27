@@ -20,11 +20,15 @@ const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.m
 const detailCss = await readFile(new URL("../src/OpeningDetail.css", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
-  assert.match(app, /lazy\(\(\) => import\("\.\/OpeningDetail"\)\)/);
+  assert.match(app, /const openingDetailModule = \(\) => import\("\.\/OpeningDetail"\)/);
+  assert.match(app, /const OpeningDetail = lazy\(openingDetailModule\)/);
   assert.match(app, /<Suspense fallback=/);
   assert.doesNotMatch(app, /from "\.\/openingKnowledge"/);
   assert.match(detail, /export default function OpeningDetail/);
   assert.match(detail, /from "\.\/openingKnowledge"/);
+  assert.match(app, /fetch\("\.\/opening-details\.json"\)/);
+  assert.match(app, /function selectOpening\(id: string\).*loadOpeningDetails\(\)/s);
+  assert.doesNotMatch(app, /useEffect\(\(\) => \{\s*fetch\("\.\/opening-details\.json"\)/);
 });
 
 test("opening detail CSS follows the lazy detail chunk without taking shared board styles", () => {

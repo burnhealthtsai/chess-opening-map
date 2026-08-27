@@ -41,15 +41,26 @@ export type Opening = {
   catalog_first_move: string;
   classification_path: [Opening["side"], string, string, string, string];
   styles: string[];
-  difficulty: string;
   mainline: string;
   variations: { name: string; line: string; note: string }[];
-  ideas: string;
-  plans: string[];
-  mistakes: string[];
   subgroup: { id: string; label: string };
   family: { id: string; label: string };
   style: { id: string; label: string };
+};
+
+export type OpeningDetails = {
+  difficulty: string;
+  ideas: string;
+  plans: string[];
+  mistakes: string[];
+};
+
+export type DetailedOpening = Opening & OpeningDetails;
+
+export type OpeningDetailsData = {
+  schema_version: number;
+  generated_at: string;
+  openings: Record<string, OpeningDetails>;
 };
 
 export type Edge = { source: string; target: string; weight: number };
@@ -68,6 +79,7 @@ export type FamilySummary = {
 };
 export type OpeningMapData = {
   schema_version: number;
+  generated_at: string;
   nodes: Opening[];
   edges: Record<RelationMode, Edge[]>;
   transpositionGroups: TranspositionGroup[];
