@@ -44,10 +44,11 @@ export default function PuzzleExplorer() {
   const [puzzleAnswer, setPuzzleAnswer] = useState<string | null>(null);
   const [answerVersion, setAnswerVersion] = useState(0);
   const [puzzleFeedback, setPuzzleFeedback] = useState<{ kind: "correct" | "wrong" | "pending"; text: string } | null>(null);
-  const handlePuzzleBestMove = useCallback((move: string | null, fen: string) => {
+  const handlePuzzleBestMove = useCallback((move: string | null, fen: string, analysis: { status: "loading" | "thinking" | "ready" | "error"; depth: number }) => {
     const expectedFen = catalog?.puzzles.find((puzzle) => puzzle.id === selectedId)?.fen;
     const position = (value?: string) => String(value || "").split(" ").slice(0, 4).join(" ");
-    if (move && position(fen) === position(expectedFen)) setPuzzleAnswer((current) => current ?? move);
+    if (!move || analysis.status !== "ready") return;
+    if (position(fen) === position(expectedFen)) setPuzzleAnswer(move);
   }, [catalog, selectedId]);
   const configuredUrl = import.meta.env.VITE_PUZZLE_APP_URL?.trim();
   const puzzleUrl = configuredUrl || "http://127.0.0.1:8788/?tab=puzzles";
@@ -100,4 +101,3 @@ export default function PuzzleExplorer() {
 function Filter({ label, value, values, onChange }: { label: string; value: string; values: string[]; onChange: (value: string) => void }) {
   return <label className="filter"><span>{label}</span><select value={value} onChange={(event) => onChange(event.target.value)}>{values.map((option) => <option key={option}>{option}</option>)}</select></label>;
 }
-

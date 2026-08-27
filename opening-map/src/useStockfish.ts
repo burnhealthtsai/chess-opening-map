@@ -72,7 +72,8 @@ export function useStockfish(fen: string, enabled: boolean) {
         return;
       }
       if (message.startsWith("bestmove")) {
-        setAnalysis((current) => ({ ...current, status: "ready" }));
+        const bestMove = message.match(/^bestmove\s+([a-h][1-8][a-h][1-8][qrbn]?)/)?.[1] ?? null;
+        setAnalysis((current) => ({ ...current, status: "ready", bestMove: bestMove ?? current.bestMove }));
       }
     };
     worker.onerror = () => setAnalysis((current) => ({ ...current, status: "error" }));

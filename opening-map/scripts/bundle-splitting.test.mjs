@@ -21,4 +21,6 @@ test("the large puzzle browser loads only when its tab is opened", () => {
   assert.match(puzzles, /fetch\("\.\/notion-puzzles\.json"\)/);
   assert.match(puzzles, /previousFen && selected\.previousMove/);
   assert.match(puzzles, /"查看解答"/);
+  assert.match(puzzles, /analysis\.status !== "ready"/);
+  assert.match(puzzles, /setPuzzleAnswer\(move\)/);
 });

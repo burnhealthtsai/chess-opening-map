@@ -117,7 +117,7 @@ type ChessboardProps = {
   autoPlay?: boolean;
   autoPlayFromStep?: number;
   orientation?: "white" | "black";
-  onBestMove?: (san: string | null, fen: string) => void;
+  onBestMove?: (san: string | null, fen: string, analysis: { status: ReturnType<typeof useStockfish>["status"]; depth: number }) => void;
   onPositionChange?: (position: { fen: string; moves: string[] }) => void;
   opponentLevel?: 1 | 2 | 3;
   playerColor?: "white" | "black";
@@ -183,8 +183,9 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
   const suggestedTo = analysis && engine.bestMove ? engine.bestMove.slice(2, 4) as Square : null;
   useEffect(() => {
     if (!onBestMove) return;
+    const analysisState = { status: engine.status, depth: engine.depth };
     if (!engine.bestMove) {
-      onBestMove(null, displayFen);
+      onBestMove(null, displayFen, analysisState);
       return;
     }
     try {
@@ -194,11 +195,11 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
         to: engine.bestMove.slice(2, 4) as Square,
         promotion: (engine.bestMove[4] as "q" | "r" | "b" | "n" | undefined) ?? "q",
       });
-      onBestMove(move.san.replace(/[+#]+$/, ""), displayFen);
+      onBestMove(move.san.replace(/[+#]+$/, ""), displayFen, analysisState);
     } catch {
-      onBestMove(null, displayFen);
+      onBestMove(null, displayFen, analysisState);
     }
-  }, [displayFen, engine.bestMove, onBestMove]);
+  }, [displayFen, engine.bestMove, engine.depth, engine.status, onBestMove]);
   const legalTargets = useMemo(() => new Set(selectedSquare
     ? displayGame.moves({ square: selectedSquare, verbose: true }).map((move) => move.to)
     : []), [displayGame, selectedSquare]);
