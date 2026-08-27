@@ -33,6 +33,23 @@ test("keeps every opening as one valid node", () => {
   assert.equal(derivedPaths.size, data.nodes.length);
 });
 
+test("every catalog line is legal and each mainline reaches its source EPD", () => {
+  for (const opening of catalog.openings) {
+    const game = new Chess();
+    for (const move of sanMoves(opening.mainline)) {
+      assert.doesNotThrow(() => game.move(move), `${opening.id}: illegal mainline SAN ${move}`);
+    }
+    assert.equal(opening.mainline.replace(/\s+/g, " ").trim(), opening.source.pgn.replace(/\s+/g, " ").trim(), `${opening.id}: mainline differs from source PGN`);
+    assert.equal(game.fen().split(" ").slice(0, 4).join(" "), opening.source.epd, `${opening.id}: mainline differs from source EPD`);
+    for (const variation of opening.variations) {
+      const variationGame = new Chess();
+      for (const move of sanMoves(variation.line)) {
+        assert.doesNotThrow(() => variationGame.move(move), `${opening.id} / ${variation.name}: illegal SAN ${move}`);
+      }
+    }
+  }
+});
+
 test("keeps detail-only opening content in a paired lazy catalog", () => {
   const generatedAt = "2026-08-28T00:00:00.000Z";
   const map = buildMapData(catalog, variationCatalog, generatedAt);
