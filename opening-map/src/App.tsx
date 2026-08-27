@@ -4,6 +4,7 @@ import { Chessboard, prepareChessSound } from "./Chessboard";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { gamesForOpening, openingMemory, phaseGuides } from "./openingKnowledge";
 import { openingIcon } from "./openingIcon";
+import { shouldStartLiveBoardMinimized } from "./responsive";
 import type { Opening, OpeningMapData, RelationMode } from "./types";
 
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
@@ -649,7 +650,10 @@ function MapBoardPreview({ opening, line, step, fromStep, level, label, onBestMo
   const frameRef = useRef<HTMLElement | null>(null);
   const dragRef = useRef<{ pointerId: number; offsetX: number; offsetY: number } | null>(null);
   const [dragging, setDragging] = useState(false);
-  const [minimized, setMinimized] = useState(false);
+  const [minimized, setMinimized] = useState(() => {
+    const viewportWidth = typeof window === "undefined" ? 1200 : window.innerWidth;
+    return shouldStartLiveBoardMinimized(viewportWidth);
+  });
   const [position, setPosition] = useState(() => {
     const viewportWidth = typeof window === "undefined" ? 1200 : window.innerWidth;
     const width = Math.min(430, viewportWidth - 16);
