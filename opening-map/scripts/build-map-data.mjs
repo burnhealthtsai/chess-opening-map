@@ -259,13 +259,13 @@ export function buildTranspositionGroups(catalog, variationCatalog = { variation
 const curatedAnalogies = [
   {
     id: "sicilian-english-reversed",
-    title: "西西里防禦 ↔ 英國式開局",
+    title: "西西里防禦 ↔ 英格蘭開局",
     relation: "reversed",
-    summary: "英國式的 1.c4 e5 常被稱為反色西西里：白方用側翼 c 兵挑戰中心，得到西西里型的不對稱局面。",
+    summary: "英格蘭開局的 1.c4 e5 常被稱為反色西西里：白方用側翼 c 兵挑戰中心，得到西西里型的不對稱局面。",
     blackIds: ["b-sicilian-defense", "b-sicilian-defense-dragon-variation"],
     whiteIds: ["w-english-opening", "w-english-opening-four-knights-system"],
     sharedIdeas: ["c 兵從側翼挑戰中心", "不對稱兵形與兩翼競爭", "保留 d 兵，等待 d4／…d5 突破"],
-    difference: "英國式白方多一個先手，但對手的配置也不同；可移植兵形判斷與突破時機，不能逐手照抄西西里主線。",
+    difference: "英格蘭開局由白方先走，多一個先手，但對手的配置也不同；可移植兵形判斷與突破時機，不能逐手照抄西西里主線。",
   },
   {
     id: "kings-indian-defense-attack",

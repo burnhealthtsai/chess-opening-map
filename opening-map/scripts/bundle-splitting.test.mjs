@@ -58,6 +58,8 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(transpositions, /精確同局面/);
   assert.match(analogies, /export default function AnalogyExplorer/);
   assert.match(analogies, /非精確轉置/);
+  assert.match(app, /<b>類似比較<\/b><small>黑方防禦對照白方進攻體系<\/small>/);
+  assert.match(app, /"transpositions", "analogies"/);
 });
 
 test("secondary explorer CSS follows its lazy JavaScript chunk", () => {
