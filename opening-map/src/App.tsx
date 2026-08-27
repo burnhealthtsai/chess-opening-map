@@ -23,6 +23,10 @@ function prepareChessSound() {
   void chessboardModule().then((module) => module.prepareChessSound()).catch(() => undefined);
 }
 
+function isOwenOpening(opening: Pick<Opening, "title_zh" | "title_en">) {
+  return /歐文|Owen/i.test(`${opening.title_zh} ${opening.title_en}`);
+}
+
 type VersionedRequest<T> = { revision: string; promise: Promise<T> };
 
 let openingDetailsRequest: VersionedRequest<OpeningDetailsData> | null = null;
@@ -325,9 +329,9 @@ export function App() {
           : lens === "transpositions" ? explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer nodes={data.nodes} groups={explorerData.transpositionGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入體系轉換資料…</div>
           : explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer nodes={data.nodes} groups={explorerData.analogyGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入類似比較資料…</div>}
       </section>
-      {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
+      {selected && <aside className={`detail open ${isOwenOpening(selected) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
     </div>}
-    {query.trim() && selected && <aside className="detail modal-detail" aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
+    {query.trim() && selected && <aside className={`detail modal-detail ${isOwenOpening(selected) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
   </main>;
 }
 

@@ -352,6 +352,39 @@ test("major flank openings keep distinct plans and accurately named recognition 
   assert.match(byId.get("w-nimzo-larsen-attack").ideas, /1\.b3、Bb2/);
 });
 
+test("major asymmetric king-pawn defenses keep distinct strategies and family lines", () => {
+  const ids = [
+    "b-scandinavian-defense",
+    "b-pirc-defense",
+    "b-modern-defense",
+    "b-alekhine-defense",
+    "b-owen-defense",
+    "b-nimzowitsch-defense",
+    "b-scandinavian-defense-portuguese-gambit",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  const coreLines = new Map([
+    ["b-scandinavian-defense", ["B01", "1. e4 d5"]],
+    ["b-modern-defense", ["B06", "1. e4 g6"]],
+    ["b-alekhine-defense", ["B02", "1. e4 Nf6"]],
+    ["b-nimzowitsch-defense", ["B00", "1. e4 Nc6"]],
+  ]);
+  for (const [id, [eco, line]] of coreLines) {
+    assert.equal(byId.get(id).eco, eco);
+    assert.equal(byId.get(id).mainline, line);
+    assert.equal(byId.get(id).source.pgn, line);
+  }
+  assert.match(byId.get("b-pirc-defense").ideas, /Nf6先攻 e4.*現代防禦/);
+  assert.match(byId.get("b-owen-defense").ideas, /1…b6、…Bb7/);
+  assert.match(byId.get("b-scandinavian-defense-portuguese-gambit").ideas, /2\.exd5.*…Nf6.*…Bg4/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);

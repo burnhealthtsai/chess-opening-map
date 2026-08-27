@@ -19,3 +19,8 @@ test("compact map controls retain at least a 24px pointer target", () => {
   assert.match(styles, /\.breadcrumb button \{[^}]*min-height: 24px/);
   assert.match(styles, /\.floating-key-moves summary \{[^}]*min-height: 28px/);
 });
+
+test("Owen Defense uses its dedicated home modal from map and search entry points", () => {
+  assert.match(app, /function isOwenOpening\(/);
+  assert.equal(app.match(/isOwenOpening\(selected\) \? "opening-home-modal"/g)?.length, 2);
+});
