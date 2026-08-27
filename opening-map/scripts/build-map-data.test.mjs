@@ -203,6 +203,32 @@ test("Old Indian keeps the official family recognition line", () => {
   assert.ok(!oldIndian?.mainline.includes("Bf5"));
 });
 
+test("major Indian defenses keep opening-specific teaching instead of one shared template", () => {
+  const ids = [
+    "b-kings-indian-defense",
+    "b-grunfeld-defense",
+    "b-nimzo-indian-defense",
+    "b-queens-indian-defense",
+    "b-bogo-indian-defense",
+    "b-old-indian-defense",
+    "b-benoni-defense",
+    "b-benoni-defense-modern",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("b-nimzo-indian-defense").ideas, /…Bb4|c3 馬/);
+  assert.match(byId.get("b-queens-indian-defense").ideas, /…b6、…Bb7/);
+  assert.match(byId.get("b-bogo-indian-defense").ideas, /…Bb4\+/);
+  assert.match(byId.get("b-old-indian-defense").ideas, /e7/);
+  assert.match(byId.get("b-old-indian-defense").ideas, /而不是.*…Bg7/);
+  assert.match(byId.get("b-grunfeld-defense").ideas, /早期…d5/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
