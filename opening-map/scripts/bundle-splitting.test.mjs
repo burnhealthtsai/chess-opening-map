@@ -10,6 +10,10 @@ const opponents = await readFile(new URL("../src/OpponentExplorer.tsx", import.m
 const styles = await readFile(new URL("../src/StyleExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const transpositions = await readFile(new URL("../src/TranspositionExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const analogies = await readFile(new URL("../src/AnalogyExplorer.tsx", import.meta.url), "utf8").catch(() => "");
+const globalCss = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+const styleCss = await readFile(new URL("../src/StyleExplorer.css", import.meta.url), "utf8").catch(() => "");
+const transpositionCss = await readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8").catch(() => "");
+const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
   assert.match(app, /lazy\(\(\) => import\("\.\/OpeningDetail"\)\)/);
@@ -51,4 +55,17 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(transpositions, /精確同局面/);
   assert.match(analogies, /export default function AnalogyExplorer/);
   assert.match(analogies, /非精確轉置/);
+});
+
+test("secondary explorer CSS follows its lazy JavaScript chunk", () => {
+  assert.match(styles, /import "\.\/StyleExplorer\.css"/);
+  assert.match(transpositions, /import "\.\/TranspositionExplorer\.css"/);
+  assert.match(analogies, /import "\.\/AnalogyExplorer\.css"/);
+  assert.match(styleCss, /\.style-grid/);
+  assert.match(styleCss, /@media \(max-width: 560px\)/);
+  assert.match(transpositionCss, /\.transposition-layout/);
+  assert.match(transpositionCss, /@media \(max-width: 560px\)/);
+  assert.match(analogyCss, /\.analogy-layout/);
+  assert.match(analogyCss, /@media \(max-width: 680px\)/);
+  assert.doesNotMatch(globalCss, /\.(?:style-grid|transposition-layout|analogy-layout)/);
 });

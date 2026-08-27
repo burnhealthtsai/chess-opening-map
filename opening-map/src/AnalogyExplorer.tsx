@@ -1,6 +1,7 @@
 import { Chess } from "chess.js";
 import { createElement, useMemo, useState } from "react";
 import type { Opening, OpeningMapData } from "./types";
+import "./AnalogyExplorer.css";
 
 const analogyRelationLabels = {
   reversed: "反色對應",

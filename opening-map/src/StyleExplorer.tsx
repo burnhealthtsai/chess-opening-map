@@ -1,5 +1,6 @@
 import { openingIcon } from "./openingIcon";
 import type { Opening, OpeningMapData } from "./types";
+import "./StyleExplorer.css";
 
 const all = "全部";
 const firstMoveOrder = ["e4", "d4", "c4", "Nf3", "其他"];

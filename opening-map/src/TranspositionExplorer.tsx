@@ -1,6 +1,7 @@
 import { Chess } from "chess.js";
 import { createElement, useMemo, useState } from "react";
 import type { Opening, OpeningMapData } from "./types";
+import "./TranspositionExplorer.css";
 
 export default function TranspositionExplorer({ data, onSelect }: { data: OpeningMapData; onSelect: (id: string) => void }) {
   const [activeGroup, setActiveGroup] = useState(data.transpositionGroups[0]?.id ?? null);

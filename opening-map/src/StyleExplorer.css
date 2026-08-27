@@ -1,0 +1,30 @@
+/* Learning-style cards and grouped opening results. */
+.style-grid { display: grid; grid-template-columns: repeat(5, minmax(150px, 1fr)); gap: 13px; }
+.style-card { position: relative; min-height: 205px; overflow: hidden; padding: 18px; text-align: left; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: 0 7px 20px rgba(49,78,110,.05); }
+.style-card:hover { border-color: #78bce2; transform: translateY(-2px); }
+.style-card b { display: block; font-size: 1.03rem; }
+.style-card > span { display: grid; width: 48px; height: 48px; place-items: center; margin-bottom: 18px; color: #fff; border-radius: 15px; background: #4b96c0; font-size: 1.3rem; }
+.style-card p { min-height: 42px; margin: 8px 0 14px; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+.style-card small { color: #277da9; font-weight: 800; }
+.style-1 > span { background: #e88634; }
+.style-2 > span { background: #d35f7d; }
+.style-3 > span { background: #5b7fc7; }
+.style-4 > span { background: #43a183; }
+.style-results { display: grid; gap: 26px; }
+.style-results section > h3 { display: flex; gap: 9px; align-items: center; margin-bottom: 10px; font-size: 1rem; }
+.style-results h3 > span { padding: 5px 8px; color: white; border-radius: 7px; background: #1f80ba; font-family: ui-monospace, monospace; }
+.style-results h3 small { margin-left: auto; color: var(--muted); font-weight: 500; }
+
+@media (max-width: 1050px) {
+  .style-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 820px) {
+  .style-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .style-grid { grid-template-columns: 1fr 1fr; }
+  .style-card { min-height: 175px; padding: 14px; }
+  .style-card > span { margin-bottom: 10px; }
+  .style-card p { min-height: 58px; }
+}
+
