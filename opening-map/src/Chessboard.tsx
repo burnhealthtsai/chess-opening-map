@@ -177,7 +177,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
     dark: (rowIndex + colIndex) % 2 === 1,
   })));
   if (orientation === "black") displayedSquares.reverse();
-  const engineEnabled = Boolean(opponentLevel) || ((analysis || Boolean(onBestMove)) && analysisRequested);
+  const engineEnabled = Boolean(opponentLevel && opponentLevel > 1) || ((analysis || Boolean(onBestMove)) && analysisRequested);
   const engine = useStockfish(displayFen, engineEnabled);
   const suggestedFrom = analysis && engine.bestMove ? engine.bestMove.slice(0, 2) as Square : null;
   const suggestedTo = analysis && engine.bestMove ? engine.bestMove.slice(2, 4) as Square : null;
