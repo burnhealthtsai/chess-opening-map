@@ -318,6 +318,40 @@ test("queen's gambit defenses keep distinct structures and core recognition line
   assert.match(byId.get("b-queens-gambit-declined-albin-countergambit").ideas, /2…e5.*d4/);
 });
 
+test("major flank openings keep distinct plans and accurately named recognition lines", () => {
+  const ids = [
+    "w-catalan-opening",
+    "w-zukertort-opening",
+    "w-english-opening",
+    "w-reti-opening",
+    "w-bird-opening",
+    "w-nimzo-larsen-attack",
+    "w-catalan-opening-open-defense",
+    "w-english-opening-four-knights-system",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  const zukertort = byId.get("w-zukertort-opening");
+  assert.equal(zukertort.eco, "A04");
+  assert.equal(zukertort.mainline, "1. Nf3");
+  assert.equal(zukertort.source.pgn, zukertort.mainline);
+  const openCatalan = byId.get("w-catalan-opening-open-defense");
+  assert.equal(openCatalan.eco, "E02");
+  assert.equal(openCatalan.mainline, "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4");
+  assert.equal(openCatalan.source.pgn, openCatalan.mainline);
+  const englishFourKnights = byId.get("w-english-opening-four-knights-system");
+  assert.match(englishFourKnights.title_zh, /尼姆佐維奇變例/);
+  assert.match(englishFourKnights.title_en, /Nimzowitsch Variation/);
+  assert.ok(englishFourKnights.aliases.includes("英格蘭開局：四馬體系"));
+  assert.match(byId.get("w-bird-opening").ideas, /1\.f4.*e5/);
+  assert.match(byId.get("w-nimzo-larsen-attack").ideas, /1\.b3、Bb2/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
