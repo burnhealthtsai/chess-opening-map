@@ -27,10 +27,10 @@ test("opening details and knowledge load only after an opening is selected", () 
   assert.doesNotMatch(app, /from "\.\/openingKnowledge"/);
   assert.match(detail, /export default function OpeningDetail/);
   assert.match(detail, /from "\.\/openingKnowledge"/);
-  assert.match(app, /fetch\("\.\/opening-details\.json"\)/);
-  assert.match(app, /function selectOpening\(id: string\).*loadOpeningDetails\(\)/s);
-  assert.doesNotMatch(app, /useEffect\(\(\) => \{\s*fetch\("\.\/opening-details\.json"\)/);
-  assert.match(app, /fetch\("\.\/opening-variation-notes\.json"\)/);
+  assert.match(app, /fetch\(`\.\/opening-details\.json\?v=\$\{revision\}`\)/);
+  assert.match(app, /function selectOpening\(id: string\).*loadOpeningDetails\(data\.catalog_revision\)/s);
+  assert.doesNotMatch(app, /useEffect\(\(\) => \{\s*fetch\(`\.\/opening-details\.json/);
+  assert.match(app, /fetch\(`\.\/opening-variation-notes\.json\?v=\$\{revision\}`\)/);
   assert.match(app, /if \(!data \|\| variationNotes \|\| !variationNotesRequested\) return/);
   assert.match(detail, /onClick=\{\(\) => \{ setActiveLine\(index\); onRequestVariationNotes\(\); \}\}/);
   assert.match(detail, /正在載入變例解說/);
@@ -69,6 +69,8 @@ test("the opening catalog validates its schema and exposes a retry state", () =>
   assert.match(app, /setMapError\("開局地圖載入失敗，請檢查網路後重試。"\)/);
   assert.match(app, /className="catalog-load-error" role="alert"/);
   assert.match(app, /setMapRetry\(\(value\) => value \+ 1\)/);
+  assert.match(app, /fetch\("\.\/opening-map\.json", \{ cache: "no-cache" \}\)/);
+  assert.match(app, /openingDetailsRequest\?\.revision !== revision/);
 });
 
 test("opening detail CSS follows the lazy detail chunk without taking shared board styles", () => {
@@ -90,7 +92,7 @@ test("the large puzzle browser loads only when its tab is opened", () => {
   assert.match(app, /lazy\(\(\) => import\("\.\/PuzzleExplorer"\)\)/);
   assert.doesNotMatch(app, /fetch\("\.\/notion-puzzles\.json"\)/);
   assert.match(puzzles, /export default function PuzzleExplorer/);
-  assert.match(puzzles, /fetch\("\.\/notion-puzzles\.json"\)/);
+  assert.match(puzzles, /fetch\("\.\/notion-puzzles\.json", \{ cache: "no-cache" \}\)/);
   assert.match(puzzles, /previousFen && selected\.previousMove/);
   assert.match(puzzles, /"查看解答"/);
   assert.match(puzzles, /analysis\.status !== "ready"/);
@@ -120,8 +122,8 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(analogies, /非精確轉置/);
   assert.match(app, /<b>類似比較<\/b><small>黑方防禦對照白方進攻體系<\/small>/);
   assert.match(app, /"transpositions", "analogies"/);
-  assert.match(app, /fetch\("\.\/opening-explorers\.json"\)/);
-  assert.match(app, /function switchLens\(next: Lens\).*loadOpeningExplorerData\(\)/s);
+  assert.match(app, /fetch\(`\.\/opening-explorers\.json\?v=\$\{revision\}`\)/);
+  assert.match(app, /function switchLens\(next: Lens\).*loadOpeningExplorerData\(data\.catalog_revision\)/s);
   assert.match(app, /if \(!data \|\| explorerData \|\| !\["transpositions", "analogies"\]\.includes\(lens\)\) return/);
   assert.match(app, /<TranspositionExplorer nodes=\{data\.nodes\} groups=\{explorerData\.transpositionGroups\}/);
   assert.match(app, /<AnalogyExplorer nodes=\{data\.nodes\} groups=\{explorerData\.analogyGroups\}/);

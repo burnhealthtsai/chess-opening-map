@@ -23,34 +23,39 @@ function prepareChessSound() {
   void chessboardModule().then((module) => module.prepareChessSound()).catch(() => undefined);
 }
 
-let openingDetailsRequest: Promise<OpeningDetailsData> | null = null;
-function loadOpeningDetails() {
-  if (!openingDetailsRequest) {
-    openingDetailsRequest = fetch("./opening-details.json")
+type VersionedRequest<T> = { revision: string; promise: Promise<T> };
+
+let openingDetailsRequest: VersionedRequest<OpeningDetailsData> | null = null;
+function loadOpeningDetails(revision: string) {
+  if (openingDetailsRequest?.revision !== revision) {
+    const promise = fetch(`./opening-details.json?v=${revision}`)
       .then((response) => response.ok ? response.json() as Promise<OpeningDetailsData> : Promise.reject(new Error(`HTTP ${response.status}`)))
-      .catch((error) => { openingDetailsRequest = null; throw error; });
+      .catch((error) => { if (openingDetailsRequest?.promise === promise) openingDetailsRequest = null; throw error; });
+    openingDetailsRequest = { revision, promise };
   }
-  return openingDetailsRequest;
+  return openingDetailsRequest.promise;
 }
 
-let openingExplorerRequest: Promise<OpeningExplorerData> | null = null;
-function loadOpeningExplorerData() {
-  if (!openingExplorerRequest) {
-    openingExplorerRequest = fetch("./opening-explorers.json")
+let openingExplorerRequest: VersionedRequest<OpeningExplorerData> | null = null;
+function loadOpeningExplorerData(revision: string) {
+  if (openingExplorerRequest?.revision !== revision) {
+    const promise = fetch(`./opening-explorers.json?v=${revision}`)
       .then((response) => response.ok ? response.json() as Promise<OpeningExplorerData> : Promise.reject(new Error(`HTTP ${response.status}`)))
-      .catch((error) => { openingExplorerRequest = null; throw error; });
+      .catch((error) => { if (openingExplorerRequest?.promise === promise) openingExplorerRequest = null; throw error; });
+    openingExplorerRequest = { revision, promise };
   }
-  return openingExplorerRequest;
+  return openingExplorerRequest.promise;
 }
 
-let openingVariationNotesRequest: Promise<OpeningVariationNotesData> | null = null;
-function loadOpeningVariationNotes() {
-  if (!openingVariationNotesRequest) {
-    openingVariationNotesRequest = fetch("./opening-variation-notes.json")
+let openingVariationNotesRequest: VersionedRequest<OpeningVariationNotesData> | null = null;
+function loadOpeningVariationNotes(revision: string) {
+  if (openingVariationNotesRequest?.revision !== revision) {
+    const promise = fetch(`./opening-variation-notes.json?v=${revision}`)
       .then((response) => response.ok ? response.json() as Promise<OpeningVariationNotesData> : Promise.reject(new Error(`HTTP ${response.status}`)))
-      .catch((error) => { openingVariationNotesRequest = null; throw error; });
+      .catch((error) => { if (openingVariationNotesRequest?.promise === promise) openingVariationNotesRequest = null; throw error; });
+    openingVariationNotesRequest = { revision, promise };
   }
-  return openingVariationNotesRequest;
+  return openingVariationNotesRequest.promise;
 }
 
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
@@ -99,7 +104,7 @@ export function App() {
   useEffect(() => {
     let active = true;
     setMapError(null);
-    fetch("./opening-map.json")
+    fetch("./opening-map.json", { cache: "no-cache" })
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const next = await response.json() as OpeningMapData;
@@ -144,7 +149,7 @@ export function App() {
     if (!selectedId || openingDetails || !data) return;
     let active = true;
     setDetailError(null);
-    loadOpeningDetails().then((details) => {
+    loadOpeningDetails(data.catalog_revision).then((details) => {
       if (details.schema_version !== data.schema_version || details.catalog_revision !== data.catalog_revision) {
         openingDetailsRequest = null;
         throw new Error("開局地圖與詳情資料版本不一致");
@@ -158,7 +163,7 @@ export function App() {
     if (!data || explorerData || !["transpositions", "analogies"].includes(lens)) return;
     let active = true;
     setExplorerError(null);
-    loadOpeningExplorerData().then((explorers) => {
+    loadOpeningExplorerData(data.catalog_revision).then((explorers) => {
       if (explorers.schema_version !== data.schema_version || explorers.catalog_revision !== data.catalog_revision) {
         openingExplorerRequest = null;
         throw new Error("開局地圖與分頁資料版本不一致");
@@ -172,7 +177,7 @@ export function App() {
     if (!data || variationNotes || !variationNotesRequested) return;
     let active = true;
     setVariationNoteError(null);
-    loadOpeningVariationNotes().then((notes) => {
+    loadOpeningVariationNotes(data.catalog_revision).then((notes) => {
       if (notes.schema_version !== data.schema_version || notes.catalog_revision !== data.catalog_revision || notes.notes.length !== data.nodes.length) {
         openingVariationNotesRequest = null;
         throw new Error("開局地圖與變例解說版本不一致");
@@ -208,7 +213,7 @@ export function App() {
 
   function switchLens(next: Lens) {
     setLens(next); setSelectedId(null); setQuery("");
-    if (["transpositions", "analogies"].includes(next)) void loadOpeningExplorerData().catch(() => undefined);
+    if (data && ["transpositions", "analogies"].includes(next)) void loadOpeningExplorerData(data.catalog_revision).catch(() => undefined);
     if (next !== "style") setSelectedStyle(null);
   }
   function home() { setSelectedFirstMove(null); setSelectedFamily(null); setSelectedId(null); }
@@ -218,7 +223,7 @@ export function App() {
   function selectOpening(id: string) {
     prepareChessSound();
     void openingDetailModule();
-    void loadOpeningDetails().catch(() => undefined);
+    if (data) void loadOpeningDetails(data.catalog_revision).catch(() => undefined);
     setSelectedId(id);
   }
   function retryOpeningDetails() {

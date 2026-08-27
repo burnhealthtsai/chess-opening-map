@@ -54,7 +54,7 @@ export default function PuzzleExplorer() {
   const configuredUrl = import.meta.env.VITE_PUZZLE_APP_URL?.trim();
   const puzzleUrl = configuredUrl || "http://127.0.0.1:8788/?tab=puzzles";
   useEffect(() => {
-    fetch("./notion-puzzles.json").then((response) => response.ok ? response.json() : Promise.reject())
+    fetch("./notion-puzzles.json", { cache: "no-cache" }).then((response) => response.ok ? response.json() : Promise.reject())
       .then((value: NotionPuzzleCatalog) => { setCatalog(value); setSelectedId(value.puzzles[0]?.id ?? null); })
       .catch(() => setLoadError(true));
   }, []);
