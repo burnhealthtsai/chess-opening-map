@@ -11,6 +11,7 @@ const styles = await readFile(new URL("../src/StyleExplorer.tsx", import.meta.ur
 const transpositions = await readFile(new URL("../src/TranspositionExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const analogies = await readFile(new URL("../src/AnalogyExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const globalCss = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+const puzzleCss = await readFile(new URL("../src/PuzzleExplorer.css", import.meta.url), "utf8").catch(() => "");
 const styleCss = await readFile(new URL("../src/StyleExplorer.css", import.meta.url), "utf8").catch(() => "");
 const transpositionCss = await readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8").catch(() => "");
 const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8").catch(() => "");
@@ -68,4 +69,15 @@ test("secondary explorer CSS follows its lazy JavaScript chunk", () => {
   assert.match(analogyCss, /\.analogy-layout/);
   assert.match(analogyCss, /@media \(max-width: 680px\)/);
   assert.doesNotMatch(globalCss, /\.(?:style-grid|transposition-layout|analogy-layout)/);
+});
+
+test("the puzzle browser CSS follows its lazy JavaScript chunk", () => {
+  assert.match(puzzles, /import "\.\/PuzzleExplorer\.css"/);
+  assert.match(puzzleCss, /\.puzzle-browser/);
+  assert.match(puzzleCss, /\.notion-puzzle-preview/);
+  assert.match(puzzleCss, /\.puzzle-answer/);
+  assert.match(puzzleCss, /@media \(max-width: 560px\)/);
+  assert.doesNotMatch(globalCss, /\.(?:puzzle-browser|notion-puzzle-preview|puzzle-answer)/);
+  assert.doesNotMatch(globalCss, /\.puzzle-portal/);
+  assert.doesNotMatch(puzzleCss, /\.puzzle-portal/);
 });

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Chessboard } from "./Chessboard";
+import "./PuzzleExplorer.css";
 
 type NotionPuzzle = {
   id: string; title: string; fen: string; side: "白方" | "黑方"; themes: string[];
