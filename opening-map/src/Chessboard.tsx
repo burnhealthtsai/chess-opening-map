@@ -111,6 +111,7 @@ type ChessboardProps = {
   initialStep?: number;
   interactive?: boolean;
   analysis?: boolean;
+  deferAnalysis?: boolean;
   compact?: boolean;
   showControls?: boolean;
   autoPlay?: boolean;
@@ -136,7 +137,7 @@ function squareCenter(square: Square, orientation: "white" | "black") {
     : { x: 7 - file + .5, y: rank - .5 };
 }
 
-export function Chessboard({ line, initialFen, initialStep = 0, interactive = false, analysis = false, compact = false, showControls, autoPlay = false, autoPlayFromStep = 0, orientation = "white", onBestMove, onPositionChange, opponentLevel, playerColor = "white", onManualMove, onManualUndo, blind = false }: ChessboardProps) {
+export function Chessboard({ line, initialFen, initialStep = 0, interactive = false, analysis = false, deferAnalysis = false, compact = false, showControls, autoPlay = false, autoPlayFromStep = 0, orientation = "white", onBestMove, onPositionChange, opponentLevel, playerColor = "white", onManualMove, onManualUndo, blind = false }: ChessboardProps) {
   const moves = useMemo(() => movesFromLine(line), [line]);
   const [step, setStep] = useState(() => autoPlay ? Math.min(autoPlayFromStep, moves.length) : Math.min(initialStep, moves.length));
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -150,6 +151,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
   const [blindInventory, setBlindInventory] = useState(false);
   const [blindNote, setBlindNote] = useState("按「盤點位置」後，點選格子確認你記憶中的棋子位置。");
   const [lastOpponentMove, setLastOpponentMove] = useState<{ from: Square; to: Square } | null>(null);
+  const [analysisRequested, setAnalysisRequested] = useState(() => !deferAnalysis);
   const arrowStart = useRef<Square | null>(null);
   const markerId = useId().replace(/:/g, "");
   const controlsVisible = showControls ?? !compact;
@@ -175,7 +177,8 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
     dark: (rowIndex + colIndex) % 2 === 1,
   })));
   if (orientation === "black") displayedSquares.reverse();
-  const engine = useStockfish(displayFen, analysis || Boolean(opponentLevel) || Boolean(onBestMove));
+  const engineEnabled = Boolean(opponentLevel) || ((analysis || Boolean(onBestMove)) && analysisRequested);
+  const engine = useStockfish(displayFen, engineEnabled);
   const suggestedFrom = analysis && engine.bestMove ? engine.bestMove.slice(0, 2) as Square : null;
   const suggestedTo = analysis && engine.bestMove ? engine.bestMove.slice(2, 4) as Square : null;
   useEffect(() => {
@@ -443,7 +446,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
       : <MoveTokens moves={moves.slice(0, safeStep)} startPly={initialTurnPly} />}</div>}
     {interactive && <p className="arrow-help">右鍵拖曳：攻擊箭頭 · Shift＋右鍵拖曳：對手反擊</p>}
     {blind && <p className="blind-note">盲棋模式：只標示對手最後一步的起點與終點。{blindNote}</p>}
-    {analysis && <StockfishPanel analysis={engine} fen={displayFen} />}
+    {analysis && <StockfishPanel analysis={engine} fen={displayFen} enabled={engineEnabled} initiallyCollapsed={deferAnalysis} onExpand={() => setAnalysisRequested(true)} />}
   </section>;
 }
 
@@ -475,9 +478,9 @@ function engineMoveReasons(piece: { type: PieceSymbol; color: "w" | "b" }, from:
   return reasons.slice(0, 2);
 }
 
-function StockfishPanel({ analysis, fen }: { analysis: ReturnType<typeof useStockfish>; fen: string }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const label = analysis.status === "loading" ? "載入分析引擎…" : analysis.status === "error" ? "分析引擎無法載入" : analysis.status === "thinking" ? "分析中…" : "分析完成";
+function StockfishPanel({ analysis, fen, enabled, initiallyCollapsed = false, onExpand }: { analysis: ReturnType<typeof useStockfish>; fen: string; enabled: boolean; initiallyCollapsed?: boolean; onExpand?: () => void }) {
+  const [collapsed, setCollapsed] = useState(initiallyCollapsed);
+  const label = !enabled ? "展開後載入分析引擎" : analysis.status === "loading" ? "載入分析引擎…" : analysis.status === "error" ? "分析引擎無法載入" : analysis.status === "thinking" ? "分析中…" : "分析完成";
   const evaluation = analysis.mate !== null ? `M${analysis.mate}` : analysis.score !== null ? `${analysis.score >= 0 ? "+" : ""}${analysis.score.toFixed(2)}` : "—";
   const whiteShare = analysis.mate !== null ? (analysis.mate > 0 ? 92 : 8) : analysis.score !== null ? Math.max(8, Math.min(92, 50 + analysis.score * 8)) : 50;
   const suggestion = useMemo(() => {
@@ -493,7 +496,7 @@ function StockfishPanel({ analysis, fen }: { analysis: ReturnType<typeof useStoc
     } catch { return null; }
   }, [analysis.bestMove, fen]);
   return <aside className={`stockfish-panel ${collapsed ? "collapsed" : ""}`} aria-live="polite">
-    <div className="engine-heading"><div><b>Stockfish 18</b><small>{label} {analysis.depth ? `· 深度 ${analysis.depth}` : ""}</small></div><div className="engine-heading-actions"><strong>{evaluation}</strong><button type="button" onClick={() => setCollapsed((value) => !value)} aria-expanded={!collapsed} aria-label={collapsed ? "展開 Stockfish 分析" : "摺疊 Stockfish 分析"}>{collapsed ? "＋" : "−"}</button></div></div>
+    <div className="engine-heading"><div><b>Stockfish 18</b><small>{label} {analysis.depth ? `· 深度 ${analysis.depth}` : ""}</small></div><div className="engine-heading-actions"><strong>{evaluation}</strong><button type="button" onClick={() => setCollapsed((value) => { const next = !value; if (!next) onExpand?.(); return next; })} aria-expanded={!collapsed} aria-label={collapsed ? "展開 Stockfish 分析" : "摺疊 Stockfish 分析"}>{collapsed ? "＋" : "−"}</button></div></div>
     {!collapsed && <><div className="eval-bar" aria-label={`白方局面比例 ${Math.round(whiteShare)}%`}><span style={{ width: `${whiteShare}%` }} /></div>
       <p className={`engine-suggestion ${suggestion?.color ?? ""}`}>{suggestion ? <><span className="engine-piece-icon cg-wrap" aria-hidden="true">{createElement("piece", { className: `${suggestion.kind} ${suggestion.color}` })}</span><span>建議下法：<b>{suggestion.colorName}{suggestion.pieceName} {suggestion.san}</b></span></> : "正在計算建議下法"}</p>
       {suggestion && <div className="engine-why"><b>為什麼這樣下？</b><ul>{suggestion.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul></div>}
