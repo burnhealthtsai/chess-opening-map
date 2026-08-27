@@ -192,6 +192,8 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.equal(sicilianEnglish.relation, "reversed");
   assert.ok(sicilianEnglish.blackIds.includes("b-sicilian-defense"));
   assert.ok(sicilianEnglish.whiteIds.includes("w-english-opening"));
+  assert.ok(sicilianEnglish.whiteIds.every((id) => openingById.get(id)?.title_zh.startsWith("英格蘭開局")));
+  assert.ok(!map.nodes.some((opening) => opening.title_zh.includes("英國式開局")));
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));

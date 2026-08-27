@@ -18,7 +18,7 @@ const originNotes: { keys: string[]; note: string }[] = [
   { keys: ["Caro-Kann", "卡羅康防禦"], note: "以 Horatio Caro 與 Marcus Kann 兩位分析者的姓氏命名；記成「Caro＋Kann＝c6、d5 的堅固中心」。" },
   { keys: ["Alekhine", "阿廖欣"], note: "以世界冠軍 Alexander Alekhine 命名；黑方先用馬挑釁白兵前進，再攻擊被拉長的兵鏈。" },
   { keys: ["Pirc", "皮爾茨"], note: "以斯洛維尼亞／南斯拉夫棋手 Vasja Pirc 命名，是先讓白方佔中心、再從側翼反擊的超現代防禦。" },
-  { keys: ["English Opening", "英式開局"], note: "名稱與英國名將 Howard Staunton 的推廣有關；用 1.c4 從側面控制 d5，像是以側翼包圍中心。" },
+  { keys: ["English Opening", "英格蘭開局", "英式開局"], note: "名稱與英國名將 Howard Staunton 的推廣有關；用 1.c4 從側面控制 d5，像是以側翼包圍中心。" },
   { keys: ["Scotch Game", "蘇格蘭開局"], note: "名稱源自 1824 年愛丁堡與倫敦之間的通信棋賽，愛丁堡一方使用了這套快速 d4 破中心的走法。" },
   { keys: ["Italian Game", "義大利開局"], note: "這套 Bc4 瞄準 f7 的古典走法由義大利棋手長期研究，因此得名義大利開局。" },
   { keys: ["Vienna Game", "維也納開局"], note: "由 19 世紀維也納棋派深入研究；先走 Nc3，保留 f4 進攻與多種中心配置。" },

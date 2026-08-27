@@ -1451,7 +1451,7 @@
     },
     {
       "id": "w-english-opening",
-      "title_zh": "英國式開局",
+      "title_zh": "英格蘭開局",
       "title_en": "English Opening",
       "aliases": [],
       "side": "白方",
@@ -1468,22 +1468,22 @@
         {
           "name": "Symmetrical, Hedgehog, Flexible Formation",
           "line": "1. c4 e6 2. Nf3 c5 3. Nc3 Nf6 4. g3 b6 5. Bg2 Bb7 6. O-O Be7 7. d4 cxd4 8. Qxd4 d6 9. Rd1 a6 10. b3 Nbd7",
-          "note": "英國式開局的「Symmetrical, Hedgehog, Flexible Formation」在第 1 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "英格蘭開局的「Symmetrical, Hedgehog, Flexible Formation」在第 1 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
           "name": "King's English Variation, Four Knights Variation",
           "line": "1. c4 e5 2. Nc3 Nf6 3. Nf3 Nc6 4. d4 exd4 5. Nxd4 Bb4 6. Bg5 h6 7. Bh4 Bxc3+ 8. bxc3 Ne5",
-          "note": "英國式開局的「King's English Variation, Four Knights Variation」在第 1 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "英格蘭開局的「King's English Variation, Four Knights Variation」在第 1 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
           "name": "King's English Variation, Botvinnik System, Prickly Pawn Pass System",
           "line": "1. c4 g6 2. Nc3 Bg7 3. g3 Nf6 4. Bg2 O-O 5. e4 d6 6. Nge2 e5 7. O-O c6 8. d3 a6",
-          "note": "英國式開局的「King's English Variation, Botvinnik System, Prickly Pawn Pass System」在第 1 回合由黑方走 g6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "英格蘭開局的「King's English Variation, Botvinnik System, Prickly Pawn Pass System」在第 1 回合由黑方走 g6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
-      "ideas": "英國式開局以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
+      "ideas": "英格蘭開局以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
       "plans": [
-        "在英國式開局中先以兵與象控制中心格，再依黑方配置決定中心兵形",
+        "在英格蘭開局中先以兵與象控制中心格，再依黑方配置決定中心兵形",
         "利用長對角線與半開線向后翼施壓",
         "保留轉置選項，但在對手完成理想配置前確立自己的中心計畫"
       ],
@@ -2832,7 +2832,7 @@
     },
     {
       "id": "w-english-opening-four-knights-system",
-      "title_zh": "英國式開局：四馬體系",
+      "title_zh": "英格蘭開局：四馬體系",
       "title_en": "English Opening: Four Knights System",
       "aliases": [],
       "side": "白方",
@@ -2846,9 +2846,9 @@
       "difficulty": "初中階",
       "mainline": "1. c4 e5 2. Nc3 Nf6 3. Nf3 Nc6 4. e4",
       "variations": [],
-      "ideas": "英國式開局：四馬體系以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
+      "ideas": "英格蘭開局：四馬體系以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
       "plans": [
-        "在英國式開局：四馬體系中先以兵與象控制中心格，再依黑方配置決定中心兵形",
+        "在英格蘭開局：四馬體系中先以兵與象控制中心格，再依黑方配置決定中心兵形",
         "利用長對角線與半開線向后翼施壓",
         "保留轉置選項，但在對手完成理想配置前確立自己的中心計畫"
       ],
@@ -6485,7 +6485,7 @@
     },
     {
       "id": "b-english-opening-symmetrical",
-      "title_zh": "英國式開局：對稱防禦",
+      "title_zh": "英格蘭開局：對稱防禦",
       "title_en": "English Opening: Symmetrical",
       "aliases": [],
       "side": "黑方",
@@ -6499,9 +6499,9 @@
       "difficulty": "初中階",
       "mainline": "1. c4 e6 2. Nf3 c5 3. Nc3 Nf6 4. g3 b6 5. Bg2 Bb7 6. O-O Be7 7. d4 cxd4 8. Qxd4 d6 9. Rd1 a6 10. b3 Nbd7",
       "variations": [],
-      "ideas": "英國式開局：對稱防禦以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
+      "ideas": "英格蘭開局：對稱防禦以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
       "plans": [
-        "在英國式開局：對稱防禦中先以兵與象控制中心格，再依黑方配置決定中心兵形",
+        "在英格蘭開局：對稱防禦中先以兵與象控制中心格，再依黑方配置決定中心兵形",
         "利用長對角線與半開線向后翼施壓",
         "保留轉置選項，但在對手完成理想配置前確立自己的中心計畫"
       ],

@@ -19,7 +19,7 @@ const iconRules: IconRule[] = [
   { icon: "🇪🇸", pattern: /西班牙|加泰隆尼亞|Ruy Lopez|Spanish|Catalan/i },
   { icon: "🇮🇹", pattern: /義大利|西西里|Italian|Sicilian/i },
   { icon: "🇫🇷", pattern: /法蘭西|French/i },
-  { icon: "🇬🇧", pattern: /英式|英國|蘇格蘭|威爾斯|English Opening|English Defense|Scotch|Welsh/i },
+  { icon: "🇬🇧", pattern: /英式|英國|英格蘭|蘇格蘭|威爾斯|English Opening|English Defense|Scotch|Welsh/i },
   { icon: "🇳🇱", pattern: /荷蘭|Dutch/i },
   { icon: "🇮🇳", pattern: /印度|Indian/i },
   { icon: "🇩🇰", pattern: /丹麥|Danish/i },
