@@ -1,6 +1,4 @@
-import { createElement, lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Chess } from "chess.js";
-import { Chessboard, prepareChessSound } from "./Chessboard";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { openingIcon } from "./openingIcon";
 import { shouldStartLiveBoardMinimized } from "./responsive";
@@ -14,8 +12,15 @@ const OpponentExplorer = lazy(() => import("./OpponentExplorer"));
 const StyleExplorer = lazy(() => import("./StyleExplorer"));
 const TranspositionExplorer = lazy(() => import("./TranspositionExplorer"));
 const AnalogyExplorer = lazy(() => import("./AnalogyExplorer"));
+const OpeningPositionPreview = lazy(() => import("./OpeningPositionPreview"));
+const chessboardModule = () => import("./Chessboard");
+const Chessboard = lazy(() => chessboardModule().then((module) => ({ default: module.Chessboard })));
 const pieceThemeModule = () => import("./pieceThemes");
 const openingSchemaVersion = 9;
+
+function prepareChessSound() {
+  void chessboardModule().then((module) => module.prepareChessSound()).catch(() => undefined);
+}
 
 let openingDetailsRequest: Promise<OpeningDetailsData> | null = null;
 function loadOpeningDetails() {
@@ -409,20 +414,7 @@ function SearchResults({ nodes, query, onSelect }: { nodes: Opening[]; query: st
 }
 
 function OpeningCard({ node, selected, preview = false, onClick }: { node: Opening; selected?: boolean; preview?: boolean; onClick: () => void }) {
-  return <button className={`opening-card ${preview ? "has-preview" : ""} ${selected ? "selected" : ""}`} onClick={onClick}><span>{node.eco}</span><b>{openingIcon(node.title_zh, node.title_en) && <i className="opening-origin-icon" aria-hidden="true">{openingIcon(node.title_zh, node.title_en)}</i>}{node.title_zh}</b><small>{node.title_en}</small>{preview && <OpeningPositionPreview opening={node} />}<em>{node.side} · {node.category}</em></button>;
-}
-
-function OpeningPositionPreview({ opening }: { opening: Opening }) {
-  const position = useMemo(() => {
-    const game = new Chess();
-    for (const san of lineMoves(opening.mainline)) {
-      try { game.move(san); } catch { break; }
-    }
-    const squares = game.board().flatMap((row) => row);
-    return opening.side === "黑方" ? squares.reverse() : squares;
-  }, [opening]);
-  const pieceNames = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" } as const;
-  return <span className="opening-position-preview" aria-label={`${opening.title_zh}主線走完後局面`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>主線走完後</i></span>;
+  return <button className={`opening-card ${preview ? "has-preview" : ""} ${selected ? "selected" : ""}`} onClick={onClick}><span>{node.eco}</span><b>{openingIcon(node.title_zh, node.title_en) && <i className="opening-origin-icon" aria-hidden="true">{openingIcon(node.title_zh, node.title_en)}</i>}{node.title_zh}</b><small>{node.title_en}</small>{preview && <Suspense fallback={<span className="opening-position-preview preview-loading" aria-hidden="true">局面載入中…</span>}><OpeningPositionPreview opening={node} /></Suspense>}<em>{node.side} · {node.category}</em></button>;
 }
 
 function MapBoardPreview({ opening, line, step, fromStep, level, label, onBestMove }: { opening: Opening; line?: string; step: number; fromStep: number; level: string; label: string; onBestMove?: (san: string | null) => void }) {
@@ -476,7 +468,7 @@ function MapBoardPreview({ opening, line, step, fromStep, level, label, onBestMo
       <div><p className="eyebrow">LIVE BOARD</p><h3>{level}</h3><b>{label}</b></div>
       <div className="floating-board-actions"><span>⠿ 拖曳移動</span><button type="button" onPointerDown={(event) => event.stopPropagation()} onClick={() => setMinimized((value) => !value)} aria-label={minimized ? "還原 Live Board" : "最小化 Live Board"}>{minimized ? "□" : "−"}</button></div>
     </div>
-    {!minimized && <><Chessboard key={`${opening.id}-${line ?? "main"}-${fromStep}-${step}`} line={line ?? opening.mainline} initialStep={step} interactive analysis deferAnalysis showControls autoPlay autoPlayFromStep={fromStep} orientation={opening.side === "黑方" ? "black" : "white"} onBestMove={onBestMove} />
+    {!minimized && <><Suspense fallback={<div className="board-loading" role="status">正在載入 Live Board…</div>}><Chessboard key={`${opening.id}-${line ?? "main"}-${fromStep}-${step}`} line={line ?? opening.mainline} initialStep={step} interactive analysis deferAnalysis showControls autoPlay autoPlayFromStep={fromStep} orientation={opening.side === "黑方" ? "black" : "white"} onBestMove={onBestMove} /></Suspense>
       <details className="floating-key-moves"><summary>重要招法 <span>{lineMoves(line ?? opening.mainline).length} 手</span></summary><div>{lineMoves(line ?? opening.mainline).map((move, index) => <span className={index % 2 === 0 ? "white-move" : "black-move"} key={`${move}-${index}`}>{move}</span>)}</div></details>
       <small>{opening.title_zh} · {opening.eco}</small>
       <span className="resize-hint" aria-hidden="true">↘</span></>}

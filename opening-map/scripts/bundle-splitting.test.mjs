@@ -18,6 +18,7 @@ const styleCss = await readFile(new URL("../src/StyleExplorer.css", import.meta.
 const transpositionCss = await readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8").catch(() => "");
 const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8").catch(() => "");
 const detailCss = await readFile(new URL("../src/OpeningDetail.css", import.meta.url), "utf8").catch(() => "");
+const positionPreview = await readFile(new URL("../src/OpeningPositionPreview.tsx", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
   assert.match(app, /const openingDetailModule = \(\) => import\("\.\/OpeningDetail"\)/);
@@ -41,6 +42,16 @@ test("custom piece theme generation loads only after leaving the original set", 
   assert.match(app, /if \(pieceStyle === "original"\).*generated-piece-theme.*remove\(\)/s);
   assert.match(app, /pieceThemeModule\(\)\.then\(\(\{ installPieceTheme \}\)/);
   assert.match(app, /pieceThemeModule\(\).*\.catch\(\(\) => \{ if \(active\) setPieceStyle\("original"\); \}\)/s);
+});
+
+test("chess rules and the full board stay out of the initial application chunk", () => {
+  assert.doesNotMatch(app, /import \{ Chess \} from "chess\.js"/);
+  assert.doesNotMatch(app, /import \{ Chessboard, prepareChessSound \} from "\.\/Chessboard"/);
+  assert.match(app, /const chessboardModule = \(\) => import\("\.\/Chessboard"\)/);
+  assert.match(app, /const Chessboard = lazy\(\(\) => chessboardModule\(\)\.then/);
+  assert.match(app, /const OpeningPositionPreview = lazy\(\(\) => import\("\.\/OpeningPositionPreview"\)\)/);
+  assert.match(positionPreview, /import \{ Chess \} from "chess\.js"/);
+  assert.match(positionPreview, /export default function OpeningPositionPreview/);
 });
 
 test("the opening catalog validates its schema and exposes a retry state", () => {
