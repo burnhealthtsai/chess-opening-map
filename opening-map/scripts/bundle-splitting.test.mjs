@@ -5,6 +5,8 @@ import test from "node:test";
 const app = await readFile(new URL("../src/App.tsx", import.meta.url), "utf8");
 const detail = await readFile(new URL("../src/OpeningDetail.tsx", import.meta.url), "utf8").catch(() => "");
 const puzzles = await readFile(new URL("../src/PuzzleExplorer.tsx", import.meta.url), "utf8").catch(() => "");
+const concepts = await readFile(new URL("../src/ConceptExplorer.tsx", import.meta.url), "utf8").catch(() => "");
+const opponents = await readFile(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
   assert.match(app, /lazy\(\(\) => import\("\.\/OpeningDetail"\)\)/);
@@ -23,4 +25,15 @@ test("the large puzzle browser loads only when its tab is opened", () => {
   assert.match(puzzles, /"查看解答"/);
   assert.match(puzzles, /analysis\.status !== "ready"/);
   assert.match(puzzles, /setPuzzleAnswer\(move\)/);
+});
+
+test("concept lessons and opponent practice are separate on-demand chunks", () => {
+  assert.match(app, /lazy\(\(\) => import\("\.\/ConceptExplorer"\)\)/);
+  assert.match(app, /lazy\(\(\) => import\("\.\/OpponentExplorer"\)\)/);
+  assert.doesNotMatch(app, /const (?:endgameLessons|opponentLevels) =/);
+  assert.match(concepts, /export default function ConceptExplorer/);
+  assert.match(concepts, /基本戰術／技巧辨識/);
+  assert.match(opponents, /export default function OpponentExplorer/);
+  assert.match(opponents, /blind-live-board/);
+  assert.match(opponents, /playerColor === "black"/);
 });
