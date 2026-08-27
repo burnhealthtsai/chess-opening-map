@@ -21,6 +21,13 @@ const palettes = {
 
 type Theme = keyof typeof palettes;
 
+const rasterSets = [
+  { id: "fairytale", folder: "fairytale-animation", whiteFilter: "invert(1) sepia(.12) saturate(.7) brightness(1.08)" },
+  { id: "ceramic-storybook", folder: "ceramic-storybook", whiteFilter: "invert(1) sepia(.08) saturate(.55) brightness(1.08)" },
+  { id: "neon-punk", folder: "neon-punk", whiteFilter: "hue-rotate(155deg) saturate(.82) brightness(1.38)" },
+  { id: "egyptian-monument", folder: "egyptian-monument", whiteFilter: "invert(1) sepia(.22) saturate(.72) brightness(1.08)" },
+] as const;
+
 function baseRole(role: Role, fill: string, stroke: string) {
   const common = `fill="${fill}" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"`;
   const bodies: Record<Role, string> = {
@@ -81,23 +88,31 @@ function makeSvg(theme: Theme, role: Role, side: Side) {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
-export function installPieceThemes() {
-  const style = document.createElement("style");
-  style.dataset.generatedPieceThemes = "true";
-  const generatedThemes = (Object.keys(palettes) as Theme[]).filter((theme) => theme !== "fairytale");
-  const rasterSets = [
-    { id: "fairytale", folder: "fairytale-animation", whiteFilter: "invert(1) sepia(.12) saturate(.7) brightness(1.08)" },
-    { id: "ceramic-storybook", folder: "ceramic-storybook", whiteFilter: "invert(1) sepia(.08) saturate(.55) brightness(1.08)" },
-    { id: "neon-punk", folder: "neon-punk", whiteFilter: "hue-rotate(155deg) saturate(.82) brightness(1.38)" },
-    { id: "egyptian-monument", folder: "egyptian-monument", whiteFilter: "invert(1) sepia(.22) saturate(.72) brightness(1.08)" },
-  ];
-  const rasterPieces = rasterSets.flatMap((set) => roles.flatMap((role) => sides.map((side) =>
-    `[data-piece-style="${set.id}"] .cg-wrap piece.${side}.${role}{background-image:url("./pieces/${set.folder}/${role}.png")!important;filter:${side === "white" ? `${set.whiteFilter} ` : ""}drop-shadow(0 2px 1px rgba(12,25,42,.32))!important}`,
-  )));
-  style.textContent = generatedThemes.flatMap((theme) =>
-    roles.flatMap((role) => sides.map((side) =>
-      `[data-piece-style="${theme}"] .cg-wrap piece.${side}.${role}{background-image:url("${makeSvg(theme, role, side)}")!important}`,
-    )),
-  ).concat(rasterPieces).join("\n");
-  document.head.append(style);
+export function pieceThemeCss(theme: string) {
+  if (Object.hasOwn(palettes, theme) && theme !== "fairytale") {
+    const selectedTheme = theme as Theme;
+    return roles.flatMap((role) => sides.map((side) =>
+      `[data-piece-style="${selectedTheme}"] .cg-wrap piece.${side}.${role}{background-image:url("${makeSvg(selectedTheme, role, side)}")!important}`,
+    )).join("\n");
+  }
+  const raster = rasterSets.find((set) => set.id === theme);
+  if (!raster) return "";
+  return roles.flatMap((role) => sides.map((side) =>
+    `[data-piece-style="${raster.id}"] .cg-wrap piece.${side}.${role}{background-image:url("./pieces/${raster.folder}/${role}.png")!important;filter:${side === "white" ? `${raster.whiteFilter} ` : ""}drop-shadow(0 2px 1px rgba(12,25,42,.32))!important}`,
+  )).join("\n");
+}
+
+let generatedStyle: HTMLStyleElement | null = null;
+
+export function installPieceTheme(theme: string) {
+  const css = pieceThemeCss(theme);
+  if (!css) {
+    generatedStyle?.remove();
+    generatedStyle = null;
+    return;
+  }
+  generatedStyle ??= document.createElement("style");
+  generatedStyle.dataset.generatedPieceTheme = theme;
+  generatedStyle.textContent = css;
+  if (!generatedStyle.isConnected) document.head.append(generatedStyle);
 }

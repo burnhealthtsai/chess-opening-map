@@ -4,6 +4,7 @@ import { Chessboard, prepareChessSound } from "./Chessboard";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { gamesForOpening, openingMemory, phaseGuides } from "./openingKnowledge";
 import { openingIcon } from "./openingIcon";
+import { installPieceTheme } from "./pieceThemes";
 import { shouldStartLiveBoardMinimized } from "./responsive";
 import type { Opening, OpeningMapData, RelationMode } from "./types";
 
@@ -64,7 +65,10 @@ export function App() {
     fetch("./opening-map.json").then((response) => response.ok ? response.json() : Promise.reject()).then(setData).catch(() => setData(null));
   }, []);
   useEffect(() => { document.documentElement.dataset.theme = dark ? "dark" : "light"; }, [dark]);
-  useEffect(() => { document.documentElement.dataset.pieceStyle = pieceStyle; }, [pieceStyle]);
+  useEffect(() => {
+    document.documentElement.dataset.pieceStyle = pieceStyle;
+    installPieceTheme(pieceStyle);
+  }, [pieceStyle]);
   useEffect(() => { document.documentElement.dataset.boardStyle = boardStyle; }, [boardStyle]);
 
   const selected = data?.nodes.find((node) => node.id === selectedId) ?? null;

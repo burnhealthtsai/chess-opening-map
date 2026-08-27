@@ -32,6 +32,10 @@ test("publishes crawlable canonical metadata for the Cloudflare primary site", (
   assert.match(sitemap, new RegExp(`<loc>${canonicalUrl}</loc>`));
 });
 
+test("preloads the opening catalog before the application bundle runs", () => {
+  assert.match(index, /<link rel="preload" href="\.\/opening-map\.json" as="fetch" crossorigin="anonymous" \/>/);
+});
+
 test("classification labels meet WCAG AA normal-text contrast", () => {
   const pairs = [
     ["#247a36", "#eaf7ec"],
