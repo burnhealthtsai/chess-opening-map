@@ -48,6 +48,7 @@ test("custom piece theme generation loads only after leaving the original set", 
   assert.match(app, /readStoredChoice\("board-style"/);
   assert.match(app, /readStoredBoolean\("dark", false\)/);
   assert.match(app, /writeStoredPreference\("piece-style", pieceStyle\)/);
+  assert.match(app, /meta\[name="theme-color"\].*dark \? "#0f1828" : "#f4f8fc"/s);
 });
 
 test("chess rules and the full board stay out of the initial application chunk", () => {

@@ -119,6 +119,7 @@ export function App() {
   }, [mapRetry]);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute("content", dark ? "#0f1828" : "#f4f8fc");
     writeStoredPreference("dark", dark);
   }, [dark]);
   useEffect(() => {

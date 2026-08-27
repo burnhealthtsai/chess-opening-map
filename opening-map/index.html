@@ -4,6 +4,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#152238" />
+    <script data-appearance-init>
+      (() => {
+        const root = document.documentElement;
+        const themeColor = document.querySelector('meta[name="theme-color"]');
+        const applyTheme = (dark) => {
+          root.dataset.theme = dark ? "dark" : "light";
+          themeColor?.setAttribute("content", dark ? "#0f1828" : "#f4f8fc");
+        };
+        root.dataset.pieceStyle = "original";
+        root.dataset.boardStyle = "wood";
+        applyTheme(false);
+        try {
+          const pieces = ["original", "magic", "fairytale", "ceramic-storybook", "neon-punk", "egyptian-monument", "forest-anime", "warcraft", "zombie", "robot", "myth", "egypt", "india", "china", "japan", "europe"];
+          const boards = ["wood", "walnut", "ocean", "forest", "slate", "royal", "rose", "sand", "mint", "night"];
+          const piece = localStorage.getItem("opening-map:piece-style");
+          const board = localStorage.getItem("opening-map:board-style");
+          if (pieces.includes(piece)) root.dataset.pieceStyle = piece;
+          if (boards.includes(board)) root.dataset.boardStyle = board;
+          applyTheme(localStorage.getItem("opening-map:dark") === "true");
+        } catch { /* Private browsing can deny storage access. */ }
+      })();
+    </script>
     <meta name="description" content="探索 196 個西洋棋開局之間的棋路家族與學習風格關聯。" />
     <link rel="canonical" href="https://chess-opening-map.pages.dev/" />
     <link rel="preload" href="./opening-map.json" as="fetch" crossorigin="anonymous" />
