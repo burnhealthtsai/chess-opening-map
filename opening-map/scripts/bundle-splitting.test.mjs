@@ -42,6 +42,8 @@ test("custom piece theme generation loads only after leaving the original set", 
   assert.match(app, /if \(pieceStyle === "original"\).*generated-piece-theme.*remove\(\)/s);
   assert.match(app, /pieceThemeModule\(\)\.then\(\(\{ installPieceTheme \}\)/);
   assert.match(app, /pieceThemeModule\(\).*\.catch\(\(\) => \{ if \(active\) setPieceStyle\("original"\); \}\)/s);
+  assert.doesNotMatch(globalCss, /data-piece-style/);
+  assert.doesNotMatch(globalCss, /CSS-built ornaments|retired CSS ornament/);
 });
 
 test("chess rules and the full board stay out of the initial application chunk", () => {

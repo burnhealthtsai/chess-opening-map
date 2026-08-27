@@ -520,17 +520,6 @@ main { max-width: 1500px; min-height: 100vh; margin: 0 auto; padding: 28px clamp
 [data-board-style="sand"] .square.light { background: #f4e2ad; } [data-board-style="sand"] .square.dark { background: #bc873f; }
 [data-board-style="mint"] .square.light { background: #dcf0df; } [data-board-style="mint"] .square.dark { background: #61a684; }
 [data-board-style="night"] .square.light { background: #8592a6; } [data-board-style="night"] .square.dark { background: #303a52; }
-[data-piece-style="classic"] .cg-wrap piece { filter: drop-shadow(0 2px 1px rgba(50,32,20,.22)); }
-[data-piece-style="ink"] .cg-wrap piece { filter: grayscale(1) contrast(1.35) drop-shadow(0 1px 0 #fff); }
-[data-piece-style="royal"] .cg-wrap piece { filter: sepia(.8) saturate(2.4) hue-rotate(350deg) drop-shadow(0 2px 2px #8b6618); }
-[data-piece-style="ocean"] .cg-wrap piece { filter: sepia(.25) saturate(2.1) hue-rotate(155deg) drop-shadow(0 2px 2px #235f7b); }
-[data-piece-style="jade"] .cg-wrap piece { filter: sepia(.35) saturate(1.9) hue-rotate(75deg) drop-shadow(0 2px 2px #276d4d); }
-[data-piece-style="rose"] .cg-wrap piece { filter: sepia(.25) saturate(2.4) hue-rotate(295deg) drop-shadow(0 2px 2px #8d3e5b); }
-[data-piece-style="amber"] .cg-wrap piece { filter: sepia(.65) saturate(2.8) hue-rotate(345deg) brightness(1.08) drop-shadow(0 2px 2px #935514); }
-[data-piece-style="mono"] .cg-wrap piece { filter: grayscale(1) contrast(.88) brightness(1.08); }
-[data-piece-style="night"] .cg-wrap piece { filter: sepia(.3) saturate(2.2) hue-rotate(215deg) drop-shadow(0 0 3px #7f6ee8); }
-[data-piece-style="candy"] .cg-wrap piece { filter: saturate(2.8) hue-rotate(20deg) brightness(1.08) drop-shadow(0 2px 2px rgba(230,74,141,.45)); }
-
 @media (max-width: 760px) { .hero { flex-direction: column; }.hero-actions { width: 100%; justify-content: flex-start; }.hero-actions label { flex: 1 1 120px; }.hero-actions select { width: 100%; min-width: 0; } }
 
 .opening-mini-study { grid-template-columns: 1fr; max-width: 980px; margin-inline: auto; padding: 20px; }
@@ -580,121 +569,6 @@ main { max-width: 1500px; min-height: 100vh; margin: 0 auto; padding: 28px clamp
   .move-line { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .deeper-piece-rows > .deeper-branch-grid { grid-template-columns: 1fr; }
 }
-
-/* Piece themes extend the original chess silhouettes with CSS-built ornaments. */
-[data-piece-style="original"] .cg-wrap piece::before,
-[data-piece-style="original"] .cg-wrap piece::after { display: none !important; }
-
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece {
-  --piece-accent: #7d57c2;
-  --piece-accent-2: #f0c764;
-  position: relative;
-  isolation: isolate;
-  filter: drop-shadow(0 2px 1px rgba(12, 25, 42, .3));
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece::before,
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  pointer-events: none;
-  box-sizing: border-box;
-}
-
-/* Every role keeps its familiar silhouette and receives its own extension. */
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece.king::before {
-  width: 42%; height: 21%; left: 29%; top: 1%;
-  background: var(--piece-accent-2);
-  clip-path: polygon(0 100%, 8% 38%, 31% 67%, 50% 0, 69% 67%, 92% 38%, 100% 100%);
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece.queen::before {
-  width: 56%; height: 20%; left: 22%; top: 3%;
-  background: var(--piece-accent-2);
-  clip-path: polygon(0 100%, 4% 26%, 25% 67%, 50% 0, 75% 67%, 96% 26%, 100% 100%);
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece.rook::before {
-  width: 66%; height: 16%; left: 17%; top: 7%;
-  border: 3px solid var(--piece-accent); border-bottom-width: 5px;
-  clip-path: polygon(0 0, 20% 0, 20% 42%, 40% 42%, 40% 0, 60% 0, 60% 42%, 80% 42%, 80% 0, 100% 0, 100% 100%, 0 100%);
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece.bishop::before {
-  width: 46%; height: 30%; left: 27%; top: 2%;
-  border: 3px solid var(--piece-accent); border-radius: 52% 52% 45% 45%;
-  clip-path: polygon(0 50%, 50% 0, 100% 50%, 77% 100%, 23% 100%);
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece.knight::before {
-  width: 34%; height: 48%; left: 16%; top: 3%;
-  background: var(--piece-accent);
-  clip-path: polygon(100% 0, 77% 39%, 100% 100%, 38% 72%, 0 19%);
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece.pawn::before {
-  width: 36%; height: 13%; left: 32%; top: 22%;
-  border: 3px solid var(--piece-accent); border-radius: 50%;
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece::after {
-  width: 54%; height: 11%; left: 23%; bottom: 8%;
-  border: 3px solid var(--piece-accent); border-radius: 50%;
-  opacity: .9;
-}
-
-/* Each family changes construction language, not merely colour. */
-[data-piece-style="magic"] .cg-wrap piece { --piece-accent:#6e42c1; --piece-accent-2:#e9c85c; }
-[data-piece-style="magic"] .cg-wrap piece::after { height: 26%; bottom: 5%; border: 2px solid var(--piece-accent); border-radius: 50%; box-shadow: inset 0 0 0 3px transparent, 0 0 7px var(--piece-accent); clip-path: polygon(50% 0,61% 35%,100% 50%,61% 65%,50% 100%,39% 65%,0 50%,39% 35%); }
-
-[data-piece-style="fairytale"] .cg-wrap piece { --piece-accent:#e56fa8; --piece-accent-2:#ffd36a; }
-[data-piece-style="fairytale"] .cg-wrap piece::after { width:74%; height:32%; left:13%; bottom:20%; border:0; border-radius:0; background:var(--piece-accent); opacity:.62; clip-path:polygon(50% 50%,8% 0,0 48%,36% 72%,50% 100%,64% 72%,100% 48%,92% 0); }
-
-[data-piece-style="forest-anime"] .cg-wrap piece { --piece-accent:#3d9a68; --piece-accent-2:#a8cf65; }
-[data-piece-style="forest-anime"] .cg-wrap piece::before { border-radius:100% 0 100% 0; transform:rotate(-12deg); }
-[data-piece-style="forest-anime"] .cg-wrap piece::after { width:70%; height:24%; left:15%; bottom:7%; border:0; background:var(--piece-accent); clip-path:polygon(0 68%,24% 28%,43% 61%,63% 0,100% 62%,74% 100%,39% 83%); opacity:.75; }
-
-[data-piece-style="warcraft"] .cg-wrap piece { --piece-accent:#5d6770; --piece-accent-2:#a52f2f; }
-[data-piece-style="warcraft"] .cg-wrap piece::before { filter:drop-shadow(0 0 1px #12171c); transform:scale(1.16); }
-[data-piece-style="warcraft"] .cg-wrap piece::after { width:82%; height:30%; left:9%; bottom:17%; border:0; border-radius:0; background:linear-gradient(135deg,var(--piece-accent) 0 38%,transparent 39% 61%,var(--piece-accent) 62%); clip-path:polygon(0 0,32% 22%,50% 100%,68% 22%,100% 0,82% 82%,18% 82%); }
-
-[data-piece-style="zombie"] .cg-wrap piece { --piece-accent:#6c9b45; --piece-accent-2:#b7c95b; filter:contrast(1.12) drop-shadow(2px 2px 0 rgba(45,66,33,.45)); }
-[data-piece-style="zombie"] .cg-wrap piece::before { transform:rotate(-8deg); clip-path:polygon(0 8%,38% 0,50% 27%,67% 5%,100% 18%,81% 48%,100% 77%,59% 69%,42% 100%,25% 64%,0 74%,14% 42%); }
-[data-piece-style="zombie"] .cg-wrap piece::after { width:58%; height:53%; left:24%; bottom:12%; border:0; border-radius:0; background:repeating-linear-gradient(62deg,transparent 0 12%,var(--piece-accent) 13% 16%,transparent 17% 29%); opacity:.8; }
-
-[data-piece-style="robot"] .cg-wrap piece { --piece-accent:#28b9d3; --piece-accent-2:#8bf3ff; }
-[data-piece-style="robot"] .cg-wrap piece::before { border-radius:2px; filter:drop-shadow(0 0 3px var(--piece-accent)); }
-[data-piece-style="robot"] .cg-wrap piece::after { width:60%; height:40%; left:20%; bottom:11%; border:2px solid var(--piece-accent); border-radius:3px; background:linear-gradient(90deg,transparent 47%,var(--piece-accent) 48% 52%,transparent 53%),linear-gradient(0deg,transparent 47%,var(--piece-accent) 48% 52%,transparent 53%); box-shadow:0 0 6px var(--piece-accent); }
-
-[data-piece-style="myth"] .cg-wrap piece { --piece-accent:#4e8fd4; --piece-accent-2:#e8ba43; }
-[data-piece-style="myth"] .cg-wrap piece::after { width:88%; height:35%; left:6%; bottom:22%; border:0; border-radius:0; background:var(--piece-accent-2); clip-path:polygon(0 52%,31% 0,40% 41%,50% 12%,60% 41%,69% 0,100% 52%,65% 71%,50% 100%,35% 71%); opacity:.72; }
-
-[data-piece-style="egypt"] .cg-wrap piece { --piece-accent:#1eb4b4; --piece-accent-2:#d9a927; }
-[data-piece-style="egypt"] .cg-wrap piece::before { border-radius:45% 45% 8% 8%; box-shadow:inset 4px 0 0 var(--piece-accent),inset -4px 0 0 var(--piece-accent-2); }
-[data-piece-style="egypt"] .cg-wrap piece::after { width:72%; height:34%; left:14%; bottom:12%; border:0; border-radius:0; background:repeating-linear-gradient(90deg,var(--piece-accent-2) 0 9%,var(--piece-accent) 10% 18%); clip-path:polygon(18% 0,82% 0,100% 100%,0 100%); opacity:.72; }
-
-[data-piece-style="india"] .cg-wrap piece { --piece-accent:#cf3f79; --piece-accent-2:#f2a52b; }
-[data-piece-style="india"] .cg-wrap piece::after { width:82%; height:31%; left:9%; bottom:4%; border:0; border-radius:0; background:var(--piece-accent); clip-path:polygon(50% 0,61% 44%,83% 13%,75% 62%,100% 67%,67% 82%,50% 100%,33% 82%,0 67%,25% 62%,17% 13%,39% 44%); opacity:.68; }
-
-[data-piece-style="china"] .cg-wrap piece { --piece-accent:#bc252c; --piece-accent-2:#e5b642; }
-[data-piece-style="china"] .cg-wrap piece::before { border-radius:0; }
-[data-piece-style="china"] .cg-wrap piece::after { width:78%; height:25%; left:11%; bottom:11%; border:0; border-radius:0; background:var(--piece-accent); clip-path:polygon(0 36%,42% 36%,50% 0,58% 36%,100% 36%,88% 57%,100% 100%,0 100%,12% 57%); opacity:.77; }
-
-[data-piece-style="japan"] .cg-wrap piece { --piece-accent:#b6242f; --piece-accent-2:#d6ad44; }
-[data-piece-style="japan"] .cg-wrap piece::before { transform:scale(1.08); filter:drop-shadow(0 1px 0 #151a22); }
-[data-piece-style="japan"] .cg-wrap piece::after { width:84%; height:31%; left:8%; bottom:17%; border:0; border-radius:0; background:var(--piece-accent); clip-path:polygon(0 100%,14% 16%,39% 49%,50% 0,61% 49%,86% 16%,100% 100%,70% 73%,50% 100%,30% 73%); opacity:.75; }
-
-[data-piece-style="europe"] .cg-wrap piece { --piece-accent:#315da8; --piece-accent-2:#d7ad3f; }
-[data-piece-style="europe"] .cg-wrap piece::after { width:62%; height:42%; left:19%; bottom:9%; border:3px solid var(--piece-accent); border-radius:48% 48% 55% 55%; background:linear-gradient(90deg,transparent 44%,var(--piece-accent-2) 45% 55%,transparent 56%); clip-path:polygon(50% 0,100% 22%,88% 75%,50% 100%,12% 75%,0 22%); opacity:.82; }
-
-/* Small map and engine icons remain readable; the chess silhouette is never replaced. */
-.map-piece-icon piece::before, .map-piece-icon piece::after,
-.engine-piece-icon piece::before, .engine-piece-icon piece::after { transform:scale(.68) !important; }
-
-/* Theme art is now a complete SVG piece; disable the retired CSS ornament layer. */
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece {
-  display: block !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-size: contain !important;
-  filter: drop-shadow(0 2px 1px rgba(12,25,42,.28)) !important;
-}
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece::before,
-[data-piece-style]:not([data-piece-style="original"]) .cg-wrap piece::after { display: none !important; }
 
 /* Search results show the final position reached by each opening's main line. */
 .search-card-grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); align-items: stretch; }
