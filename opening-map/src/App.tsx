@@ -15,6 +15,7 @@ const StyleExplorer = lazy(() => import("./StyleExplorer"));
 const TranspositionExplorer = lazy(() => import("./TranspositionExplorer"));
 const AnalogyExplorer = lazy(() => import("./AnalogyExplorer"));
 const pieceThemeModule = () => import("./pieceThemes");
+const openingSchemaVersion = 9;
 
 let openingDetailsRequest: Promise<OpeningDetailsData> | null = null;
 function loadOpeningDetails() {
@@ -60,6 +61,8 @@ const boardStyles = [
 ] as const;
 export function App() {
   const [data, setData] = useState<OpeningMapData | null>(null);
+  const [mapError, setMapError] = useState<string | null>(null);
+  const [mapRetry, setMapRetry] = useState(0);
   const [lens, setLens] = useState<Lens>("family");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(all);
@@ -84,8 +87,26 @@ export function App() {
   const [boardStyle, setBoardStyle] = useState<(typeof boardStyles)[number][0]>("wood");
 
   useEffect(() => {
-    fetch("./opening-map.json").then((response) => response.ok ? response.json() : Promise.reject()).then(setData).catch(() => setData(null));
-  }, []);
+    let active = true;
+    setMapError(null);
+    fetch("./opening-map.json")
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const next = await response.json() as OpeningMapData;
+        if (next.schema_version !== openingSchemaVersion
+          || typeof next.generated_at !== "string"
+          || !Array.isArray(next.nodes)
+          || !next.nodes.length
+          || !next.navigation) throw new Error("Invalid opening catalog");
+        if (active) setData(next);
+      })
+      .catch(() => {
+        if (!active) return;
+        setData(null);
+        setMapError("開局地圖載入失敗，請檢查網路後重試。");
+      });
+    return () => { active = false; };
+  }, [mapRetry]);
   useEffect(() => { document.documentElement.dataset.theme = dark ? "dark" : "light"; }, [dark]);
   useEffect(() => {
     document.documentElement.dataset.pieceStyle = pieceStyle;
@@ -187,6 +208,10 @@ export function App() {
     setDetailError(null);
     setDetailRetry((value) => value + 1);
   }
+  function retryOpeningMap() {
+    setMapError(null);
+    setMapRetry((value) => value + 1);
+  }
   function retryExplorerData() {
     openingExplorerRequest = null;
     setExplorerError(null);
@@ -224,7 +249,9 @@ export function App() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [category, data, lens, selectedId, selectedSide]);
 
-  if (!data) return <main className="loading">正在建立清楚的開局學習路線…</main>;
+  if (!data) return mapError
+    ? <main className="catalog-load-error" role="alert"><div><span aria-hidden="true">↻</span><h1>開局地圖暫時載入失敗</h1><p>{mapError}</p><button onClick={retryOpeningMap}>重新載入地圖</button></div></main>
+    : <main className="loading" role="status">正在建立清楚的開局學習路線…</main>;
   return <main>
     <header className="hero">
       <div><p className="eyebrow">CHESS OPENING ATLAS</p><h1>西洋棋開局地圖</h1><p>先看大方向，再逐步走進每個開局家族。</p></div>

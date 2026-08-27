@@ -43,6 +43,14 @@ test("custom piece theme generation loads only after leaving the original set", 
   assert.match(app, /pieceThemeModule\(\).*\.catch\(\(\) => \{ if \(active\) setPieceStyle\("original"\); \}\)/s);
 });
 
+test("the opening catalog validates its schema and exposes a retry state", () => {
+  assert.match(app, /const openingSchemaVersion = 9/);
+  assert.match(app, /response\.ok.*schema_version !== openingSchemaVersion/s);
+  assert.match(app, /setMapError\("開局地圖載入失敗，請檢查網路後重試。"\)/);
+  assert.match(app, /className="catalog-load-error" role="alert"/);
+  assert.match(app, /setMapRetry\(\(value\) => value \+ 1\)/);
+});
+
 test("opening detail CSS follows the lazy detail chunk without taking shared board styles", () => {
   assert.match(detail, /import "\.\/OpeningDetail\.css"/);
   assert.match(detailCss, /\.detail-content/);
