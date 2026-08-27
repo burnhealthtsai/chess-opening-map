@@ -3,7 +3,6 @@ import { Chess } from "chess.js";
 import { Chessboard, prepareChessSound } from "./Chessboard";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { openingIcon } from "./openingIcon";
-import { installPieceTheme } from "./pieceThemes";
 import { shouldStartLiveBoardMinimized } from "./responsive";
 import type { DetailedOpening, Opening, OpeningDetailsData, OpeningMapData, RelationMode } from "./types";
 
@@ -15,6 +14,7 @@ const OpponentExplorer = lazy(() => import("./OpponentExplorer"));
 const StyleExplorer = lazy(() => import("./StyleExplorer"));
 const TranspositionExplorer = lazy(() => import("./TranspositionExplorer"));
 const AnalogyExplorer = lazy(() => import("./AnalogyExplorer"));
+const pieceThemeModule = () => import("./pieceThemes");
 
 let openingDetailsRequest: Promise<OpeningDetailsData> | null = null;
 function loadOpeningDetails() {
@@ -62,7 +62,15 @@ export function App() {
   useEffect(() => { document.documentElement.dataset.theme = dark ? "dark" : "light"; }, [dark]);
   useEffect(() => {
     document.documentElement.dataset.pieceStyle = pieceStyle;
-    installPieceTheme(pieceStyle);
+    if (pieceStyle === "original") {
+      document.querySelector("style[data-generated-piece-theme]")?.remove();
+      return;
+    }
+    let active = true;
+    pieceThemeModule().then(({ installPieceTheme }) => {
+      if (active && document.documentElement.dataset.pieceStyle === pieceStyle) installPieceTheme(pieceStyle);
+    }).catch(() => { if (active) setPieceStyle("original"); });
+    return () => { active = false; };
   }, [pieceStyle]);
   useEffect(() => { document.documentElement.dataset.boardStyle = boardStyle; }, [boardStyle]);
 

@@ -31,6 +31,14 @@ test("opening details and knowledge load only after an opening is selected", () 
   assert.doesNotMatch(app, /useEffect\(\(\) => \{\s*fetch\("\.\/opening-details\.json"\)/);
 });
 
+test("custom piece theme generation loads only after leaving the original set", () => {
+  assert.doesNotMatch(app, /import \{ installPieceTheme \} from "\.\/pieceThemes"/);
+  assert.match(app, /const pieceThemeModule = \(\) => import\("\.\/pieceThemes"\)/);
+  assert.match(app, /if \(pieceStyle === "original"\).*generated-piece-theme.*remove\(\)/s);
+  assert.match(app, /pieceThemeModule\(\)\.then\(\(\{ installPieceTheme \}\)/);
+  assert.match(app, /pieceThemeModule\(\).*\.catch\(\(\) => \{ if \(active\) setPieceStyle\("original"\); \}\)/s);
+});
+
 test("opening detail CSS follows the lazy detail chunk without taking shared board styles", () => {
   assert.match(detail, /import "\.\/OpeningDetail\.css"/);
   assert.match(detailCss, /\.detail-content/);
