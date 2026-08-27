@@ -3,6 +3,7 @@ import { Chessboard } from "./Chessboard";
 import { gamesForOpening, openingMemory, phaseGuides } from "./openingKnowledge";
 import { openingIcon } from "./openingIcon";
 import type { Opening } from "./types";
+import "./OpeningDetail.css";
 
 type OpeningDetailProps = {
   opening: Opening;

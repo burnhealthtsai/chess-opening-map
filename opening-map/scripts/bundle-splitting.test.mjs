@@ -17,6 +17,7 @@ const opponentCss = await readFile(new URL("../src/OpponentExplorer.css", import
 const styleCss = await readFile(new URL("../src/StyleExplorer.css", import.meta.url), "utf8").catch(() => "");
 const transpositionCss = await readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8").catch(() => "");
 const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8").catch(() => "");
+const detailCss = await readFile(new URL("../src/OpeningDetail.css", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
   assert.match(app, /lazy\(\(\) => import\("\.\/OpeningDetail"\)\)/);
@@ -24,6 +25,21 @@ test("opening details and knowledge load only after an opening is selected", () 
   assert.doesNotMatch(app, /from "\.\/openingKnowledge"/);
   assert.match(detail, /export default function OpeningDetail/);
   assert.match(detail, /from "\.\/openingKnowledge"/);
+});
+
+test("opening detail CSS follows the lazy detail chunk without taking shared board styles", () => {
+  assert.match(detail, /import "\.\/OpeningDetail\.css"/);
+  assert.match(detailCss, /\.detail-content/);
+  assert.match(detailCss, /\.line-choices/);
+  assert.match(detailCss, /\.core-followups/);
+  assert.match(detailCss, /\.famous-game-list/);
+  assert.match(detailCss, /\.variation-opponent/);
+  assert.match(detailCss, /\.phase-roadmap/);
+  assert.match(detailCss, /@media \(max-width: 820px\)/);
+  assert.doesNotMatch(globalCss, /\.(?:detail-content|line-choices|core-followups|famous-game-list|variation-opponent|phase-roadmap)\b/);
+  assert.match(globalCss, /\.board \{/);
+  assert.match(globalCss, /\.move-line/);
+  assert.match(globalCss, /\.opening-mini-study/);
 });
 
 test("the large puzzle browser loads only when its tab is opened", () => {
