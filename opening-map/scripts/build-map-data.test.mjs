@@ -258,6 +258,33 @@ test("major white systems keep opening-specific plans and the Colle uses its sta
   assert.match(byId.get("w-polish-opening").ideas, /1\.b4/);
 });
 
+test("major open king-pawn openings keep distinct teaching and the Scotch uses its core line", () => {
+  const ids = [
+    "w-italian-game",
+    "w-ruy-lopez",
+    "w-scotch-game",
+    "w-vienna-game",
+    "w-four-knights-game",
+    "w-ponziani-opening",
+    "w-bishops-opening",
+    "w-italian-game-evans-gambit",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  const scotch = byId.get("w-scotch-game");
+  assert.equal(scotch.mainline, "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Nxd4");
+  assert.equal(scotch.source.pgn, scotch.mainline);
+  assert.doesNotMatch(scotch.mainline, /Qh4|Nb5|Bb4\+/);
+  assert.match(byId.get("w-ruy-lopez").ideas, /Bb5.*c6 馬.*e5/);
+  assert.match(byId.get("w-ponziani-opening").ideas, /3\.c3.*d4/);
+  assert.match(byId.get("w-italian-game-evans-gambit").ideas, /4\.b4.*c3.*d4/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
