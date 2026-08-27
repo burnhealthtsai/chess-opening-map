@@ -12,14 +12,15 @@ test("keeps every opening as one valid node", () => {
   const data = buildMapData(catalog);
   assert.equal(data.nodes.length, 196);
   assert.equal(new Set(data.nodes.map((node) => node.id)).size, 196);
+  const derivedPaths = new Set();
   for (const node of data.nodes) {
-    assert.ok(node.subgroup.id && node.family.id && node.style.id && node.mainline && node.variations.length <= 3);
-    assert.equal(node.classification_path.length, 5);
-    assert.equal(node.classification_path[0], node.side);
-    assert.equal(node.classification_path[1], node.first_move);
-    assert.equal(node.classification_path[2], node.subgroup.id);
-    assert.equal(node.classification_path[3], node.family.id);
-    assert.equal(node.classification_path[4], node.id);
+    assert.ok(node.subgroup.id && node.family.id && node.mainline && node.variations.length <= 3);
+    const derivedPath = [node.side, node.first_move, node.subgroup.id, node.family.id, node.id].join("/");
+    assert.ok(!derivedPaths.has(derivedPath));
+    derivedPaths.add(derivedPath);
+    assert.ok(!("classification_path" in node));
+    assert.ok(!("catalog_first_move" in node));
+    assert.ok(!("style" in node));
     assert.equal(node.first_move_san, sanMoves(node.mainline)[0]);
     assert.equal(node.reply_san, sanMoves(node.mainline)[1] ?? "起手");
     assert.equal(node.first_move, ["e4", "d4", "c4", "Nf3"].includes(node.first_move_san) ? node.first_move_san : "其他");
@@ -29,13 +30,14 @@ test("keeps every opening as one valid node", () => {
     assert.ok(!("difficulty" in node));
     assert.ok(node.variations.every((variation) => !("note" in variation)));
   }
+  assert.equal(derivedPaths.size, data.nodes.length);
 });
 
 test("keeps detail-only opening content in a paired lazy catalog", () => {
   const generatedAt = "2026-08-28T00:00:00.000Z";
   const map = buildMapData(catalog, variationCatalog, generatedAt);
   const details = buildOpeningDetails(catalog, generatedAt);
-  assert.equal(map.schema_version, 8);
+  assert.equal(map.schema_version, 9);
   assert.equal(details.schema_version, map.schema_version);
   assert.equal(details.generated_at, map.generated_at);
   assert.ok(!("edges" in map));
@@ -163,7 +165,7 @@ test("Old Indian keeps the official family recognition line", () => {
 
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.equal(data.schema_version, 8);
+  assert.equal(data.schema_version, 9);
   assert.ok(data.transpositionGroups.length >= 6);
   for (const group of data.transpositionGroups) {
     assert.equal(group.relation, "exact");

@@ -10,7 +10,7 @@ const destination = resolve(root, "public", "opening-map.json");
 const detailsDestination = resolve(root, "public", "opening-details.json");
 const explorersDestination = resolve(root, "public", "opening-explorers.json");
 const variationNotesDestination = resolve(root, "public", "opening-variation-notes.json");
-const schemaVersion = 8;
+const schemaVersion = 9;
 
 export function sanMoves(line) {
   return line
@@ -48,12 +48,6 @@ function subgroupFor(firstMove, firstMoveSan, replySan) {
   if (/^[abc]/.test(move)) return { id: "queen-wing", label: firstMove === "其他" ? "后翼兵起手" : "后翼兵回應" };
   if (/^[fgh]/.test(move)) return { id: "king-wing", label: firstMove === "其他" ? "王翼兵起手" : "王翼兵回應" };
   return { id: "other", label: "其他棋路" };
-}
-
-function styleGroup(item) {
-  const priority = ["戰術", "局面", "主動", "穩健", "發展"];
-  const style = priority.find((name) => item.styles.includes(name)) ?? item.styles[0] ?? "其他";
-  return { id: style, label: `${style}取向` };
 }
 
 function sharedPrefix(a, b) {
@@ -348,8 +342,6 @@ export function buildMapData(catalog, _variationCatalog = { variations: [] }, ge
         first_move: firstMove,
         first_move_san: firstMoveSan,
         reply_san: replySan,
-        catalog_first_move: item.first_move,
-        classification_path: [item.side, firstMove, subgroup.id, family.id, item.id],
         subgroup,
         family,
       };
@@ -363,7 +355,6 @@ export function buildMapData(catalog, _variationCatalog = { variations: [] }, ge
     styles: item.styles,
     mainline: item.mainline.replace(/\s+/g, " ").trim(),
     variations: item.variations.map((variation) => ({ name: variation.name, line: variation.line.replace(/\s+/g, " ").trim() })),
-    style: styleGroup(item),
   }));
   const familyBuckets = new Map();
   for (const node of nodes) {

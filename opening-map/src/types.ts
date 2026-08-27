@@ -38,14 +38,11 @@ export type Opening = {
   first_move: string;
   first_move_san: string;
   reply_san: string;
-  catalog_first_move: string;
-  classification_path: [Opening["side"], string, string, string, string];
   styles: string[];
   mainline: string;
   variations: { name: string; line: string }[];
   subgroup: { id: string; label: string };
   family: { id: string; label: string };
-  style: { id: string; label: string };
 };
 
 export type OpeningDetails = {
