@@ -2781,7 +2781,7 @@
     },
     {
       "id": "w-catalan-opening-open-defense",
-      "title_zh": "加泰隆尼亞：開放防禦",
+      "title_zh": "加泰隆尼亞開局：開放防禦",
       "title_en": "Catalan Opening: Open Defense",
       "aliases": [],
       "side": "白方",
@@ -2798,22 +2798,22 @@
         {
           "name": "Open Defense",
           "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. g3 c6 5. Bg2 dxc4",
-          "note": "加泰隆尼亞：開放防禦的「Open Defense」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "加泰隆尼亞開局：開放防禦的「Open Defense」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
           "name": "Open Defense",
           "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Nf3",
-          "note": "加泰隆尼亞：開放防禦的「Open Defense」在第 5 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "加泰隆尼亞開局：開放防禦的「Open Defense」在第 5 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
           "name": "Open Defense",
           "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4",
-          "note": "加泰隆尼亞：開放防禦的「Open Defense」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "加泰隆尼亞開局：開放防禦的「Open Defense」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
-      "ideas": "加泰隆尼亞：開放防禦以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
+      "ideas": "加泰隆尼亞開局：開放防禦以側翼控制中心並保留轉置彈性；重點不是立刻佔滿中心，而是看準 d4、e4、c5 或 e5 的突破時機。",
       "plans": [
-        "在加泰隆尼亞：開放防禦中先以兵與象控制中心格，再依黑方配置決定中心兵形",
+        "在加泰隆尼亞開局：開放防禦中先以兵與象控制中心格，再依黑方配置決定中心兵形",
         "利用長對角線與半開線向后翼施壓",
         "保留轉置選項，但在對手完成理想配置前確立自己的中心計畫"
       ],
@@ -7075,7 +7075,7 @@
     },
     {
       "id": "b-scandinavian-defense-portuguese-gambit",
-      "title_zh": "斯堪地那維亞：葡萄牙棄兵",
+      "title_zh": "斯堪地那維亞防禦：葡萄牙棄兵",
       "title_en": "Scandinavian Defense: Portuguese Gambit",
       "aliases": [],
       "side": "黑方",
@@ -7092,22 +7092,22 @@
         {
           "name": "Portuguese Gambit, Classical Variation",
           "line": "1. e4 d5 2. exd5 Nf6 3. d4 Bg4 4. Nf3",
-          "note": "斯堪地那維亞：葡萄牙棄兵的「Portuguese Gambit, Classical Variation」在第 4 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "斯堪地那維亞防禦：葡萄牙棄兵的「Portuguese Gambit, Classical Variation」在第 4 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
           "name": "Portuguese Gambit, Jadoul Variation",
           "line": "1. e4 d5 2. exd5 Nf6 3. d4 Bg4 4. f3 Bf5 5. Bb5+ Nbd7 6. c4",
-          "note": "斯堪地那維亞：葡萄牙棄兵的「Portuguese Gambit, Jadoul Variation」在第 4 回合由白方走 f3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "斯堪地那維亞防禦：葡萄牙棄兵的「Portuguese Gambit, Jadoul Variation」在第 4 回合由白方走 f3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
           "name": "Portuguese Gambit, Melbourne Shuffle Variation",
           "line": "1. e4 d5 2. exd5 Nf6 3. d4 Bg4 4. f3 Bf5 5. Bb5+ Nbd7 6. Nc3",
-          "note": "斯堪地那維亞：葡萄牙棄兵的「Portuguese Gambit, Melbourne Shuffle Variation」在第 4 回合由白方走 f3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "note": "斯堪地那維亞防禦：葡萄牙棄兵的「Portuguese Gambit, Melbourne Shuffle Variation」在第 4 回合由白方走 f3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
-      "ideas": "斯堪地那維亞：葡萄牙棄兵主動誘導白方中心前進，再用兵突破和子力攻擊中心；黑方必須用節奏證明早期讓出空間是合理的。",
+      "ideas": "斯堪地那維亞防禦：葡萄牙棄兵主動誘導白方中心前進，再用兵突破和子力攻擊中心；黑方必須用節奏證明早期讓出空間是合理的。",
       "plans": [
-        "在斯堪地那維亞：葡萄牙棄兵中完成王翼發展後，立即準備攻擊白方中心根部",
+        "在斯堪地那維亞防禦：葡萄牙棄兵中完成王翼發展後，立即準備攻擊白方中心根部",
         "用…c5、…e5或…f6迫使白方中心做出決定",
         "把棄兵轉化為發展領先、開放線或持續先手，不以立刻奪回兵為唯一目標"
       ],

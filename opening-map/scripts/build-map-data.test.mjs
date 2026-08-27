@@ -149,6 +149,20 @@ test("every Sicilian opening keeps the Chinese family name", () => {
   assert.ok(sicilians.every((node) => node.title_zh.startsWith("西西里防禦")));
 });
 
+test("canonical translated families retain their full Chinese prefix", () => {
+  const data = buildMapData(catalog);
+  const canonicalPrefixes = new Map([
+    ["English Opening", "英格蘭開局"],
+    ["Catalan Opening", "加泰隆尼亞開局"],
+    ["Scandinavian Defense", "斯堪地那維亞防禦"],
+  ]);
+  for (const [englishFamily, chinesePrefix] of canonicalPrefixes) {
+    const members = data.nodes.filter((opening) => opening.title_en === englishFamily || opening.title_en.startsWith(`${englishFamily}:`));
+    assert.ok(members.length >= 1, `${englishFamily} should exist`);
+    assert.ok(members.every((opening) => opening.title_zh.startsWith(chinesePrefix)), `${englishFamily} has an inconsistent Chinese prefix`);
+  }
+});
+
 test("Meran variation is searchable by the Chinese Milan system alias", () => {
   const data = buildMapData(catalog);
   const meran = data.nodes.find((node) => node.id === "b-semi-slav-defense-meran-variation");
