@@ -252,6 +252,8 @@ export function App() {
       if (event.key === "Tab") {
         if (isFormField) return;
         const tabButton = target?.closest(".lens-tabs button");
+        const interactive = target?.closest("a, button, input, textarea, select, summary, [tabindex]:not([tabindex='-1'])");
+        if (interactive && !tabButton) return;
         const currentIndex = lenses.indexOf(lens);
         const direction = event.shiftKey ? -1 : 1;
         let nextIndex = currentIndex + direction;

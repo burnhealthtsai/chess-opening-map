@@ -7,6 +7,8 @@ const styles = await readFile(new URL("../src/styles.css", import.meta.url), "ut
 
 test("Tab switches cards without trapping keyboard focus in the tab list", () => {
   assert.match(app, /target\?\.closest\("\.lens-tabs button"\)/);
+  assert.match(app, /target\?\.closest\("a, button, input, textarea, select, summary, \[tabindex\]:not\(\[tabindex='-1'\]\)"\)/);
+  assert.match(app, /if \(interactive && !tabButton\) return/);
   assert.match(app, /const direction = event\.shiftKey \? -1 : 1/);
   assert.match(app, /if \(nextIndex < 0 \|\| nextIndex >= lenses\.length\) return/);
   assert.match(app, /querySelectorAll<HTMLButtonElement>\("\.lens-tabs button"\)\[nextIndex\]\?\.focus\(\)/);
