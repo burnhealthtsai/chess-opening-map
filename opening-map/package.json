@@ -7,10 +7,10 @@
     "generate:data": "node scripts/build-map-data.mjs",
     "generate:puzzles": "node scripts/export-notion-puzzles.mjs",
     "generate:engine": "node scripts/copy-stockfish.mjs",
-    "dev": "pnpm generate:data && pnpm generate:puzzles && vite",
+    "dev": "pnpm generate:data && vite",
     "typecheck": "tsc --noEmit",
     "test": "node --test scripts/*.test.mjs",
-    "build": "pnpm generate:data && pnpm generate:puzzles && pnpm generate:engine && tsc --noEmit && vite build"
+    "build": "pnpm generate:data && pnpm generate:engine && tsc --noEmit && vite build"
   },
   "dependencies": {
     "@lichess-org/chessground": "10.1.1",

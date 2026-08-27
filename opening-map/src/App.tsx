@@ -17,7 +17,7 @@ const OpeningPositionPreview = lazy(() => import("./OpeningPositionPreview"));
 const chessboardModule = () => import("./Chessboard");
 const Chessboard = lazy(() => chessboardModule().then((module) => ({ default: module.Chessboard })));
 const pieceThemeModule = () => import("./pieceThemes");
-const openingSchemaVersion = 9;
+const openingSchemaVersion = 10;
 
 function prepareChessSound() {
   void chessboardModule().then((module) => module.prepareChessSound()).catch(() => undefined);
@@ -104,7 +104,7 @@ export function App() {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const next = await response.json() as OpeningMapData;
         if (next.schema_version !== openingSchemaVersion
-          || typeof next.generated_at !== "string"
+          || !/^[a-f0-9]{64}$/.test(next.catalog_revision)
           || !Array.isArray(next.nodes)
           || !next.nodes.length
           || !next.navigation) throw new Error("Invalid opening catalog");
@@ -145,7 +145,7 @@ export function App() {
     let active = true;
     setDetailError(null);
     loadOpeningDetails().then((details) => {
-      if (details.schema_version !== data.schema_version || details.generated_at !== data.generated_at) {
+      if (details.schema_version !== data.schema_version || details.catalog_revision !== data.catalog_revision) {
         openingDetailsRequest = null;
         throw new Error("開局地圖與詳情資料版本不一致");
       }
@@ -159,7 +159,7 @@ export function App() {
     let active = true;
     setExplorerError(null);
     loadOpeningExplorerData().then((explorers) => {
-      if (explorers.schema_version !== data.schema_version || explorers.generated_at !== data.generated_at) {
+      if (explorers.schema_version !== data.schema_version || explorers.catalog_revision !== data.catalog_revision) {
         openingExplorerRequest = null;
         throw new Error("開局地圖與分頁資料版本不一致");
       }
@@ -173,7 +173,7 @@ export function App() {
     let active = true;
     setVariationNoteError(null);
     loadOpeningVariationNotes().then((notes) => {
-      if (notes.schema_version !== data.schema_version || notes.generated_at !== data.generated_at || notes.notes.length !== data.nodes.length) {
+      if (notes.schema_version !== data.schema_version || notes.catalog_revision !== data.catalog_revision || notes.notes.length !== data.nodes.length) {
         openingVariationNotesRequest = null;
         throw new Error("開局地圖與變例解說版本不一致");
       }

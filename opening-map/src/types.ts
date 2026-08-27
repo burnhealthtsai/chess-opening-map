@@ -56,21 +56,21 @@ export type DetailedOpening = Opening & OpeningDetails;
 
 export type OpeningDetailsData = {
   schema_version: number;
-  generated_at: string;
+  catalog_revision: string;
   edges: Record<RelationMode, Edge[]>;
   openings: Record<string, OpeningDetails>;
 };
 
 export type OpeningExplorerData = {
   schema_version: number;
-  generated_at: string;
+  catalog_revision: string;
   transpositionGroups: TranspositionGroup[];
   analogyGroups: AnalogyGroup[];
 };
 
 export type OpeningVariationNotesData = {
   schema_version: number;
-  generated_at: string;
+  catalog_revision: string;
   notes: string[][];
 };
 
@@ -90,7 +90,7 @@ export type FamilySummary = {
 };
 export type OpeningMapData = {
   schema_version: number;
-  generated_at: string;
+  catalog_revision: string;
   nodes: Opening[];
   navigation: {
     sides: { id: Opening["side"]; count: number }[];

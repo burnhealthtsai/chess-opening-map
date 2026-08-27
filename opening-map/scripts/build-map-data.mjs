@@ -1,4 +1,5 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Chess } from "chess.js";
@@ -10,7 +11,11 @@ const destination = resolve(root, "public", "opening-map.json");
 const detailsDestination = resolve(root, "public", "opening-details.json");
 const explorersDestination = resolve(root, "public", "opening-explorers.json");
 const variationNotesDestination = resolve(root, "public", "opening-variation-notes.json");
-const schemaVersion = 9;
+const schemaVersion = 10;
+
+export function buildCatalogRevision(catalog, variationCatalog = { variations: [] }) {
+  return createHash("sha256").update(JSON.stringify([catalog, variationCatalog])).digest("hex");
+}
 
 export function sanMoves(line) {
   return line
@@ -328,7 +333,7 @@ export function buildAnalogyGroups(catalog) {
   });
 }
 
-export function buildMapData(catalog, _variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
+export function buildMapData(catalog, variationCatalog = { variations: [] }, catalogRevision = buildCatalogRevision(catalog, variationCatalog)) {
   const items = catalog.openings;
   const nodes = items.map((item) => ({
     ...(() => {
@@ -366,7 +371,7 @@ export function buildMapData(catalog, _variationCatalog = { variations: [] }, ge
   const styleNames = ["局面", "戰術", "主動", "穩健", "發展"];
   return {
     schema_version: schemaVersion,
-    generated_at: generatedAt,
+    catalog_revision: catalogRevision,
     nodes,
     navigation: {
       sides: ["白方", "黑方"].map((id) => ({ id, count: nodes.filter((node) => node.side === id).length })),
@@ -392,10 +397,10 @@ export function buildMapData(catalog, _variationCatalog = { variations: [] }, ge
   };
 }
 
-export function buildOpeningDetails(catalog, generatedAt = new Date().toISOString()) {
+export function buildOpeningDetails(catalog, catalogRevision = buildCatalogRevision(catalog)) {
   return {
     schema_version: schemaVersion,
-    generated_at: generatedAt,
+    catalog_revision: catalogRevision,
     edges: {
       family: strongestEdges(catalog.openings, familyScore),
       style: strongestEdges(catalog.openings, styleScore),
@@ -409,18 +414,18 @@ export function buildOpeningDetails(catalog, generatedAt = new Date().toISOStrin
   };
 }
 
-export function buildVariationNotes(catalog, generatedAt = new Date().toISOString()) {
+export function buildVariationNotes(catalog, catalogRevision = buildCatalogRevision(catalog)) {
   return {
     schema_version: schemaVersion,
-    generated_at: generatedAt,
+    catalog_revision: catalogRevision,
     notes: catalog.openings.map((item) => item.variations.map((variation) => variation.note)),
   };
 }
 
-export function buildExplorerData(catalog, variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
+export function buildExplorerData(catalog, variationCatalog = { variations: [] }, catalogRevision = buildCatalogRevision(catalog, variationCatalog)) {
   return {
     schema_version: schemaVersion,
-    generated_at: generatedAt,
+    catalog_revision: catalogRevision,
     transpositionGroups: buildTranspositionGroups(catalog, variationCatalog),
     analogyGroups: buildAnalogyGroups(catalog),
   };
@@ -437,11 +442,11 @@ function normalizedChineseTitle(item) {
 async function main() {
   const catalog = JSON.parse(await readFile(source, "utf8"));
   const variationCatalog = JSON.parse(await readFile(variationsSource, "utf8"));
-  const generatedAt = new Date().toISOString();
-  const data = buildMapData(catalog, variationCatalog, generatedAt);
-  const details = buildOpeningDetails(catalog, generatedAt);
-  const explorers = buildExplorerData(catalog, variationCatalog, generatedAt);
-  const variationNotes = buildVariationNotes(catalog, generatedAt);
+  const catalogRevision = buildCatalogRevision(catalog, variationCatalog);
+  const data = buildMapData(catalog, variationCatalog, catalogRevision);
+  const details = buildOpeningDetails(catalog, catalogRevision);
+  const explorers = buildExplorerData(catalog, variationCatalog, catalogRevision);
+  const variationNotes = buildVariationNotes(catalog, catalogRevision);
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, `${JSON.stringify(data)}\n`, "utf8");
   await writeFile(detailsDestination, `${JSON.stringify(details)}\n`, "utf8");

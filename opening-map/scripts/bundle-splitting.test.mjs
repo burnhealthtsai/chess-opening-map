@@ -62,7 +62,9 @@ test("chess rules and the full board stay out of the initial application chunk",
 });
 
 test("the opening catalog validates its schema and exposes a retry state", () => {
-  assert.match(app, /const openingSchemaVersion = 9/);
+  assert.match(app, /const openingSchemaVersion = 10/);
+  assert.match(app, /\^\[a-f0-9\]\{64\}\$/);
+  assert.match(app, /catalog_revision !== data\.catalog_revision/);
   assert.match(app, /response\.ok.*schema_version !== openingSchemaVersion/s);
   assert.match(app, /setMapError\("開局地圖載入失敗，請檢查網路後重試。"\)/);
   assert.match(app, /className="catalog-load-error" role="alert"/);

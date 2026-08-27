@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Chess } from "chess.js";
-import { buildExplorerData, buildMapData, buildOpeningDetails, buildVariationNotes, sanMoves } from "./build-map-data.mjs";
+import { buildCatalogRevision, buildExplorerData, buildMapData, buildOpeningDetails, buildVariationNotes, sanMoves } from "./build-map-data.mjs";
 
 const catalog = JSON.parse(await readFile(resolve("..", "openings.yaml"), "utf8"));
 const variationCatalog = JSON.parse(await readFile(resolve("..", "variations.json"), "utf8"));
@@ -51,12 +51,13 @@ test("every catalog line is legal and each mainline reaches its source EPD", () 
 });
 
 test("keeps detail-only opening content in a paired lazy catalog", () => {
-  const generatedAt = "2026-08-28T00:00:00.000Z";
-  const map = buildMapData(catalog, variationCatalog, generatedAt);
-  const details = buildOpeningDetails(catalog, generatedAt);
-  assert.equal(map.schema_version, 9);
+  const revision = buildCatalogRevision(catalog, variationCatalog);
+  const map = buildMapData(catalog, variationCatalog, revision);
+  const details = buildOpeningDetails(catalog, revision);
+  assert.equal(map.schema_version, 10);
   assert.equal(details.schema_version, map.schema_version);
-  assert.equal(details.generated_at, map.generated_at);
+  assert.equal(details.catalog_revision, map.catalog_revision);
+  assert.match(map.catalog_revision, /^[a-f0-9]{64}$/);
   assert.ok(!("edges" in map));
   assert.ok(!("transpositionGroups" in map));
   assert.ok(!("analogyGroups" in map));
@@ -73,11 +74,11 @@ test("keeps detail-only opening content in a paired lazy catalog", () => {
 });
 
 test("keeps variation explanations behind their own on-demand catalog", () => {
-  const generatedAt = "2026-08-28T00:00:00.000Z";
-  const map = buildMapData(catalog, variationCatalog, generatedAt);
-  const notes = buildVariationNotes(catalog, generatedAt);
+  const revision = buildCatalogRevision(catalog, variationCatalog);
+  const map = buildMapData(catalog, variationCatalog, revision);
+  const notes = buildVariationNotes(catalog, revision);
   assert.equal(notes.schema_version, map.schema_version);
-  assert.equal(notes.generated_at, map.generated_at);
+  assert.equal(notes.catalog_revision, map.catalog_revision);
   assert.equal(notes.notes.length, map.nodes.length);
   for (const [index, opening] of map.nodes.entries()) {
     assert.equal(notes.notes[index].length, opening.variations.length);
@@ -86,13 +87,21 @@ test("keeps variation explanations behind their own on-demand catalog", () => {
 });
 
 test("keeps secondary explorer groups in a version-matched lazy catalog", () => {
-  const generatedAt = "2026-08-28T00:00:00.000Z";
-  const map = buildMapData(catalog, variationCatalog, generatedAt);
-  const explorers = buildExplorerData(catalog, variationCatalog, generatedAt);
+  const revision = buildCatalogRevision(catalog, variationCatalog);
+  const map = buildMapData(catalog, variationCatalog, revision);
+  const explorers = buildExplorerData(catalog, variationCatalog, revision);
   assert.equal(explorers.schema_version, map.schema_version);
-  assert.equal(explorers.generated_at, map.generated_at);
+  assert.equal(explorers.catalog_revision, map.catalog_revision);
   assert.ok(explorers.transpositionGroups.length >= 6);
   assert.ok(explorers.analogyGroups.length >= 6);
+});
+
+test("catalog revision is deterministic and changes with source content", () => {
+  const revision = buildCatalogRevision(catalog, variationCatalog);
+  assert.equal(buildCatalogRevision(catalog, variationCatalog), revision);
+  const changedCatalog = structuredClone(catalog);
+  changedCatalog.openings[0].title_zh += "測試";
+  assert.notEqual(buildCatalogRevision(changedCatalog, variationCatalog), revision);
 });
 
 test("relationship edges are unique, symmetric and never self-referential", () => {
@@ -196,7 +205,7 @@ test("Old Indian keeps the official family recognition line", () => {
 
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.equal(data.schema_version, 9);
+  assert.equal(data.schema_version, 10);
   assert.ok(data.transpositionGroups.length >= 6);
   for (const group of data.transpositionGroups) {
     assert.equal(group.relation, "exact");
