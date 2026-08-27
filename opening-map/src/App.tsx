@@ -4,7 +4,7 @@ import { Chessboard, prepareChessSound } from "./Chessboard";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { openingIcon } from "./openingIcon";
 import { shouldStartLiveBoardMinimized } from "./responsive";
-import type { DetailedOpening, Opening, OpeningDetailsData, OpeningExplorerData, OpeningMapData, RelationMode } from "./types";
+import type { DetailedOpening, Opening, OpeningDetailsData, OpeningExplorerData, OpeningMapData, OpeningVariationNotesData, RelationMode } from "./types";
 
 const openingDetailModule = () => import("./OpeningDetail");
 const OpeningDetail = lazy(openingDetailModule);
@@ -36,6 +36,16 @@ function loadOpeningExplorerData() {
   return openingExplorerRequest;
 }
 
+let openingVariationNotesRequest: Promise<OpeningVariationNotesData> | null = null;
+function loadOpeningVariationNotes() {
+  if (!openingVariationNotesRequest) {
+    openingVariationNotesRequest = fetch("./opening-variation-notes.json")
+      .then((response) => response.ok ? response.json() as Promise<OpeningVariationNotesData> : Promise.reject(new Error(`HTTP ${response.status}`)))
+      .catch((error) => { openingVariationNotesRequest = null; throw error; });
+  }
+  return openingVariationNotesRequest;
+}
+
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
 const all = "全部";
 const pieceStyles = [
@@ -65,6 +75,10 @@ export function App() {
   const [explorerData, setExplorerData] = useState<OpeningExplorerData | null>(null);
   const [explorerError, setExplorerError] = useState<string | null>(null);
   const [explorerRetry, setExplorerRetry] = useState(0);
+  const [variationNotes, setVariationNotes] = useState<OpeningVariationNotesData | null>(null);
+  const [variationNotesRequested, setVariationNotesRequested] = useState(false);
+  const [variationNoteError, setVariationNoteError] = useState<string | null>(null);
+  const [variationNoteRetry, setVariationNoteRetry] = useState(0);
   const [dark, setDark] = useState(false);
   const [pieceStyle, setPieceStyle] = useState<(typeof pieceStyles)[number][0]>("original");
   const [boardStyle, setBoardStyle] = useState<(typeof boardStyles)[number][0]>("wood");
@@ -115,11 +129,27 @@ export function App() {
     return () => { active = false; };
   }, [data, explorerData, explorerRetry, lens]);
 
+  useEffect(() => {
+    if (!data || variationNotes || !variationNotesRequested) return;
+    let active = true;
+    setVariationNoteError(null);
+    loadOpeningVariationNotes().then((notes) => {
+      if (notes.schema_version !== data.schema_version || notes.generated_at !== data.generated_at || notes.notes.length !== data.nodes.length) {
+        openingVariationNotesRequest = null;
+        throw new Error("開局地圖與變例解說版本不一致");
+      }
+      if (active) setVariationNotes(notes);
+    }).catch(() => { if (active) setVariationNoteError("變例解說載入失敗。"); });
+    return () => { active = false; };
+  }, [data, variationNoteRetry, variationNotes, variationNotesRequested]);
+
   const selected = data?.nodes.find((node) => node.id === selectedId) ?? null;
   const detailedSelected = useMemo<DetailedOpening | null>(() => {
     const details = selected && openingDetails?.openings[selected.id];
     return selected && details ? { ...selected, ...details } : null;
   }, [openingDetails, selected]);
+  const selectedIndex = selected && data ? data.nodes.findIndex((opening) => opening.id === selected.id) : -1;
+  const selectedVariationNotes = selectedIndex >= 0 ? variationNotes?.notes[selectedIndex] ?? null : null;
   const relationMode: RelationMode = lens === "family" ? "family" : "style";
   const neighbours = useMemo(() => {
     if (!selected || !data || !openingDetails) return [] as Opening[];
@@ -162,6 +192,12 @@ export function App() {
     setExplorerError(null);
     setExplorerRetry((value) => value + 1);
   }
+  function retryVariationNotes() {
+    openingVariationNotesRequest = null;
+    setVariationNoteError(null);
+    setVariationNoteRetry((value) => value + 1);
+  }
+  function requestVariationNotes() { setVariationNotesRequested(true); }
   async function copyLine(line: string) { await navigator.clipboard?.writeText(line); }
 
   // Let the atlas be explored without needing to aim at every small opening node.
@@ -224,9 +260,9 @@ export function App() {
           : lens === "transpositions" ? explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer nodes={data.nodes} groups={explorerData.transpositionGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入體系轉換資料…</div>
           : explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer nodes={data.nodes} groups={explorerData.analogyGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入類似比較資料…</div>}
       </section>
-      {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
+      {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
     </div>}
-    {query.trim() && selected && <aside className="detail modal-detail" aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
+    {query.trim() && selected && <aside className="detail modal-detail" aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
   </main>;
 }
 

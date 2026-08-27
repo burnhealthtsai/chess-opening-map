@@ -9,7 +9,8 @@ const variationsSource = resolve(root, "..", "variations.json");
 const destination = resolve(root, "public", "opening-map.json");
 const detailsDestination = resolve(root, "public", "opening-details.json");
 const explorersDestination = resolve(root, "public", "opening-explorers.json");
-const schemaVersion = 7;
+const variationNotesDestination = resolve(root, "public", "opening-variation-notes.json");
+const schemaVersion = 8;
 
 export function sanMoves(line) {
   return line
@@ -361,7 +362,7 @@ export function buildMapData(catalog, _variationCatalog = { variations: [] }, ge
     eco: item.eco,
     styles: item.styles,
     mainline: item.mainline.replace(/\s+/g, " ").trim(),
-    variations: item.variations.map((variation) => ({ ...variation, line: variation.line.replace(/\s+/g, " ").trim() })),
+    variations: item.variations.map((variation) => ({ name: variation.name, line: variation.line.replace(/\s+/g, " ").trim() })),
     style: styleGroup(item),
   }));
   const familyBuckets = new Map();
@@ -417,6 +418,14 @@ export function buildOpeningDetails(catalog, generatedAt = new Date().toISOStrin
   };
 }
 
+export function buildVariationNotes(catalog, generatedAt = new Date().toISOString()) {
+  return {
+    schema_version: schemaVersion,
+    generated_at: generatedAt,
+    notes: catalog.openings.map((item) => item.variations.map((variation) => variation.note)),
+  };
+}
+
 export function buildExplorerData(catalog, variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
   return {
     schema_version: schemaVersion,
@@ -441,11 +450,13 @@ async function main() {
   const data = buildMapData(catalog, variationCatalog, generatedAt);
   const details = buildOpeningDetails(catalog, generatedAt);
   const explorers = buildExplorerData(catalog, variationCatalog, generatedAt);
+  const variationNotes = buildVariationNotes(catalog, generatedAt);
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, `${JSON.stringify(data)}\n`, "utf8");
   await writeFile(detailsDestination, `${JSON.stringify(details)}\n`, "utf8");
   await writeFile(explorersDestination, `${JSON.stringify(explorers)}\n`, "utf8");
-  console.log(`Generated ${data.nodes.length} opening nodes at ${destination}, ${detailsDestination}, and ${explorersDestination}`);
+  await writeFile(variationNotesDestination, `${JSON.stringify(variationNotes)}\n`, "utf8");
+  console.log(`Generated ${data.nodes.length} opening nodes and lazy catalogs in ${dirname(destination)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) main();

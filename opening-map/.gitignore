@@ -3,4 +3,5 @@ dist/
 public/opening-map.json
 public/opening-details.json
 public/opening-explorers.json
+public/opening-variation-notes.json
 public/stockfish/

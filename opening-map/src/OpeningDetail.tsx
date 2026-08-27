@@ -11,14 +11,19 @@ type OpeningDetailProps = {
   onSelect: (id: string) => void;
   onCopy: (line: string) => void;
   onClose: () => void;
+  variationNotes: string[] | null;
+  variationNoteError: string | null;
+  onRequestVariationNotes: () => void;
+  onRetryVariationNotes: () => void;
 };
 
-export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, onClose }: OpeningDetailProps) {
+export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, onClose, variationNotes, variationNoteError, onRequestVariationNotes, onRetryVariationNotes }: OpeningDetailProps) {
   const [activeLine, setActiveLine] = useState<"main" | number>("main");
   const [expandedGame, setExpandedGame] = useState<number | null>(null);
   const [practiceLevel, setPracticeLevel] = useState<1 | 2 | 3>(2);
   const [practiceOpen, setPracticeOpen] = useState(false);
-  const selectedVariation = typeof activeLine === "number" ? opening.variations[activeLine] : null;
+  const selectedVariationIndex = typeof activeLine === "number" ? activeLine : null;
+  const selectedVariation = selectedVariationIndex === null ? null : opening.variations[selectedVariationIndex];
   const line = selectedVariation?.line ?? opening.mainline;
   const lineLength = lineMoves(line).length;
   const lineTitle = selectedVariation?.name ?? "官方辨識棋路";
@@ -32,9 +37,9 @@ export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, o
     <Chessboard key={`${opening.id}-${activeLine}`} line={line} initialStep={lineLength} orientation={opening.side === "黑方" ? "black" : "white"} autoPlay autoPlayFromStep={0} interactive analysis />
     <section className="line-choices"><h3>這個開局怎麼形成</h3><p>官方辨識棋路停在足以確認名稱的局面；下方具名變例只顯示資料來源實際收錄的棋路。</p><div>
       <button className={activeLine === "main" ? "active" : ""} onClick={() => setActiveLine("main")}><span>主</span><b>官方辨識棋路</b><small>{opening.eco}</small></button>
-      {opening.variations.slice(0, 3).map((variation, index) => <button className={activeLine === index ? "active" : ""} key={`${variation.name}-${index}`} onClick={() => setActiveLine(index)}><span>{index + 1}</span><b>{variation.name}</b><small>重點變例</small></button>)}
+      {opening.variations.slice(0, 3).map((variation, index) => <button className={activeLine === index ? "active" : ""} key={`${variation.name}-${index}`} onClick={() => { setActiveLine(index); onRequestVariationNotes(); }}><span>{index + 1}</span><b>{variation.name}</b><small>重點變例</small></button>)}
     </div></section>
-    <section><div className="section-heading"><h3>{lineTitle}</h3><button onClick={() => void onCopy(line)}>複製 PGN</button></div><p className="mainline">{line}</p>{selectedVariation && <p className="variation-note">{selectedVariation.note}</p>}</section>
+    <section><div className="section-heading"><h3>{lineTitle}</h3><button onClick={() => void onCopy(line)}>複製 PGN</button></div><p className="mainline">{line}</p>{selectedVariation && selectedVariationIndex !== null && (variationNoteError ? <p className="variation-note" role="alert">{variationNoteError} <button className="clear-button" onClick={onRetryVariationNotes}>重新載入</button></p> : variationNotes ? <p className="variation-note">{variationNotes[selectedVariationIndex]}</p> : <p className="variation-note" role="status">正在載入變例解說…</p>)}</section>
     <section><h3>核心構想</h3><p>{opening.ideas}</p></section>
     <section className="core-followups"><div className="section-heading"><div><p className="eyebrow">IMPORTANT CONTINUATIONS</p><h3>重要招法｜接下來怎麼下</h3></div><small>把構想變成下一步</small></div>
       <div className="core-plan-grid">{opening.plans.map((plan, index) => {

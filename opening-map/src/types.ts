@@ -42,7 +42,7 @@ export type Opening = {
   classification_path: [Opening["side"], string, string, string, string];
   styles: string[];
   mainline: string;
-  variations: { name: string; line: string; note: string }[];
+  variations: { name: string; line: string }[];
   subgroup: { id: string; label: string };
   family: { id: string; label: string };
   style: { id: string; label: string };
@@ -69,6 +69,12 @@ export type OpeningExplorerData = {
   generated_at: string;
   transpositionGroups: TranspositionGroup[];
   analogyGroups: AnalogyGroup[];
+};
+
+export type OpeningVariationNotesData = {
+  schema_version: number;
+  generated_at: string;
+  notes: string[][];
 };
 
 export type Edge = { source: string; target: string; weight: number };

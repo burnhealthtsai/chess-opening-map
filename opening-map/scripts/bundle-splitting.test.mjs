@@ -29,6 +29,10 @@ test("opening details and knowledge load only after an opening is selected", () 
   assert.match(app, /fetch\("\.\/opening-details\.json"\)/);
   assert.match(app, /function selectOpening\(id: string\).*loadOpeningDetails\(\)/s);
   assert.doesNotMatch(app, /useEffect\(\(\) => \{\s*fetch\("\.\/opening-details\.json"\)/);
+  assert.match(app, /fetch\("\.\/opening-variation-notes\.json"\)/);
+  assert.match(app, /if \(!data \|\| variationNotes \|\| !variationNotesRequested\) return/);
+  assert.match(detail, /onClick=\{\(\) => \{ setActiveLine\(index\); onRequestVariationNotes\(\); \}\}/);
+  assert.match(detail, /正在載入變例解說/);
 });
 
 test("custom piece theme generation loads only after leaving the original set", () => {
