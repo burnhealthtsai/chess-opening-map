@@ -60,7 +60,15 @@ export type DetailedOpening = Opening & OpeningDetails;
 export type OpeningDetailsData = {
   schema_version: number;
   generated_at: string;
+  edges: Record<RelationMode, Edge[]>;
   openings: Record<string, OpeningDetails>;
+};
+
+export type OpeningExplorerData = {
+  schema_version: number;
+  generated_at: string;
+  transpositionGroups: TranspositionGroup[];
+  analogyGroups: AnalogyGroup[];
 };
 
 export type Edge = { source: string; target: string; weight: number };
@@ -81,9 +89,6 @@ export type OpeningMapData = {
   schema_version: number;
   generated_at: string;
   nodes: Opening[];
-  edges: Record<RelationMode, Edge[]>;
-  transpositionGroups: TranspositionGroup[];
-  analogyGroups: AnalogyGroup[];
   navigation: {
     sides: { id: Opening["side"]; count: number }[];
     first_moves: { side: Opening["side"]; value: string; count: number }[];

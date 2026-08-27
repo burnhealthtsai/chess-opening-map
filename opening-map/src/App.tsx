@@ -4,7 +4,7 @@ import { Chessboard, prepareChessSound } from "./Chessboard";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { openingIcon } from "./openingIcon";
 import { shouldStartLiveBoardMinimized } from "./responsive";
-import type { DetailedOpening, Opening, OpeningDetailsData, OpeningMapData, RelationMode } from "./types";
+import type { DetailedOpening, Opening, OpeningDetailsData, OpeningExplorerData, OpeningMapData, RelationMode } from "./types";
 
 const openingDetailModule = () => import("./OpeningDetail");
 const OpeningDetail = lazy(openingDetailModule);
@@ -24,6 +24,16 @@ function loadOpeningDetails() {
       .catch((error) => { openingDetailsRequest = null; throw error; });
   }
   return openingDetailsRequest;
+}
+
+let openingExplorerRequest: Promise<OpeningExplorerData> | null = null;
+function loadOpeningExplorerData() {
+  if (!openingExplorerRequest) {
+    openingExplorerRequest = fetch("./opening-explorers.json")
+      .then((response) => response.ok ? response.json() as Promise<OpeningExplorerData> : Promise.reject(new Error(`HTTP ${response.status}`)))
+      .catch((error) => { openingExplorerRequest = null; throw error; });
+  }
+  return openingExplorerRequest;
 }
 
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
@@ -52,6 +62,9 @@ export function App() {
   const [openingDetails, setOpeningDetails] = useState<OpeningDetailsData | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
   const [detailRetry, setDetailRetry] = useState(0);
+  const [explorerData, setExplorerData] = useState<OpeningExplorerData | null>(null);
+  const [explorerError, setExplorerError] = useState<string | null>(null);
+  const [explorerRetry, setExplorerRetry] = useState(0);
   const [dark, setDark] = useState(false);
   const [pieceStyle, setPieceStyle] = useState<(typeof pieceStyles)[number][0]>("original");
   const [boardStyle, setBoardStyle] = useState<(typeof boardStyles)[number][0]>("wood");
@@ -88,6 +101,20 @@ export function App() {
     return () => { active = false; };
   }, [data, detailRetry, openingDetails, selectedId]);
 
+  useEffect(() => {
+    if (!data || explorerData || !["transpositions", "analogies"].includes(lens)) return;
+    let active = true;
+    setExplorerError(null);
+    loadOpeningExplorerData().then((explorers) => {
+      if (explorers.schema_version !== data.schema_version || explorers.generated_at !== data.generated_at) {
+        openingExplorerRequest = null;
+        throw new Error("開局地圖與分頁資料版本不一致");
+      }
+      if (active) setExplorerData(explorers);
+    }).catch(() => { if (active) setExplorerError("分頁資料載入失敗，請重新載入。"); });
+    return () => { active = false; };
+  }, [data, explorerData, explorerRetry, lens]);
+
   const selected = data?.nodes.find((node) => node.id === selectedId) ?? null;
   const detailedSelected = useMemo<DetailedOpening | null>(() => {
     const details = selected && openingDetails?.openings[selected.id];
@@ -95,13 +122,13 @@ export function App() {
   }, [openingDetails, selected]);
   const relationMode: RelationMode = lens === "family" ? "family" : "style";
   const neighbours = useMemo(() => {
-    if (!selected || !data) return [] as Opening[];
-    const ranked = data.edges[relationMode]
+    if (!selected || !data || !openingDetails) return [] as Opening[];
+    const ranked = openingDetails.edges[relationMode]
       .filter((edge) => edge.source === selected.id || edge.target === selected.id)
       .map((edge) => ({ id: edge.source === selected.id ? edge.target : edge.source, weight: edge.weight }))
       .sort((a, b) => b.weight - a.weight).slice(0, 5);
     return ranked.map(({ id }) => data.nodes.find((node) => node.id === id)!).filter(Boolean);
-  }, [data, relationMode, selected]);
+  }, [data, openingDetails, relationMode, selected]);
   const searchResults = useMemo(() => {
     if (!data || !query.trim()) return [];
     const needle = query.trim().toLowerCase();
@@ -112,6 +139,7 @@ export function App() {
 
   function switchLens(next: Lens) {
     setLens(next); setSelectedId(null); setQuery("");
+    if (["transpositions", "analogies"].includes(next)) void loadOpeningExplorerData().catch(() => undefined);
     if (next !== "style") setSelectedStyle(null);
   }
   function home() { setSelectedFirstMove(null); setSelectedFamily(null); setSelectedId(null); }
@@ -128,6 +156,11 @@ export function App() {
     openingDetailsRequest = null;
     setDetailError(null);
     setDetailRetry((value) => value + 1);
+  }
+  function retryExplorerData() {
+    openingExplorerRequest = null;
+    setExplorerError(null);
+    setExplorerRetry((value) => value + 1);
   }
   async function copyLine(line: string) { await navigator.clipboard?.writeText(line); }
 
@@ -188,8 +221,8 @@ export function App() {
           : lens === "opponent" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入對手練習…</div>}><OpponentExplorer data={data} /></Suspense>
           : lens === "puzzles" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入謎題訓練…</div>}><PuzzleExplorer /></Suspense>
           : lens === "style" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入學習風格…</div>}><StyleExplorer data={data} category={category} side={styleSide} style={selectedStyle} selectedId={selectedId} onStyle={(value) => { setSelectedStyle(value); setSelectedId(null); }} onSelect={selectOpening} /></Suspense>
-          : lens === "transpositions" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer data={data} onSelect={selectOpening} /></Suspense>
-          : <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer data={data} onSelect={selectOpening} /></Suspense>}
+          : lens === "transpositions" ? explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer nodes={data.nodes} groups={explorerData.transpositionGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入體系轉換資料…</div>
+          : explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer nodes={data.nodes} groups={explorerData.analogyGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入類似比較資料…</div>}
       </section>
       {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
     </div>}
@@ -199,6 +232,10 @@ export function App() {
 
 function DetailLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
   return <div className="detail-load-error" role="alert"><b>{message}</b><button onClick={onRetry}>重新載入</button></div>;
+}
+
+function ExplorerLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
+  return <div className="empty" role="alert"><b>{message}</b><button className="clear-button" onClick={onRetry}>重新載入</button></div>;
 }
 
 function FamilyExplorer({ data, category, side, firstMove, familyId, selectedId, onHome, onSide, onFirstMove, onFamily, onSelect }: {

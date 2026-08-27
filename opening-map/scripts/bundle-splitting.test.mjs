@@ -88,6 +88,11 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(analogies, /非精確轉置/);
   assert.match(app, /<b>類似比較<\/b><small>黑方防禦對照白方進攻體系<\/small>/);
   assert.match(app, /"transpositions", "analogies"/);
+  assert.match(app, /fetch\("\.\/opening-explorers\.json"\)/);
+  assert.match(app, /function switchLens\(next: Lens\).*loadOpeningExplorerData\(\)/s);
+  assert.match(app, /if \(!data \|\| explorerData \|\| !\["transpositions", "analogies"\]\.includes\(lens\)\) return/);
+  assert.match(app, /<TranspositionExplorer nodes=\{data\.nodes\} groups=\{explorerData\.transpositionGroups\}/);
+  assert.match(app, /<AnalogyExplorer nodes=\{data\.nodes\} groups=\{explorerData\.analogyGroups\}/);
 });
 
 test("secondary explorer CSS follows its lazy JavaScript chunk", () => {

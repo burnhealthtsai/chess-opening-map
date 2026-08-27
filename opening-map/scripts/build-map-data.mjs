@@ -8,6 +8,8 @@ const source = resolve(root, "..", "openings.yaml");
 const variationsSource = resolve(root, "..", "variations.json");
 const destination = resolve(root, "public", "opening-map.json");
 const detailsDestination = resolve(root, "public", "opening-details.json");
+const explorersDestination = resolve(root, "public", "opening-explorers.json");
+const schemaVersion = 7;
 
 export function sanMoves(line) {
   return line
@@ -331,7 +333,7 @@ export function buildAnalogyGroups(catalog) {
   });
 }
 
-export function buildMapData(catalog, variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
+export function buildMapData(catalog, _variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
   const items = catalog.openings;
   const nodes = items.map((item) => ({
     ...(() => {
@@ -371,15 +373,9 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }, gen
   }
   const styleNames = ["局面", "戰術", "主動", "穩健", "發展"];
   return {
-    schema_version: 6,
+    schema_version: schemaVersion,
     generated_at: generatedAt,
     nodes,
-    edges: {
-      family: strongestEdges(items, familyScore),
-      style: strongestEdges(items, styleScore),
-    },
-    transpositionGroups: buildTranspositionGroups(catalog, variationCatalog),
-    analogyGroups: buildAnalogyGroups(catalog),
     navigation: {
       sides: ["白方", "黑方"].map((id) => ({ id, count: nodes.filter((node) => node.side === id).length })),
       first_moves: ["白方", "黑方"].flatMap((side) => [...new Set(nodes.filter((node) => node.side === side).map((node) => node.first_move))].map((value) => ({ side, value, count: nodes.filter((node) => node.side === side && node.first_move === value).length }))),
@@ -406,14 +402,27 @@ export function buildMapData(catalog, variationCatalog = { variations: [] }, gen
 
 export function buildOpeningDetails(catalog, generatedAt = new Date().toISOString()) {
   return {
-    schema_version: 6,
+    schema_version: schemaVersion,
     generated_at: generatedAt,
+    edges: {
+      family: strongestEdges(catalog.openings, familyScore),
+      style: strongestEdges(catalog.openings, styleScore),
+    },
     openings: Object.fromEntries(catalog.openings.map((item) => [item.id, {
       difficulty: item.difficulty,
       ideas: item.ideas,
       plans: item.plans,
       mistakes: item.mistakes,
     }])),
+  };
+}
+
+export function buildExplorerData(catalog, variationCatalog = { variations: [] }, generatedAt = new Date().toISOString()) {
+  return {
+    schema_version: schemaVersion,
+    generated_at: generatedAt,
+    transpositionGroups: buildTranspositionGroups(catalog, variationCatalog),
+    analogyGroups: buildAnalogyGroups(catalog),
   };
 }
 
@@ -431,10 +440,12 @@ async function main() {
   const generatedAt = new Date().toISOString();
   const data = buildMapData(catalog, variationCatalog, generatedAt);
   const details = buildOpeningDetails(catalog, generatedAt);
+  const explorers = buildExplorerData(catalog, variationCatalog, generatedAt);
   await mkdir(dirname(destination), { recursive: true });
   await writeFile(destination, `${JSON.stringify(data)}\n`, "utf8");
   await writeFile(detailsDestination, `${JSON.stringify(details)}\n`, "utf8");
-  console.log(`Generated ${data.nodes.length} opening nodes at ${destination} and ${detailsDestination}`);
+  await writeFile(explorersDestination, `${JSON.stringify(explorers)}\n`, "utf8");
+  console.log(`Generated ${data.nodes.length} opening nodes at ${destination}, ${detailsDestination}, and ${explorersDestination}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) main();

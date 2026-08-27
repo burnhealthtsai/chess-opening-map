@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Chess } from "chess.js";
-import { buildMapData, buildOpeningDetails, sanMoves } from "./build-map-data.mjs";
+import { buildExplorerData, buildMapData, buildOpeningDetails, sanMoves } from "./build-map-data.mjs";
 
 const catalog = JSON.parse(await readFile(resolve("..", "openings.yaml"), "utf8"));
 const variationCatalog = JSON.parse(await readFile(resolve("..", "variations.json"), "utf8"));
@@ -34,9 +34,14 @@ test("keeps detail-only opening content in a paired lazy catalog", () => {
   const generatedAt = "2026-08-28T00:00:00.000Z";
   const map = buildMapData(catalog, variationCatalog, generatedAt);
   const details = buildOpeningDetails(catalog, generatedAt);
-  assert.equal(map.schema_version, 6);
+  assert.equal(map.schema_version, 7);
   assert.equal(details.schema_version, map.schema_version);
   assert.equal(details.generated_at, map.generated_at);
+  assert.ok(!("edges" in map));
+  assert.ok(!("transpositionGroups" in map));
+  assert.ok(!("analogyGroups" in map));
+  assert.ok(details.edges.family.length > 0);
+  assert.ok(details.edges.style.length > 0);
   assert.equal(Object.keys(details.openings).length, map.nodes.length);
   assert.deepEqual(Object.keys(details.openings).sort(), map.nodes.map((opening) => opening.id).sort());
   for (const detail of Object.values(details.openings)) {
@@ -47,8 +52,18 @@ test("keeps detail-only opening content in a paired lazy catalog", () => {
   }
 });
 
+test("keeps secondary explorer groups in a version-matched lazy catalog", () => {
+  const generatedAt = "2026-08-28T00:00:00.000Z";
+  const map = buildMapData(catalog, variationCatalog, generatedAt);
+  const explorers = buildExplorerData(catalog, variationCatalog, generatedAt);
+  assert.equal(explorers.schema_version, map.schema_version);
+  assert.equal(explorers.generated_at, map.generated_at);
+  assert.ok(explorers.transpositionGroups.length >= 6);
+  assert.ok(explorers.analogyGroups.length >= 6);
+});
+
 test("relationship edges are unique, symmetric and never self-referential", () => {
-  const data = buildMapData(catalog);
+  const data = buildOpeningDetails(catalog);
   for (const mode of ["family", "style"]) {
     const seen = new Set();
     for (const edge of data.edges[mode]) {
@@ -133,8 +148,8 @@ test("Old Indian keeps the official family recognition line", () => {
 });
 
 test("transposition routes reach the exact same normalized FEN", () => {
-  const data = buildMapData(catalog, variationCatalog);
-  assert.equal(data.schema_version, 6);
+  const data = buildExplorerData(catalog, variationCatalog);
+  assert.equal(data.schema_version, 7);
   assert.ok(data.transpositionGroups.length >= 6);
   for (const group of data.transpositionGroups) {
     assert.equal(group.relation, "exact");
@@ -150,9 +165,10 @@ test("transposition routes reach the exact same normalized FEN", () => {
 });
 
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
-  const data = buildMapData(catalog, variationCatalog);
+  const map = buildMapData(catalog, variationCatalog);
+  const data = buildExplorerData(catalog, variationCatalog);
   assert.ok(data.analogyGroups.length >= 6);
-  const openingById = new Map(data.nodes.map((opening) => [opening.id, opening]));
+  const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
   assert.equal(sicilianEnglish.title, "西西里防禦 ↔ 英格蘭開局");
