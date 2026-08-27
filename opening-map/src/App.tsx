@@ -11,10 +11,12 @@ const OpeningDetail = lazy(() => import("./OpeningDetail"));
 const PuzzleExplorer = lazy(() => import("./PuzzleExplorer"));
 const ConceptExplorer = lazy(() => import("./ConceptExplorer"));
 const OpponentExplorer = lazy(() => import("./OpponentExplorer"));
+const StyleExplorer = lazy(() => import("./StyleExplorer"));
+const TranspositionExplorer = lazy(() => import("./TranspositionExplorer"));
+const AnalogyExplorer = lazy(() => import("./AnalogyExplorer"));
 
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
 const all = "全部";
-const firstMoveOrder = ["e4", "d4", "c4", "Nf3", "其他"];
 const pieceStyles = [
   ["original", "原版棋子"],
   ["magic", "魔法學院風格"], ["fairytale", "迪士尼童話風格（原創）"], ["ceramic-storybook", "手繪陶瓷棋子"], ["neon-punk", "霓虹龐克棋子"], ["egyptian-monument", "古埃及雕像棋子"], ["forest-anime", "手繪森林動畫"], ["warcraft", "史詩獸人風格"],
@@ -25,15 +27,6 @@ const boardStyles = [
   ["wood", "經典木棋盤"], ["walnut", "胡桃木"], ["ocean", "海洋藍"], ["forest", "森林綠"], ["slate", "石板灰"],
   ["royal", "皇家紫"], ["rose", "玫瑰粉"], ["sand", "沙漠金"], ["mint", "薄荷綠"], ["night", "午夜棋盤"],
 ] as const;
-const styleDescriptions: Record<string, string> = {
-  局面: "重視兵形、空間與長期計畫",
-  戰術: "快速製造威脅與具體計算",
-  主動: "掌握先手並持續向對手施壓",
-  穩健: "降低風險，建立可靠的發展",
-  發展: "快速出子、控制中心與完成易位",
-};
-
-
 export function App() {
   const [data, setData] = useState<OpeningMapData | null>(null);
   const [lens, setLens] = useState<Lens>("family");
@@ -144,9 +137,9 @@ export function App() {
           : lens === "concept" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入中心思想…</div>}><ConceptExplorer /></Suspense>
           : lens === "opponent" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入對手練習…</div>}><OpponentExplorer data={data} /></Suspense>
           : lens === "puzzles" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入謎題訓練…</div>}><PuzzleExplorer /></Suspense>
-          : lens === "style" ? <StyleExplorer data={data} category={category} side={styleSide} style={selectedStyle} selectedId={selectedId} onStyle={(value) => { setSelectedStyle(value); setSelectedId(null); }} onSelect={selectOpening} />
-          : lens === "transpositions" ? <TranspositionExplorer data={data} onSelect={selectOpening} />
-          : <AnalogyExplorer data={data} onSelect={selectOpening} />}
+          : lens === "style" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入學習風格…</div>}><StyleExplorer data={data} category={category} side={styleSide} style={selectedStyle} selectedId={selectedId} onStyle={(value) => { setSelectedStyle(value); setSelectedId(null); }} onSelect={selectOpening} /></Suspense>
+          : lens === "transpositions" ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer data={data} onSelect={selectOpening} /></Suspense>
+          : <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer data={data} onSelect={selectOpening} /></Suspense>}
       </section>
       {selected && <aside className={`detail open ${/歐文|Owen/i.test(`${selected.title_zh} ${selected.title_en}`) ? "opening-home-modal" : ""}`} aria-live="polite"><Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={selected} neighbours={neighbours} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense></aside>}
     </div>}
@@ -257,72 +250,6 @@ function SideSwitcher({ data, category, side, onSide }: { data: OpeningMapData; 
   </nav>;
 }
 
-function StyleExplorer({ data, category, side, style, selectedId, onStyle, onSelect }: { data: OpeningMapData; category: string; side: string; style: string | null; selectedId: string | null; onStyle: (style: string | null) => void; onSelect: (id: string) => void }) {
-  const filter = (node: Opening) => (category === all || node.category === category) && (side === all || node.side === side);
-  if (!style) return <Level title="你喜歡怎樣下棋？" intro="一個開局可以同時屬於多種風格。先選最想練習的局面特質。" step="五種學習入口">
-    <div className="style-grid">{data.navigation.styles.map((item, index) => {
-      const count = data.nodes.filter((node) => node.styles.includes(item.value) && filter(node)).length;
-      return <button className={`style-card style-${index}`} key={item.value} onClick={() => onStyle(item.value)}><span>{["◎", "⚡", "↗", "◆", "♟"][index]}</span><b>{item.value}</b><p>{styleDescriptions[item.value]}</p><small>{count} 個開局　→</small></button>;
-    })}</div>
-  </Level>;
-  const members = data.nodes.filter((node) => node.styles.includes(style) && filter(node));
-  const groups = firstMoveOrder.map((move) => ({ move, nodes: members.filter((node) => node.first_move === move) })).filter((group) => group.nodes.length);
-  return <><Breadcrumb items={[{ label: "學習風格", onClick: () => onStyle(null) }, { label: `${style}取向` }]} />
-    <div className="family-header"><div><p className="eyebrow">STYLE COLLECTION</p><h2>{style}取向</h2><p>{styleDescriptions[style]}。共 {members.length} 個符合目前篩選的開局。</p></div><button onClick={() => onStyle(null)}>← 返回風格</button></div>
-    {groups.length ? <div className="style-results">{groups.map((group) => <section key={group.move}><h3><span>{group.move}</span>{moveName(group.move)}<small>{group.nodes.length} 個</small></h3><div className="opening-card-grid">{group.nodes.map((node) => <OpeningCard key={node.id} node={node} selected={selectedId === node.id} onClick={() => onSelect(node.id)} />)}</div></section>)}</div> : <Empty />}
-  </>;
-}
-
-function TranspositionExplorer({ data, onSelect }: { data: OpeningMapData; onSelect: (id: string) => void }) {
-  const [activeGroup, setActiveGroup] = useState(data.transpositionGroups[0]?.id ?? null);
-  const group = data.transpositionGroups.find((item) => item.id === activeGroup) ?? data.transpositionGroups[0];
-  const members = group?.memberIds.map((id) => data.nodes.find((node) => node.id === id)).filter((node): node is Opening => Boolean(node)) ?? [];
-  if (!group) return <Empty />;
-  return <div className="transposition-explorer">
-    <div className="directory-heading with-summary"><div><p className="eyebrow">TRANSPOSITION ATLAS</p><h2>體系轉換地圖</h2><p>只有棋子位置、輪到哪方、易位權與吃過路兵狀態完全一致，才標為「精確同局面」。先比較走子順序，再決定你想保留哪一種開局選擇。</p></div><aside className="map-summary"><span><b>{data.transpositionGroups.length}</b><small>轉換群組</small></span><i /><span><b>{data.transpositionGroups.reduce((sum, item) => sum + item.routes.length, 0)}</b><small>合流走序</small></span></aside></div>
-    <div className="transposition-layout">
-      <nav className="transposition-group-list" aria-label="體系轉換群組">{data.transpositionGroups.map((item) => <button className={item.id === group.id ? "active" : ""} key={item.id} onClick={() => setActiveGroup(item.id)}><span>{item.source === "curated" ? "精選" : "官方"}</span><b>{item.title}</b><small>{item.memberIds.length} 個體系・{item.routes.length} 條走序</small></button>)}</nav>
-      <section className="transposition-detail" aria-live="polite"><header><div><span className="exact-badge">⇄ 精確同局面</span><h3>{group.title}</h3><p>{group.summary}</p></div><FenPositionPreview fen={group.targetFen} label="共同目標局面" /></header>
-        <div className="transposition-routes">{group.routes.map((route, index) => <article key={`${route.line}-${index}`}><span>{index + 1}</span><div><b>{route.label}</b><p>{route.line}</p></div></article>)}</div>
-        <div className="transposition-members"><h4>這些開局在此群組互相連接</h4><div>{members.map((opening) => <button key={opening.id} onClick={() => onSelect(opening.id)}><span>{opening.eco}</span><b>{opening.title_zh}</b><small>{opening.title_en}</small></button>)}</div></div>
-      </section>
-    </div>
-  </div>;
-}
-
-const analogyRelationLabels = {
-  reversed: "反色對應",
-  structure: "結構相似",
-  plan: "計畫相似",
-} as const;
-
-function AnalogyExplorer({ data, onSelect }: { data: OpeningMapData; onSelect: (id: string) => void }) {
-  const [activeGroup, setActiveGroup] = useState(data.analogyGroups[0]?.id ?? null);
-  const group = data.analogyGroups.find((item) => item.id === activeGroup) ?? data.analogyGroups[0];
-  if (!group) return <Empty />;
-  const blackOpenings = group.blackIds.map((id) => data.nodes.find((node) => node.id === id)).filter((node): node is Opening => Boolean(node));
-  const whiteOpenings = group.whiteIds.map((id) => data.nodes.find((node) => node.id === id)).filter((node): node is Opening => Boolean(node));
-  const openingCard = (opening: Opening) => <button className="analogy-opening-card" key={opening.id} onClick={() => onSelect(opening.id)}>
-    <span>{opening.eco}</span><b>{opening.title_zh}</b><small>{opening.title_en}</small><OpeningPositionPreview opening={opening} /><em>開啟主頁 →</em>
-  </button>;
-  return <div className="analogy-explorer">
-    <div className="directory-heading with-summary"><div><p className="eyebrow">OPENING ANALOGY LAB</p><h2>黑方防禦 × 白方進攻類似比較</h2><p>把可以共用兵形判斷、出子配置或進攻計畫的開局放在一起。這裡比較的是「可移植的思考方式」，不是精確轉置，也不代表招法能逐手照搬。</p></div><aside className="map-summary"><span><b>{data.analogyGroups.length}</b><small>比較群組</small></span><i /><span><b>{data.analogyGroups.reduce((sum, item) => sum + item.blackIds.length + item.whiteIds.length, 0)}</b><small>開局對照</small></span></aside></div>
-    <div className="analogy-layout">
-      <nav className="analogy-group-list" aria-label="黑白開局類似比較群組">{data.analogyGroups.map((item) => <button className={item.id === group.id ? "active" : ""} key={item.id} onClick={() => setActiveGroup(item.id)}><span>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav>
-      <section className="analogy-detail" aria-live="polite">
-        <header><span className={`analogy-badge ${group.relation}`}>≈ {analogyRelationLabels[group.relation]}・非精確轉置</span><h3>{group.title}</h3><p>{group.summary}</p></header>
-        <div className="analogy-ideas"><h4>可以互相借用的觀念</h4><div>{group.sharedIdeas.map((idea) => <span key={idea}>{idea}</span>)}</div></div>
-        <div className="analogy-comparison">
-          <section className="analogy-side black"><header><span>♚</span><div><small>BLACK DEFENSE</small><h4>黑方防禦</h4></div></header><div>{blackOpenings.map(openingCard)}</div></section>
-          <div className="analogy-arrow" aria-hidden="true"><b>≈</b><small>觀念映射</small></div>
-          <section className="analogy-side white"><header><span>♔</span><div><small>WHITE SYSTEM</small><h4>白方進攻／體系</h4></div></header><div>{whiteOpenings.map(openingCard)}</div></section>
-        </div>
-        <aside className="analogy-difference"><b>不能直接照抄的地方</b><p>{group.difference}</p></aside>
-      </section>
-    </div>
-  </div>;
-}
-
 function SearchResults({ nodes, query, onSelect }: { nodes: Opening[]; query: string; onSelect: (id: string) => void }) {
   return <section className="search-results"><p className="eyebrow">SEARCH RESULTS</p><h2>「{query}」找到 {nodes.length} 個開局</h2>{nodes.length ? <div className="opening-card-grid search-card-grid">{nodes.map((node) => <OpeningCard key={node.id} node={node} preview onClick={() => onSelect(node.id)} />)}</div> : <Empty />}</section>;
 }
@@ -342,12 +269,6 @@ function OpeningPositionPreview({ opening }: { opening: Opening }) {
   }, [opening]);
   const pieceNames = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" } as const;
   return <span className="opening-position-preview" aria-label={`${opening.title_zh}主線走完後局面`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>主線走完後</i></span>;
-}
-
-function FenPositionPreview({ fen, label }: { fen: string; label: string }) {
-  const position = useMemo(() => new Chess(fen).board().flatMap((row) => row), [fen]);
-  const pieceNames = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" } as const;
-  return <span className="opening-position-preview transposition-position" aria-label={label}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>{label}</i></span>;
 }
 
 function MapBoardPreview({ opening, line, step, fromStep, level, label, onBestMove }: { opening: Opening; line?: string; step: number; fromStep: number; level: string; label: string; onBestMove?: (san: string | null) => void }) {
@@ -408,10 +329,6 @@ function MapBoardPreview({ opening, line, step, fromStep, level, label, onBestMo
   </aside>;
 }
 
-function Level({ title, intro, step, children }: { title: string; intro: string; step: string; children: React.ReactNode }) {
-  return <div className="level"><div className="level-heading"><div><p className="eyebrow">{step}</p><h2>{title}</h2><p>{intro}</p></div></div>{children}</div>;
-}
-
 function Breadcrumb({ items }: { items: { label: string; onClick?: () => void }[] }) {
   return <nav className="breadcrumb" aria-label="目前位置">{items.map((item, index) => <span key={`${item.label}-${index}`}>{index > 0 && <i>›</i>}{item.onClick ? <button onClick={item.onClick}>{item.label}</button> : <b>{item.label}</b>}</span>)}</nav>;
 }
@@ -421,5 +338,4 @@ function Filter({ label, value, values, onChange }: { label: string; value: stri
 }
 
 function Empty() { return <div className="empty">沒有符合目前條件的開局。</div>; }
-function moveName(move: string) { return ({ e4: "王兵起手", d4: "后兵起手", c4: "英式起手", Nf3: "列蒂起手", 其他: "不規則起手" } as Record<string, string>)[move] ?? move; }
 function lineMoves(line: string) { return line.split(/\s+/).filter((token) => !/^\d+\.(\.\.)?$/.test(token) && !/^(1-0|0-1|1\/2-1\/2|\*)$/.test(token)); }

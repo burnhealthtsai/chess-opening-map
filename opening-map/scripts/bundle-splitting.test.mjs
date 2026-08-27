@@ -7,6 +7,9 @@ const detail = await readFile(new URL("../src/OpeningDetail.tsx", import.meta.ur
 const puzzles = await readFile(new URL("../src/PuzzleExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const concepts = await readFile(new URL("../src/ConceptExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 const opponents = await readFile(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8").catch(() => "");
+const styles = await readFile(new URL("../src/StyleExplorer.tsx", import.meta.url), "utf8").catch(() => "");
+const transpositions = await readFile(new URL("../src/TranspositionExplorer.tsx", import.meta.url), "utf8").catch(() => "");
+const analogies = await readFile(new URL("../src/AnalogyExplorer.tsx", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
   assert.match(app, /lazy\(\(\) => import\("\.\/OpeningDetail"\)\)/);
@@ -36,4 +39,16 @@ test("concept lessons and opponent practice are separate on-demand chunks", () =
   assert.match(opponents, /export default function OpponentExplorer/);
   assert.match(opponents, /blind-live-board/);
   assert.match(opponents, /playerColor === "black"/);
+});
+
+test("secondary opening explorers load only when their tabs are opened", () => {
+  assert.match(app, /lazy\(\(\) => import\("\.\/StyleExplorer"\)\)/);
+  assert.match(app, /lazy\(\(\) => import\("\.\/TranspositionExplorer"\)\)/);
+  assert.match(app, /lazy\(\(\) => import\("\.\/AnalogyExplorer"\)\)/);
+  assert.doesNotMatch(app, /function (?:StyleExplorer|TranspositionExplorer|AnalogyExplorer)/);
+  assert.match(styles, /export default function StyleExplorer/);
+  assert.match(transpositions, /export default function TranspositionExplorer/);
+  assert.match(transpositions, /精確同局面/);
+  assert.match(analogies, /export default function AnalogyExplorer/);
+  assert.match(analogies, /非精確轉置/);
 });
