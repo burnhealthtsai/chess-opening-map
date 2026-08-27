@@ -285,6 +285,39 @@ test("major open king-pawn openings keep distinct teaching and the Scotch uses i
   assert.match(byId.get("w-italian-game-evans-gambit").ideas, /4\.b4.*c3.*d4/);
 });
 
+test("queen's gambit defenses keep distinct structures and core recognition lines", () => {
+  const ids = [
+    "b-queens-gambit-declined",
+    "b-queens-gambit-accepted",
+    "b-slav-defense",
+    "b-semi-slav-defense",
+    "b-queens-gambit-declined-albin-countergambit",
+    "b-queens-gambit-declined-chigorin-defense",
+    "b-tarrasch-defense",
+    "b-queens-gambit-declined-orthodox-defense",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  const coreLines = new Map([
+    ["b-queens-gambit-declined", "1. d4 d5 2. c4 e6"],
+    ["b-queens-gambit-accepted", "1. d4 d5 2. c4 dxc4"],
+    ["b-slav-defense", "1. d4 d5 2. c4 c6"],
+  ]);
+  for (const [id, line] of coreLines) {
+    assert.equal(byId.get(id).mainline, line);
+    assert.equal(byId.get(id).source.pgn, line);
+  }
+  assert.match(byId.get("b-queens-gambit-accepted").ideas, /…dxc4.*不長期守兵/);
+  assert.match(byId.get("b-semi-slav-defense").ideas, /…c6與…e6/);
+  assert.match(byId.get("b-tarrasch-defense").ideas, /孤立 d5兵/);
+  assert.match(byId.get("b-queens-gambit-declined-albin-countergambit").ideas, /2…e5.*d4/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
