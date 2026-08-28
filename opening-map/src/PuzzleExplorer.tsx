@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Chessboard } from "./Chessboard";
 import "./PuzzleExplorer.css";
 
@@ -19,6 +19,43 @@ type PuzzleSearchEntry = { puzzle: PuzzleSummary; searchText: string; groupMask:
 
 const puzzleGroups = ["全部題目", "開局", "中局", "殘局", "進攻", "防守", "重大失誤"] as const;
 type PuzzleGroup = typeof puzzleGroups[number];
+type PuzzleViewState = { query: string; side: string; theme: string; difficulty: string; group: PuzzleGroup; page: number; selectedId: string | null };
+
+let cachedCatalog: NotionPuzzleCatalog | null = null;
+let catalogRequest: Promise<NotionPuzzleCatalog> | null = null;
+const cachedDetails: Record<string, PuzzleDetail> = {};
+const detailChunkRequests = new Map<string, Promise<PuzzleDetailChunk>>();
+let puzzleViewState: PuzzleViewState = { query: "", side: "全部", theme: "全部", difficulty: "全部", group: "全部題目", page: 1, selectedId: null };
+
+function loadPuzzleCatalog(force = false) {
+  if (force) { cachedCatalog = null; catalogRequest = null; }
+  if (cachedCatalog) return Promise.resolve(cachedCatalog);
+  if (catalogRequest) return catalogRequest;
+  catalogRequest = fetch("./notion-puzzles.json", { cache: "no-cache" })
+    .then((response) => response.ok ? response.json() as Promise<NotionPuzzleCatalog> : Promise.reject(new Error(`HTTP ${response.status}`)))
+    .then((value) => {
+      if (value.schemaVersion !== 2 || value.count !== value.puzzles.length) throw new Error("Invalid puzzle index");
+      cachedCatalog = value;
+      return value;
+    })
+    .catch((error) => { catalogRequest = null; throw error; });
+  return catalogRequest;
+}
+
+function loadPuzzleDetailChunk(catalog: NotionPuzzleCatalog, chunk: number) {
+  const key = `${catalog.exportedAt}:${chunk}`;
+  const existing = detailChunkRequests.get(key);
+  if (existing) return existing;
+  const request = fetch(`./${catalog.detailBase}/chunk-${String(chunk).padStart(3, "0")}.json`, { cache: "no-cache" })
+    .then((response) => response.ok ? response.json() as Promise<PuzzleDetailChunk> : Promise.reject(new Error(`HTTP ${response.status}`)))
+    .then((value) => {
+      if (value.schemaVersion !== 2 || value.exportedAt !== catalog.exportedAt || value.chunk !== chunk) throw new Error("Mismatched puzzle detail chunk");
+      return value;
+    })
+    .catch((error) => { detailChunkRequests.delete(key); throw error; });
+  detailChunkRequests.set(key, request);
+  return request;
+}
 
 function puzzleGroupMask(puzzle: PuzzleSummary) {
   const labels = `${puzzle.title} ${puzzle.themes.join(" ")} ${puzzle.classification}`;
@@ -36,19 +73,19 @@ function puzzleGroupMask(puzzle: PuzzleSummary) {
 }
 
 export default function PuzzleExplorer() {
-  const [catalog, setCatalog] = useState<NotionPuzzleCatalog | null>(null);
+  const [catalog, setCatalog] = useState<NotionPuzzleCatalog | null>(cachedCatalog);
   const [loadError, setLoadError] = useState(false);
-  const [puzzleQuery, setPuzzleQuery] = useState("");
-  const [side, setSide] = useState("全部");
-  const [theme, setTheme] = useState("全部");
-  const [difficulty, setDifficulty] = useState("全部");
-  const [group, setGroup] = useState<PuzzleGroup>("全部題目");
-  const [page, setPage] = useState(1);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [detailsById, setDetailsById] = useState<Record<string, PuzzleDetail>>({});
+  const [catalogRetry, setCatalogRetry] = useState(0);
+  const [puzzleQuery, setPuzzleQuery] = useState(puzzleViewState.query);
+  const [side, setSide] = useState(puzzleViewState.side);
+  const [theme, setTheme] = useState(puzzleViewState.theme);
+  const [difficulty, setDifficulty] = useState(puzzleViewState.difficulty);
+  const [group, setGroup] = useState<PuzzleGroup>(puzzleViewState.group);
+  const [page, setPage] = useState(puzzleViewState.page);
+  const [selectedId, setSelectedId] = useState<string | null>(puzzleViewState.selectedId);
+  const [detailsById, setDetailsById] = useState<Record<string, PuzzleDetail>>(() => ({ ...cachedDetails }));
   const [detailErrorChunk, setDetailErrorChunk] = useState<number | null>(null);
   const [detailRetry, setDetailRetry] = useState(0);
-  const pendingChunks = useRef(new Set<number>());
   const [showStockfish, setShowStockfish] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
   const [puzzleFeedback, setPuzzleFeedback] = useState<{ kind: "correct" | "wrong"; text: string } | null>(null);
@@ -56,14 +93,21 @@ export default function PuzzleExplorer() {
   const configuredUrl = import.meta.env.VITE_PUZZLE_APP_URL?.trim();
   const puzzleUrl = configuredUrl || "http://127.0.0.1:8788/?tab=puzzles";
   useEffect(() => {
-    fetch("./notion-puzzles.json", { cache: "no-cache" }).then((response) => response.ok ? response.json() : Promise.reject())
-      .then((value: NotionPuzzleCatalog) => {
-        if (value.schemaVersion !== 2 || value.count !== value.puzzles.length) throw new Error("Invalid puzzle index");
+    if (catalog) return;
+    let active = true;
+    setLoadError(false);
+    loadPuzzleCatalog(catalogRetry > 0)
+      .then((value) => {
+        if (!active) return;
         setCatalog(value);
-        setSelectedId(value.puzzles[0]?.id ?? null);
+        setSelectedId((current) => current ?? value.puzzles[0]?.id ?? null);
       })
-      .catch(() => setLoadError(true));
-  }, []);
+      .catch(() => { if (active) setLoadError(true); });
+    return () => { active = false; };
+  }, [catalog, catalogRetry]);
+  useEffect(() => {
+    puzzleViewState = { query: puzzleQuery, side, theme, difficulty, group, page, selectedId };
+  }, [difficulty, group, page, puzzleQuery, selectedId, side, theme]);
   const themes = useMemo(() => catalog ? [...new Set(catalog.puzzles.flatMap((puzzle) => puzzle.themes))].sort((a, b) => a.localeCompare(b, "zh-Hant")) : [], [catalog]);
   const searchData = useMemo(() => {
     const groupCounts = puzzleGroups.map(() => 0);
@@ -97,24 +141,26 @@ export default function PuzzleExplorer() {
   const selectedDetail = selectedSummary ? detailsById[selectedSummary.id] : null;
   const selected: NotionPuzzle | null = selectedSummary && selectedDetail ? { ...selectedSummary, ...selectedDetail } : null;
   useEffect(() => {
-    if (!catalog || !selectedSummary || selectedDetail || pendingChunks.current.has(selectedSummary.chunk)) return;
+    if (!catalog || !selectedSummary || selectedDetail) return;
     const chunk = selectedSummary.chunk;
-    pendingChunks.current.add(chunk);
+    let active = true;
     setDetailErrorChunk((value) => value === chunk ? null : value);
-    fetch(`./${catalog.detailBase}/chunk-${String(chunk).padStart(3, "0")}.json`, { cache: "no-cache" })
-      .then((response) => response.ok ? response.json() : Promise.reject())
+    loadPuzzleDetailChunk(catalog, chunk)
       .then((value: PuzzleDetailChunk) => {
-        if (value.schemaVersion !== 2 || value.exportedAt !== catalog.exportedAt || value.chunk !== chunk) throw new Error("Mismatched puzzle detail chunk");
         if (!value.puzzles.some((puzzle) => puzzle.id === selectedSummary.id)) throw new Error("Selected puzzle is missing from its detail chunk");
-        setDetailsById((current) => ({ ...current, ...Object.fromEntries(value.puzzles.map((puzzle) => [puzzle.id, puzzle])) }));
+        Object.assign(cachedDetails, Object.fromEntries(value.puzzles.map((puzzle) => [puzzle.id, puzzle])));
+        if (active) {
+          setDetailsById((current) => ({ ...current, ...cachedDetails }));
+          setDetailErrorChunk(null);
+        }
       })
-      .catch(() => setDetailErrorChunk(chunk))
-      .finally(() => pendingChunks.current.delete(chunk));
+      .catch(() => { if (active) setDetailErrorChunk(chunk); });
+    return () => { active = false; };
   }, [catalog, detailRetry, selectedDetail, selectedSummary]);
   const due = useMemo(() => catalog?.puzzles.filter((puzzle) => new Date(puzzle.dueAt) <= new Date()).length ?? 0, [catalog]);
   const solveUrl = selectedSummary ? `${puzzleUrl}${puzzleUrl.includes("?") ? "&" : "?"}puzzle=${encodeURIComponent(selectedSummary.id)}` : puzzleUrl;
   return <section className="puzzle-explorer"><div className="concept-heading"><p className="eyebrow">NOTION PUZZLE LIBRARY</p><h2>個人化西洋棋謎題</h2><p>Notion「個人西洋棋謎題」已真正匯入地圖；可依陣營、主題與難度找題，並直接預覽實戰局面。</p></div>
-    {loadError ? <div className="empty">無法載入 Notion 謎題匯出檔。</div> : !catalog ? <div className="loading-inline">正在載入 Notion 謎題…</div> : <>
+    {loadError ? <div className="empty" role="alert"><b>無法載入 Notion 謎題匯出檔。</b><button className="clear-button" onClick={() => setCatalogRetry((value) => value + 1)}>重新載入謎題</button></div> : !catalog ? <div className="loading-inline" role="status">正在載入 Notion 謎題…</div> : <>
       <div className="puzzle-stats"><span><b>{catalog.count.toLocaleString()}</b><small>Notion 題目</small></span><span><b>{due.toLocaleString()}</b><small>已到複習日</small></span><span><b>{themes.length}</b><small>戰術主題</small></span><a href="https://app.notion.com/p/63e9236b893e43d8bb58c71e70cece5a" target="_blank" rel="noreferrer">開啟 Notion 資料庫 ↗</a></div>
       <div className="puzzle-filters"><label><span>搜尋題目</span><input value={puzzleQuery} onChange={(event) => setPuzzleQuery(event.target.value)} placeholder="回合、主題或 Puzzle ID" /></label><Filter label="陣營" value={side} values={["全部", "白方", "黑方"]} onChange={setSide} /><Filter label="主題" value={theme} values={["全部", ...themes]} onChange={setTheme} /><Filter label="難度" value={difficulty} values={["全部", "初階", "中階"]} onChange={setDifficulty} /></div>
       <div className="puzzle-browser"><aside className="puzzle-big-groups" aria-label="謎題大群分類"><p className="eyebrow">大群分類</p><h3>依局面找題</h3>{puzzleGroups.map((item) => {
