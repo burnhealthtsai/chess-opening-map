@@ -6,6 +6,7 @@ const board = await readFile(new URL("../src/Chessboard.tsx", import.meta.url), 
 const app = await readFile(new URL("../src/App.tsx", import.meta.url), "utf8");
 const opponents = await readFile(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8");
 const puzzles = await readFile(new URL("../src/PuzzleExplorer.tsx", import.meta.url), "utf8");
+const stockfish = await readFile(new URL("../src/useStockfish.ts", import.meta.url), "utf8");
 const puzzleRefresh = await readFile(new URL("./refresh-puzzle-solutions.mjs", import.meta.url), "utf8");
 
 test("the map Mini Live Board defers Stockfish until its panel is expanded", () => {
@@ -38,4 +39,12 @@ test("查看謎題解答使用已驗證解答，不在背景重算", () => {
   assert.match(puzzleRefresh, /stockfish-18-lite-single\.js/);
   assert.match(puzzleRefresh, /setoption name Clear Hash/);
   assert.match(puzzleRefresh, /go depth \$\{engineDepth\}/);
+});
+
+test("Stockfish 被瀏覽器封鎖時只標記引擎不可用", () => {
+  assert.match(stockfish, /try\s*\{\s*worker = new Worker\(workerUrl\);\s*\}\s*catch\s*\{/);
+  assert.match(stockfish, /function markEngineUnavailable\(\)/);
+  assert.match(stockfish, /status: "error"/);
+  assert.match(stockfish, /try\s*\{\s*worker\.postMessage\(command\);/);
+  assert.match(stockfish, /try \{ worker\.terminate\(\); \} catch/);
 });

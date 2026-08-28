@@ -23,12 +23,27 @@ export function useStockfish(fen: string, enabled: boolean) {
   const readyRef = useRef(false);
   const fenRef = useRef(fen);
 
+  function markEngineUnavailable() {
+    readyRef.current = false;
+    setAnalysis((current) => ({ ...current, status: "error" }));
+  }
+
+  function sendCommand(worker: Worker, command: string) {
+    try {
+      worker.postMessage(command);
+      return true;
+    } catch {
+      markEngineUnavailable();
+      return false;
+    }
+  }
+
   function startAnalysis(position: string) {
     const worker = workerRef.current;
     if (!worker || !readyRef.current) return;
-    worker.postMessage("stop");
-    worker.postMessage(`position fen ${position}`);
-    worker.postMessage("go depth 12");
+    if (!sendCommand(worker, "stop")) return;
+    if (!sendCommand(worker, `position fen ${position}`)) return;
+    if (!sendCommand(worker, "go depth 12")) return;
     setAnalysis((current) => ({ ...current, status: "thinking", depth: 0, bestMove: null }));
   }
 
@@ -40,14 +55,21 @@ export function useStockfish(fen: string, enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
     const workerUrl = `${import.meta.env.BASE_URL}stockfish/stockfish-18-lite-single.js`;
-    const worker = new Worker(workerUrl);
+    let worker: Worker;
+    try {
+      worker = new Worker(workerUrl);
+    } catch {
+      workerRef.current = null;
+      markEngineUnavailable();
+      return;
+    }
     workerRef.current = worker;
     setAnalysis(initialAnalysis);
 
     worker.onmessage = (event: MessageEvent<unknown>) => {
       const message = String(event.data);
       if (message === "uciok") {
-        worker.postMessage("isready");
+        sendCommand(worker, "isready");
         return;
       }
       if (message === "readyok") {
@@ -76,14 +98,14 @@ export function useStockfish(fen: string, enabled: boolean) {
         setAnalysis((current) => ({ ...current, status: "ready", bestMove: bestMove ?? current.bestMove }));
       }
     };
-    worker.onerror = () => setAnalysis((current) => ({ ...current, status: "error" }));
-    worker.postMessage("uci");
+    worker.onerror = markEngineUnavailable;
+    sendCommand(worker, "uci");
 
     return () => {
       readyRef.current = false;
-      worker.postMessage("stop");
-      worker.terminate();
       workerRef.current = null;
+      try { worker.postMessage("stop"); } catch { /* The worker may already be unavailable. */ }
+      try { worker.terminate(); } catch { /* Termination is best-effort during cleanup. */ }
     };
   }, [enabled]);
 
