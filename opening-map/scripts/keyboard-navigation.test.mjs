@@ -4,6 +4,7 @@ import test from "node:test";
 
 const app = await readFile(new URL("../src/App.tsx", import.meta.url), "utf8");
 const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+const transpositions = await readFile(new URL("../src/TranspositionExplorer.tsx", import.meta.url), "utf8");
 
 test("Tab switches cards without trapping keyboard focus in the tab list", () => {
   assert.match(app, /target\?\.closest\("\.lens-tabs button"\)/);
@@ -44,4 +45,15 @@ test("WASD follows only the openings visible in the current explorer", () => {
   assert.match(app, /else if \(lens === "style" && selectedStyle\)/);
   assert.match(app, /const nextIndex = index < 0 \? \(change < 0 \? candidates\.length - 1 : 0\)/);
   assert.doesNotMatch(app, /Math\.max\(0, candidates\.findIndex/);
+});
+
+test("transposition groups support roving WASD and arrow-key navigation", () => {
+  assert.match(transpositions, /role="tablist"/);
+  assert.match(transpositions, /role="tab"/);
+  assert.match(transpositions, /tabIndex=\{item\.id === group\.id \? 0 : -1\}/);
+  assert.match(transpositions, /\["ArrowUp", "ArrowLeft", "w", "a"\]/);
+  assert.match(transpositions, /\["ArrowDown", "ArrowRight", "s", "d"\]/);
+  assert.match(transpositions, /event\.stopPropagation\(\)/);
+  assert.match(transpositions, /querySelectorAll<HTMLButtonElement>\("button"\)\[target\]\?\.focus\(\)/);
+  assert.match(transpositions, /role="tabpanel"/);
 });
