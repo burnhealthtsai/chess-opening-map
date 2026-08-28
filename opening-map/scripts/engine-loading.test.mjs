@@ -14,7 +14,7 @@ test("the map Mini Live Board defers Stockfish until its panel is expanded", () 
   assert.match(app, /<Chessboard[^>]+deferAnalysis[^>]+onBestMove=/);
   assert.match(board, /deferAnalysis\?: boolean/);
   assert.match(board, /const \[analysisRequested, setAnalysisRequested\] = useState\(\(\) => !deferAnalysis\)/);
-  assert.match(board, /onExpand=\{\(\) => setAnalysisRequested\(true\)\}/);
+  assert.match(board, /onExpandedChange=\{setAnalysisRequested\}/);
   assert.match(board, /initiallyCollapsed=\{deferAnalysis\}/);
 });
 
@@ -32,6 +32,11 @@ test("opening details defer Stockfish and shut an expanded engine down cleanly",
   assert.match(stockfish, /worker\.postMessage\("stop"\)/);
   assert.match(stockfish, /worker\.postMessage\("quit"\)/);
   assert.match(stockfish, /window\.setTimeout\(\(\) => \{[\s\S]*worker\.terminate\(\)[\s\S]*\}, 50\)/);
+  assert.match(stockfish, /else setAnalysis\(initialAnalysis\)/);
+  assert.match(board, /analysis && analysisRequested && displayedBestMove/);
+  assert.match(board, /onExpandedChange\?\.\(!next\)/);
+  assert.match(board, /const evaluation = !enabled \? "—"/);
+  assert.match(board, /enabled && analysis\.depth \? `· 深度/);
 });
 
 test("查看謎題解答使用已驗證解答，不在背景重算", () => {

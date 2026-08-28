@@ -50,6 +50,7 @@ export function useStockfish(fen: string, enabled: boolean) {
   useEffect(() => {
     fenRef.current = fen;
     if (enabled) startAnalysis(fen);
+    else setAnalysis(initialAnalysis);
   }, [enabled, fen]);
 
   useEffect(() => {
