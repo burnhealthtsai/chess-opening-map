@@ -124,3 +124,47 @@ test("concept and opponent information badges meet WCAG AA contrast", () => {
   assert.match(opponentStyles, /\[data-theme="dark"\] \.opponent-levels small/);
   assert.match(opponentStyles, /\[data-theme="dark"\] \.recognized-opening\.off-book small/);
 });
+
+test("secondary labels remain readable across mixed light and dark surfaces", () => {
+  const pairs = [
+    ["#596b84", "#ffffff", styles],
+    ["#596b84", "#edf4fb", styles],
+    ["#1f7198", "#edf4fb", styles],
+    ["#ffffff", "#176486", styles],
+    ["#ffffff", "#1f7198", styles],
+    ["#82cff1", "#17243a", styles],
+    ["#e8effa", "#193225", styles],
+    ["#e8effa", "#183048", styles],
+    ["#e8effa", "#3a2d1a", styles],
+    ["#e8effa", "#33223d", styles],
+    ["#e8effa", "#3b2230", styles],
+    ["#aabbd1", "#193225", styles],
+    ["#aabbd1", "#183048", styles],
+    ["#aabbd1", "#3a2d1a", styles],
+    ["#aabbd1", "#33223d", styles],
+    ["#aabbd1", "#3b2230", styles],
+    ["#9fe2b2", "#193225", styles],
+    ["#9ed8ff", "#183048", styles],
+    ["#ffd08a", "#3a2d1a", styles],
+    ["#e3b7ef", "#33223d", styles],
+    ["#f2b2cb", "#3b2230", styles],
+    ["#56677e", "#ffffff", opponentStyles],
+    ["#596b84", "#edf4fb", opponentStyles],
+    ["#c4d2e4", "#22334c", opponentStyles],
+    ["#563786", "#f5f0ff", puzzleStyles],
+    ["#1c668c", "#e5f4fb", transpositionStyles],
+    ["#1f7198", "#ffffff", transpositionStyles],
+    ["#ffffff", "#176486", transpositionStyles],
+  ];
+  for (const [foreground, background, source] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background} must reach 4.5:1`);
+    assert.ok(source.includes(foreground) || (foreground === "#ffffff" && source.includes("#fff")), `${foreground} must be present in its stylesheet`);
+  }
+  assert.match(styles, /\[data-theme="dark"\] \.engine-heading-actions button/);
+  assert.match(styles, /\[data-theme="dark"\] \.breadcrumb button,/);
+  assert.match(styles, /\.side-switcher button\.active\.white-side \{[^}]*linear-gradient\(135deg, #176486, #1f7198\)/);
+  assert.match(styles, /\.board-controls button\.manual-toggle\.on \{ background: #a95f00; \}/);
+  assert.match(styles, /\[data-theme="dark"\] \.taxonomy-zone:nth-child\(5\)/);
+  assert.match(opponentStyles, /\.player-seats \.white small \{ color: #56677e; \}/);
+  assert.match(puzzleStyles, /\.puzzle-last-move small \{[^}]*color: #563786;/);
+});

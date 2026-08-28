@@ -6,7 +6,7 @@
 .group-return-button { display: none; }
 .transposition-group-list { display: grid; max-height: 720px; gap: 8px; overflow-y: auto; padding-right: 3px; }
 .transposition-group-list button { display: grid; grid-template-columns: auto 1fr; gap: 3px 8px; min-width: 0; padding: 12px; text-align: left; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-.transposition-group-list button > span { grid-row: 1 / 3; align-self: start; padding: 4px 6px; color: #26769f; border-radius: 7px; background: #e5f4fb; font-size: .58rem; font-weight: 900; }
+.transposition-group-list button > span { grid-row: 1 / 3; align-self: start; padding: 4px 6px; color: #1c668c; border-radius: 7px; background: #e5f4fb; font-size: .58rem; font-weight: 900; }
 .transposition-group-list button b, .transposition-group-list button small { min-width: 0; overflow-wrap: anywhere; white-space: normal; }
 .transposition-group-list button b { color: var(--navy); font-size: .76rem; }
 .transposition-group-list button small { color: var(--muted); font-size: .62rem; }
@@ -19,7 +19,7 @@
 .transposition-position { width: min(100%, 200px); margin: 0; }
 .transposition-routes { display: grid; gap: 8px; margin-top: 18px; }
 .transposition-routes article { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 9px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
-.transposition-routes article > span { display: grid; width: 31px; height: 31px; place-items: center; color: #fff; border-radius: 50%; background: #318eb8; font-size: .7rem; font-weight: 900; }
+.transposition-routes article > span { display: grid; width: 31px; height: 31px; place-items: center; color: #fff; border-radius: 50%; background: #176486; font-size: .7rem; font-weight: 900; }
 .transposition-routes b { color: var(--navy); font-size: .73rem; }
 .transposition-routes p { margin: 3px 0 0; overflow-wrap: anywhere; color: #456987; font-family: ui-monospace, monospace; font-size: .65rem; line-height: 1.5; }
 .transposition-members { margin-top: 18px; padding-top: 15px; border-top: 1px dashed var(--line); }
@@ -27,7 +27,7 @@
 .transposition-members > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 7px; }
 .transposition-members button { display: grid; gap: 2px; min-width: 0; padding: 9px; text-align: left; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
 .transposition-members button:hover { border-color: #2d92bf; transform: translateY(-1px); }
-.transposition-members button span { color: #2480aa; font-family: ui-monospace, monospace; font-size: .6rem; font-weight: 900; }
+.transposition-members button span { color: #1f7198; font-family: ui-monospace, monospace; font-size: .6rem; font-weight: 900; }
 .transposition-members button b, .transposition-members button small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .transposition-members button b { font-size: .7rem; }.transposition-members button small { color: var(--muted); font-size: .58rem; }
 [data-theme="dark"] .transposition-group-list button > span { color: #1c668c; }

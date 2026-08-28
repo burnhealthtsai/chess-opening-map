@@ -45,6 +45,7 @@ test("learning-style symbols stay decorative", () => {
 test("practice mode symbols stay decorative", () => {
   assert.match(opponents, /<span aria-hidden="true">♟<\/span>/);
   assert.match(opponents, /<span aria-hidden="true">◌<\/span>/);
+  assert.match(opponents, /<span aria-hidden="true">→<\/span>/);
 });
 
 test("autoplay pause control meets normal-text contrast", () => {

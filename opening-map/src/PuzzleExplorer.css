@@ -15,7 +15,7 @@
 .puzzle-last-move { display: flex; align-items: center; gap: 8px; margin: 10px 0; padding: 9px 11px; color: #563786; border: 1px solid #d5c5ed; border-radius: 11px; background: #f5f0ff; }
 .puzzle-last-move span { font-size: .68rem; font-weight: 850; }
 .puzzle-last-move b { padding: 4px 8px; color: #fff; border-radius: 8px; background: #7856b5; font-family: ui-monospace, monospace; }
-.puzzle-last-move small { margin-left: auto; color: var(--muted); }
+.puzzle-last-move small { margin-left: auto; color: #563786; }
 .puzzle-preview-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }.puzzle-preview-actions a, .puzzle-preview-actions button { padding: 7px 9px; color: #74409d; border: 1px solid #cfb5e3; border-radius: 9px; background: #f7effb; font-size: .58rem; font-weight: 850; }.puzzle-preview-actions button { color: #fff; background: #74409d; }.puzzle-preview-actions button.active { color: #74409d; background: #fff; }
 .puzzle-answer { display: flex; align-items: flex-start; gap: 9px; margin-top: 9px; padding: 10px 11px; color: #216b48; border: 1px solid #8ac8a7; border-radius: 10px; background: #eaf8f0; }.puzzle-answer > span { flex: 0 0 auto; padding: 4px 7px; color: #fff; border-radius: 7px; background: #2e9662; font-size: .58rem; font-weight: 900; }.puzzle-answer > div { display: grid; gap: 4px; min-width: 0; }.puzzle-answer b { font-size: .68rem; }.puzzle-answer small { color: #39765a; font-size: .61rem; line-height: 1.45; overflow-wrap: anywhere; }.puzzle-preview-actions button.answer-active { color: #fff; border-color: #2e9662; background: #2e9662; }
 .puzzle-feedback { display: flex; align-items: center; gap: 8px; margin-top: 9px; padding: 9px 10px; border-radius: 10px; font-size: .66rem; line-height: 1.4; }
