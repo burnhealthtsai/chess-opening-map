@@ -483,7 +483,7 @@ main { max-width: 1500px; min-height: 100vh; margin: 0 auto; padding: 28px clamp
 .concept-heading { max-width: 760px; margin-bottom: 24px; }
 .concept-heading > p:last-child { margin: 0; color: var(--muted); line-height: 1.6; }
 .family-opening-groups { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-@media (max-width: 900px) { .lens-tabs { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 680px) { .lens-tabs { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 680px) { .variation-satellites { top: 92px; }.opening-planet-system.selected { padding-bottom: 104px; } }
 
 /* Prevent small family groups and their variation satellites from collapsing. */

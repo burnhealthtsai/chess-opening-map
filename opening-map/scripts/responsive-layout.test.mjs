@@ -40,6 +40,12 @@ test("mobile filters wrap below the full-width search field", () => {
   assert.match(styles, /\.compact-toolbar \.filter select \{ width: 100%; min-width: 0; \}/);
 });
 
+test("tablet navigation keeps seven feature cards in three compact columns", () => {
+  assert.match(styles, /@media \(max-width: 1200px\) \{ \.lens-tabs \{ grid-template-columns: repeat\(3, minmax\(0, 1fr\)\); \} \}/);
+  assert.match(styles, /@media \(max-width: 680px\) \{ \.lens-tabs \{ grid-template-columns: repeat\(2, 1fr\); \} \}/);
+  assert.doesNotMatch(styles, /@media \(max-width: 900px\) \{ \.lens-tabs \{ grid-template-columns: repeat\(2, 1fr\); \} \}/);
+});
+
 test("mobile opening details cannot restore the desktop focused workspace widths", () => {
   const desktopFocusedWidth = styles.lastIndexOf(".workspace.focused { grid-template-columns: minmax(440px, .82fr) minmax(540px, 1.18fr); }");
   const mobileFocusedWidth = styles.indexOf("@media (max-width: 820px) {\n  .workspace.focused { grid-template-columns: minmax(0, 1fr); }\n}", desktopFocusedWidth);
