@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 11);
+  assert.ok(data.analogyGroups.length >= 12);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -988,6 +988,21 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(earlyQueenTempo?.examples.white.line ?? "", /exd4 3\. Qxd4 Nc6/);
   assert.match(earlyQueenTempo?.summary ?? "", /d 兵.*后.*馬.*節奏/);
   assert.match(earlyQueenTempo?.difference ?? "", /黑方.*白方.*先手|白方.*黑方.*先手/);
+
+  const budapestBdg = data.analogyGroups.find((group) => group.id === "budapest-blackmar-diemer-gambit-plan");
+  assert.equal(budapestBdg?.title, "布達佩斯棄兵 ↔ 布萊克馬－迪默棄兵");
+  assert.equal(budapestBdg?.relation, "plan");
+  assert.deepEqual(budapestBdg?.blackIds, ["b-indian-defense-budapest-gambit"]);
+  assert.deepEqual(budapestBdg?.whiteIds, ["w-blackmar-diemer-gambit", "w-blackmar-diemer-gambit-accepted"]);
+  assert.match(budapestBdg?.examples.black.line ?? "", /2\. c4 e5 3\. dxe5 Ng4/);
+  assert.match(budapestBdg?.examples.white.line ?? "", /2\. e4 dxe4 3\. Nc3 Nf6 4\. f3 exf3/);
+  assert.match(budapestBdg?.summary ?? "", /中央兵.*快速出子|快速出子.*中央兵/);
+  assert.match(budapestBdg?.summary ?? "", /BDG/);
+  assert.match(budapestBdg?.difference ?? "", /補償.*爭議|爭議.*補償/);
+  assert.deepEqual(
+    Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
+    { reversed: 6, structure: 3, plan: 3 },
+  );
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));

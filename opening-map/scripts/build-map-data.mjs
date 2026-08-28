@@ -367,6 +367,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "budapest-blackmar-diemer-gambit-plan",
+    title: "布達佩斯棄兵 ↔ 布萊克馬－迪默棄兵",
+    relation: "plan",
+    summary: "兩邊都先投入中央兵並允許對手吃兵，換取馬帶節奏、快速出子與開放線；布達佩斯由黑方以 …e5 反擊 d4、c4 中心，布萊克馬－迪默（BDG）則由白方用 e4、f3 主動製造攻勢。",
+    blackIds: ["b-indian-defense-budapest-gambit"],
+    whiteIds: ["w-blackmar-diemer-gambit", "w-blackmar-diemer-gambit-accepted"],
+    sharedIdeas: ["用中央兵換取發展速度與主動權", "馬一面攻兵一面帶節奏出子", "迅速開發象、后並把兵線轉成攻擊線"],
+    difference: "布達佩斯通常以 …Ng4、…Nc6、…Qe7 集中奪回 e5 兵，未必真的少兵；布萊克馬－迪默接受變例則讓白方實際少一兵，補償是否足夠較具爭議。兩者可共用主動權觀念，不能把戰術或理論評價直接互換。",
+    examples: {
+      black: { openingId: "b-indian-defense-budapest-gambit", label: "布達佩斯追兵出子", line: "1. d4 Nf6 2. c4 e5 3. dxe5 Ng4 4. Bf4 Nc6 5. Nf3 Bb4+ 6. Nbd2 Qe7" },
+      white: { openingId: "w-blackmar-diemer-gambit-accepted", label: "BDG 開線換發展", line: "1. d4 d5 2. e4 dxe4 3. Nc3 Nf6 4. f3 exf3 5. Nxf3 Bf5 6. Bc4 e6 7. O-O" },
+    },
+  },
+  {
     id: "nimzo-trompowsky-pin",
     title: "尼姆佐印度防禦 ↔ 特龍普夫斯基／托雷攻擊",
     relation: "plan",
