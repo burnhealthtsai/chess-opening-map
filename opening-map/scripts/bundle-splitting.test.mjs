@@ -98,6 +98,10 @@ test("the large puzzle browser loads only when its tab is opened", () => {
   assert.match(puzzles, /正在載入棋盤與解答/);
   assert.match(puzzles, /重新載入題目/);
   assert.match(puzzles, /setDetailRetry\(\(value\) => value \+ 1\)/);
+  assert.match(puzzles, /useDeferredValue\(puzzleQuery\.trim\(\)\.toLowerCase\(\)\)/);
+  assert.match(puzzles, /searchData\.groupCounts/);
+  assert.match(puzzles, /selectedSummary = filtered\.find/);
+  assert.doesNotMatch(puzzles, /catalog\.puzzles\.filter\(\(puzzle\) => inPuzzleGroup/);
   assert.match(puzzles, /previousFen && selected\.previousMove/);
   assert.match(puzzles, /"查看解答"/);
   assert.match(puzzles, /analysis=\{showStockfish\}/);
