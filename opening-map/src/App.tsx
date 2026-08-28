@@ -104,6 +104,8 @@ export function App() {
   const [dark, setDark] = useState(() => readStoredBoolean("dark", false));
   const [pieceStyle, setPieceStyle] = useState<PieceStyle>(() => readStoredChoice("piece-style", pieceStyleValues, "original"));
   const [boardStyle, setBoardStyle] = useState<BoardStyle>(() => readStoredChoice("board-style", boardStyleValues, "wood"));
+  const openingTriggerRef = useRef<HTMLElement | null>(null);
+  const modalDetailRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -192,6 +194,7 @@ export function App() {
   }, [data, variationNoteRetry, variationNotes, variationNotesRequested]);
 
   const selected = data?.nodes.find((node) => node.id === selectedId) ?? null;
+  const openingIsModal = Boolean(selected && (query.trim() || isOwenOpening(selected)));
   const detailedSelected = useMemo<DetailedOpening | null>(() => {
     const details = selected && openingDetails?.openings[selected.id];
     return selected && details ? { ...selected, ...details } : null;
@@ -215,6 +218,37 @@ export function App() {
       && (styleSide === all || node.side === styleSide));
   }, [category, data, query, styleSide]);
 
+  useEffect(() => {
+    if (!openingIsModal) return;
+    const frame = window.requestAnimationFrame(() => modalDetailRef.current?.querySelector<HTMLButtonElement>(".detail-close")?.focus());
+    const onModalKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        event.stopPropagation();
+        closeOpening();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const modal = modalDetailRef.current;
+      if (!modal) return;
+      const focusable = [...modal.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])')]
+        .filter((element) => element.getClientRects().length > 0);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!modal.contains(document.activeElement) || (event.shiftKey && document.activeElement === first) || (!event.shiftKey && document.activeElement === last)) {
+        event.preventDefault();
+        event.stopPropagation();
+        (event.shiftKey ? last : first).focus();
+      }
+    };
+    document.addEventListener("keydown", onModalKeyDown, true);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", onModalKeyDown, true);
+    };
+  }, [detailError, detailedSelected, openingIsModal, selectedId]);
+
   function switchLens(next: Lens) {
     setLens(next); setSelectedId(null); setQuery("");
     if (data && ["transpositions", "analogies"].includes(next)) void loadOpeningExplorerData(data.catalog_revision).catch(() => undefined);
@@ -228,7 +262,14 @@ export function App() {
     prepareChessSound();
     void openingDetailModule();
     if (data) void loadOpeningDetails(data.catalog_revision).catch(() => undefined);
+    if (!selectedId && document.activeElement instanceof HTMLElement) openingTriggerRef.current = document.activeElement;
     setSelectedId(id);
+  }
+  function closeOpening() {
+    const trigger = openingTriggerRef.current;
+    openingTriggerRef.current = null;
+    setSelectedId(null);
+    window.requestAnimationFrame(() => { if (trigger?.isConnected) trigger.focus(); });
   }
   function retryOpeningDetails() {
     openingDetailsRequest = null;
@@ -329,14 +370,14 @@ export function App() {
           : lens === "transpositions" ? explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入體系轉換…</div>}><TranspositionExplorer nodes={data.nodes} groups={explorerData.transpositionGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入體系轉換資料…</div>
           : explorerError ? <ExplorerLoadError message={explorerError} onRetry={retryExplorerData} /> : explorerData ? <Suspense fallback={<div className="loading-inline" role="status">正在載入類似比較…</div>}><AnalogyExplorer nodes={data.nodes} groups={explorerData.analogyGroups} onSelect={selectOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入類似比較資料…</div>}
       </section>
-      {selected && <aside className={`detail open ${isOwenOpening(selected) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
+      {selected && <aside ref={isOwenOpening(selected) ? modalDetailRef : undefined} className={`detail open ${isOwenOpening(selected) ? "opening-home-modal" : ""}`} role={isOwenOpening(selected) ? "dialog" : undefined} aria-modal={isOwenOpening(selected) ? true : undefined} aria-label={isOwenOpening(selected) ? `${selected.title_zh}開局詳情` : undefined} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} onClose={closeOpening} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={closeOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
     </div>}
-    {query.trim() && selected && <aside className={`detail modal-detail ${isOwenOpening(selected) ? "opening-home-modal" : ""}`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={() => setSelectedId(null)} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
+    {query.trim() && selected && <aside ref={modalDetailRef} className={`detail modal-detail ${isOwenOpening(selected) ? "opening-home-modal" : ""}`} role="dialog" aria-modal="true" aria-label={`${selected.title_zh}開局詳情`} aria-live="polite">{detailError ? <DetailLoadError message={detailError} onRetry={retryOpeningDetails} onClose={closeOpening} /> : detailedSelected ? <Suspense fallback={<div className="loading-inline" role="status">正在載入開局詳情…</div>}><OpeningDetail key={selected.id} opening={detailedSelected} neighbours={neighbours} variationNotes={selectedVariationNotes} variationNoteError={variationNoteError} onRequestVariationNotes={requestVariationNotes} onRetryVariationNotes={retryVariationNotes} onSelect={selectOpening} onCopy={copyLine} onClose={closeOpening} /></Suspense> : <div className="loading-inline" role="status">正在載入開局詳情資料…</div>}</aside>}
   </main>;
 }
 
-function DetailLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {
-  return <div className="detail-load-error" role="alert"><b>{message}</b><button onClick={onRetry}>重新載入</button></div>;
+function DetailLoadError({ message, onRetry, onClose }: { message: string; onRetry: () => void; onClose: () => void }) {
+  return <div className="detail-load-error" role="alert"><button className="detail-close" onClick={onClose} aria-label="關閉開局詳情">×</button><b>{message}</b><button onClick={onRetry}>重新載入</button></div>;
 }
 
 function ExplorerLoadError({ message, onRetry }: { message: string; onRetry: () => void }) {

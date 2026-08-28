@@ -24,3 +24,14 @@ test("Owen Defense uses its dedicated home modal from map and search entry point
   assert.match(app, /function isOwenOpening\(/);
   assert.equal(app.match(/isOwenOpening\(selected\) \? "opening-home-modal"/g)?.length, 2);
 });
+
+test("opening dialogs announce themselves, trap focus and return it after Escape", () => {
+  assert.match(app, /role="dialog" aria-modal="true" aria-label=\{`\$\{selected\.title_zh\}開局詳情`\}/);
+  assert.match(app, /modalDetailRef\.current\?\.querySelector<HTMLButtonElement>\("\.detail-close"\)\?\.focus\(\)/);
+  assert.match(app, /document\.addEventListener\("keydown", onModalKeyDown, true\)/);
+  assert.match(app, /if \(event\.key === "Escape"\)/);
+  assert.match(app, /if \(event\.key !== "Tab"\) return/);
+  assert.match(app, /\(event\.shiftKey \? last : first\)\.focus\(\)/);
+  assert.match(app, /if \(trigger\?\.isConnected\) trigger\.focus\(\)/);
+  assert.match(app, /<DetailLoadError[^>]+onClose=\{closeOpening\}/);
+});
