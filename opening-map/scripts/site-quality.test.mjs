@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles] = await Promise.all([
+const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles, conceptStyles, opponentStyles] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
   readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
@@ -11,6 +11,8 @@ const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles,
   readFile(new URL("../src/PuzzleExplorer.css", import.meta.url), "utf8"),
   readFile(new URL("../src/StyleExplorer.css", import.meta.url), "utf8"),
   readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/ConceptExplorer.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/OpponentExplorer.css", import.meta.url), "utf8"),
 ]);
 
 const canonicalUrl = "https://chess-opening-map.pages.dev/";
@@ -96,4 +98,29 @@ test("dark puzzle, style and transposition labels meet WCAG AA contrast", () => 
   assert.match(puzzleStyles, /\[data-theme="dark"\] \.puzzle-stats b/);
   assert.match(styleStyles, /\[data-theme="dark"\] \.style-card small/);
   assert.match(transpositionStyles, /\[data-theme="dark"\] \.transposition-routes p/);
+});
+
+test("concept and opponent information badges meet WCAG AA contrast", () => {
+  const pairs = [
+    ["#ffffff", "#176486", conceptStyles],
+    ["#ffffff", "#a95f00", conceptStyles],
+    ["#ffffff", "#21734a", conceptStyles],
+    ["#ffffff", "#256b43", conceptStyles],
+    ["#ffffff", "#966000", conceptStyles],
+    ["#ffffff", "#664293", conceptStyles],
+    ["#ffffff", "#176486", opponentStyles],
+    ["#ffffff", "#a95f00", opponentStyles],
+    ["#ffffff", "#21734a", opponentStyles],
+    ["#ffffff", "#966000", opponentStyles],
+    ["#ffffff", "#1f7198", opponentStyles],
+    ["#82cff1", "#17243a", opponentStyles],
+    ["#93dfb5", "#17243a", opponentStyles],
+    ["#ffca78", "#17243a", opponentStyles],
+  ];
+  for (const [foreground, background, source] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background} must reach 4.5:1`);
+    assert.ok(source.includes(foreground) || (foreground === "#ffffff" && source.includes("#fff")), `${foreground} must be present in its lazy explorer styles`);
+  }
+  assert.match(opponentStyles, /\[data-theme="dark"\] \.opponent-levels small/);
+  assert.match(opponentStyles, /\[data-theme="dark"\] \.recognized-opening\.off-book small/);
 });

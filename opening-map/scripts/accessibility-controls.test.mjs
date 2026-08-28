@@ -42,6 +42,11 @@ test("learning-style symbols stay decorative", () => {
   assert.match(styleExplorer, /<span aria-hidden="true">\{\["◎", "⚡", "↗", "◆", "♟"\]\[index\]\}<\/span>/);
 });
 
+test("practice mode symbols stay decorative", () => {
+  assert.match(opponents, /<span aria-hidden="true">♟<\/span>/);
+  assert.match(opponents, /<span aria-hidden="true">◌<\/span>/);
+});
+
 test("autoplay pause control meets normal-text contrast", () => {
   const channel = (value) => { const normalized = value / 255; return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4; };
   const luminance = (hex) => { const values = hex.match(/[0-9a-f]{2}/gi).map((value) => channel(Number.parseInt(value, 16))); return 0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2]; };
