@@ -96,6 +96,19 @@
 .analogy-arrow b { font-size: 2rem; }.analogy-arrow small { font-size: .56rem; font-weight: 850; writing-mode: vertical-rl; }
 .analogy-difference { margin-top: 16px; padding: 11px 13px; border-left: 4px solid #e19934; border-radius: 8px; background: color-mix(in srgb, var(--surface) 78%, #fff0d5); }
 .analogy-difference p { margin: 4px 0 0; color: var(--muted); font-size: .68rem; line-height: 1.55; }
+.analogy-related-groups { margin-top: 16px; padding: 12px; border: 1px solid #b8d9e8; border-radius: 13px; background: color-mix(in srgb, var(--surface) 92%, #e8f6fc); }
+.analogy-related-groups > header { display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+.analogy-related-groups h4 { margin: 0; color: var(--navy); font-size: .73rem; }
+.analogy-related-groups header p { margin: 3px 0 0; color: var(--muted); font-size: .58rem; }
+.analogy-related-groups header > span { padding: 4px 7px; color: #276a8d; border-radius: 999px; background: var(--surface); font-size: .57rem; font-weight: 850; white-space: nowrap; }
+.analogy-related-groups > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 7px; margin-top: 9px; }
+.analogy-related-card { display: grid; min-width: 0; padding: 9px; gap: 2px; text-align: left; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+.analogy-related-card:hover { border-color: #d8902b; transform: translateY(-1px); }
+.analogy-related-card > span { color: #247394; font-size: .55rem; font-weight: 850; }
+.analogy-related-card b, .analogy-related-card small { overflow-wrap: anywhere; }
+.analogy-related-card b { color: var(--navy); font-size: .67rem; line-height: 1.35; }
+.analogy-related-card small { color: var(--muted); font-size: .56rem; line-height: 1.4; }
+.analogy-related-card em { margin-top: 3px; color: #8a4d05; font-size: .56rem; font-style: normal; font-weight: 850; text-align: right; }
 [data-theme="dark"] .analogy-ideas span { color: #e6f2ff; }
 [data-theme="dark"] .analogy-replay-controls button { color: #bfeaff; border-color: #486d87; }
 [data-theme="dark"] .analogy-move-timeline button { color: #d2e2f4; }
@@ -114,6 +127,8 @@
 [data-theme="dark"] .analogy-search i, [data-theme="dark"] .analogy-search button { color: #7fd3f5; }
 [data-theme="dark"] .analogy-copy-link { color: #c6eaff; border-color: #486d87; }
 [data-theme="dark"] .analogy-copy-status { color: #adddf3; }
+[data-theme="dark"] .analogy-related-card > span { color: #9ed8ff; }
+[data-theme="dark"] .analogy-related-card em { color: #ffc36a; }
 [data-theme="dark"] .analogy-relation-filters button { color: #d2e2f4; border-color: #486d87; }
 [data-theme="dark"] .analogy-relation-filters button small { color: #bfeaff; background: #3a586a; }
 [data-theme="dark"] .analogy-relation-filters button[aria-pressed="true"] { color: #ffe2b5; border-color: #d68a1f; }

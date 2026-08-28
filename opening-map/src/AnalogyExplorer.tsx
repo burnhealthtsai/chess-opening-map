@@ -48,6 +48,17 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   }, [groups, openingById, query]);
   const visibleGroups = useMemo(() => relationFilter === "all" ? queryMatchedGroups : queryMatchedGroups.filter((group) => group.relation === relationFilter), [queryMatchedGroups, relationFilter]);
   const group = visibleGroups.find((item) => item.id === activeGroup) ?? visibleGroups[0] ?? null;
+  const relatedGroups = useMemo(() => {
+    if (!group) return [];
+    const memberIds = new Set([...group.blackIds, ...group.whiteIds]);
+    return groups.flatMap((candidate) => {
+      if (candidate.id === group.id) return [];
+      const sharedIds = [...candidate.blackIds, ...candidate.whiteIds].filter((id) => memberIds.has(id));
+      if (!sharedIds.length) return [];
+      const sharedOpenings = sharedIds.map((id) => openingById.get(id)).filter((opening): opening is Opening => Boolean(opening));
+      return [{ analogy: candidate, sharedOpenings }];
+    }).sort((a, b) => b.sharedOpenings.length - a.sharedOpenings.length || a.analogy.title.localeCompare(b.analogy.title, "zh-Hant"));
+  }, [group, groups, openingById]);
   useEffect(() => {
     function syncGroupFromLocation() {
       const requested = readAnalogyHash(window.location.hash);
@@ -69,6 +80,11 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
     if (revealDetail && window.matchMedia("(max-width: 980px)").matches) {
       requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" }));
     }
+  }
+  function selectRelatedGroup(id: string) {
+    setQuery("");
+    setRelationFilter("all");
+    selectGroup(id, true, "push");
   }
   async function copyGroupLink() {
     if (!group) return;
@@ -162,6 +178,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
           <section className="analogy-side white"><header><span>♔</span><div><small>WHITE SYSTEM</small><h4>白方進攻／體系</h4></div></header><div>{whiteOpenings.map(openingCard)}</div></section>
         </div>
         <aside className="analogy-difference"><b>不能直接照抄的地方</b><p>{group.difference}</p></aside>
+        {relatedGroups.length > 0 && <nav className="analogy-related-groups" aria-label="含相同開局的其他比較"><header><div><h4>同一開局的其他比較</h4><p>從共同成員延伸到另一種黑白對照。</p></div><span>{relatedGroups.length} 組</span></header><div>{relatedGroups.map(({ analogy, sharedOpenings }) => <button type="button" className="analogy-related-card" key={analogy.id} aria-label={`開啟「${analogy.title}」；共同開局：${sharedOpenings.map((opening) => opening.title_zh).join("、")}`} onClick={() => selectRelatedGroup(analogy.id)}><span>≈ {analogyRelationLabels[analogy.relation]}</span><b>{analogy.title}</b><small>共同開局：{sharedOpenings.map((opening) => opening.title_zh).join("、")}</small><em>查看比較 →</em></button>)}</div></nav>}
       </section> : <section className="analogy-search-empty" role="status"><span aria-hidden="true">⌕</span><b>{query.trim() && queryMatchedGroups.length === 0 ? <>找不到符合「{query.trim()}」的類似比較群組</> : query.trim() && relationFilter !== "all" ? <>「{query.trim()}」在「{analogyRelationLabels[relationFilter]}」分類沒有符合群組</> : "目前沒有符合此分類的群組"}</b><p>可改搜開局中文名、英文名、ECO 編號，或「象翼」、「中心」、「兵鏈」等觀念。</p><button type="button" onClick={clearFiltersAndFocus}>清除篩選</button></section>}
     </div>
   </div>;

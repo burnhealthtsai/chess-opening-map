@@ -139,3 +139,20 @@ test("the active analogy group exposes clipboard success and failure feedback", 
   assert.match(styles, /\.analogy-detail-tools/);
   assert.match(styles, /\.analogy-copy-link/);
 });
+
+test("analogy details link to other groups that share the same openings", () => {
+  assert.match(component, /const relatedGroups = useMemo/);
+  assert.match(component, /new Set\(\[\.\.\.group\.blackIds, \.\.\.group\.whiteIds\]\)/);
+  assert.match(component, /candidate\.id === group\.id/);
+  assert.match(component, /sharedIds\.length/);
+  assert.match(component, /sharedOpenings/);
+  assert.match(component, /function selectRelatedGroup\(id: string\)/);
+  assert.match(component, /setQuery\(""\)/);
+  assert.match(component, /setRelationFilter\("all"\)/);
+  assert.match(component, /className="analogy-related-groups" aria-label="含相同開局的其他比較"/);
+  assert.match(component, /同一開局的其他比較/);
+  assert.match(component, /共同開局：/);
+  assert.match(component, /onClick=\{\(\) => selectRelatedGroup\(analogy\.id\)\}/);
+  assert.match(styles, /\.analogy-related-groups/);
+  assert.match(styles, /\.analogy-related-card/);
+});
