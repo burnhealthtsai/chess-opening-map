@@ -447,7 +447,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
       {interactive && !opponentLevel && <button className={`manual-toggle ${manualFen ? "on" : ""}`} onClick={toggleManual}>{manualFen ? "回到棋譜" : "自由走棋"}</button>}
       {blind && <button className={`manual-toggle ${blindInventory ? "on" : ""}`} onClick={() => setBlindInventory((value) => !value)}>{blindInventory ? "結束盤點" : "盤點位置"}</button>}
     </div>}
-    {controlsVisible && (manualFen ? manualMoves.length > 0 : safeStep > 0) && <div className="move-line" aria-live="polite">{manualFen
+    {controlsVisible && !blind && (manualFen ? manualMoves.length > 0 : safeStep > 0) && <div className="move-line" aria-live="polite">{manualFen
       ? <><b className="manual-label">自由走棋</b><MoveTokens moves={manualMoves} startPly={initialTurnPly + safeStep} /></>
       : <MoveTokens moves={moves.slice(0, safeStep)} startPly={initialTurnPly} />}</div>}
     {interactive && <p className="arrow-help">右鍵拖曳：攻擊箭頭 · Shift＋右鍵拖曳：對手反擊</p>}
