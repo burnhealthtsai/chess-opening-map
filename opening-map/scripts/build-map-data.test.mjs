@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 12);
+  assert.ok(data.analogyGroups.length >= 13);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -999,9 +999,20 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(budapestBdg?.summary ?? "", /中央兵.*快速出子|快速出子.*中央兵/);
   assert.match(budapestBdg?.summary ?? "", /BDG/);
   assert.match(budapestBdg?.difference ?? "", /補償.*爭議|爭議.*補償/);
+
+  const benkoPolish = data.analogyGroups.find((group) => group.id === "benko-polish-queenside-plan");
+  assert.equal(benkoPolish?.title, "班科棄兵 ↔ 波蘭開局");
+  assert.equal(benkoPolish?.relation, "plan");
+  assert.deepEqual(benkoPolish?.blackIds, ["b-benko-gambit", "b-benko-gambit-accepted"]);
+  assert.deepEqual(benkoPolish?.whiteIds, ["w-polish-opening", "w-polish-opening-with-d5"]);
+  assert.match(benkoPolish?.examples.black.line ?? "", /3\. d5 b5 4\. cxb5 a6/);
+  assert.match(benkoPolish?.examples.white.line ?? "", /1\. b4.*2\. Bb2/);
+  assert.match(benkoPolish?.summary ?? "", /b 兵.*長斜線|長斜線.*b 兵/);
+  assert.match(benkoPolish?.difference ?? "", /半開.*a.*b 線/);
+  assert.match(benkoPolish?.difference ?? "", /目標/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 6, structure: 3, plan: 3 },
+    { reversed: 6, structure: 3, plan: 4 },
   );
 
   for (const group of data.analogyGroups) {

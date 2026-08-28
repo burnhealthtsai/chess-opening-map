@@ -381,6 +381,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "benko-polish-queenside-plan",
+    title: "班科棄兵 ↔ 波蘭開局",
+    relation: "plan",
+    summary: "兩邊都提早推 b 兵取得后翼空間，並以 …Bg7／Bb2 從 a1–h8 長斜線施壓中心與后翼；共同課題是把側翼兵的前進轉成子力活動，而不是只顧著多推兵。",
+    blackIds: ["b-benko-gambit", "b-benko-gambit-accepted"],
+    whiteIds: ["w-polish-opening", "w-polish-opening-with-d5"],
+    sharedIdeas: ["提早推 b 兵逼對手決定后翼兵形", "用 …Bg7／Bb2 控制 a1–h8 長斜線", "后翼線路打開後讓車與后加入壓力"],
+    difference: "班科用 …b5、…a6 主動犧牲兵，換取半開 a、b 線與長期補償；波蘭的 b4 主要是保留空間並開放 Bb2，b 兵本身反而可能成為攻擊目標。兩者的兵值判斷與開線時機不能直接互換。",
+    examples: {
+      black: { openingId: "b-benko-gambit", label: "班科開線與象翼", line: "1. d4 Nf6 2. c4 c5 3. d5 b5 4. cxb5 a6 5. bxa6 g6 6. Nc3 Bxa6 7. g3 d6 8. Bg2 Bg7 9. Nf3 O-O" },
+      white: { openingId: "w-polish-opening", label: "波蘭 b 兵與長象", line: "1. b4 e6 2. Bb2 Nf6 3. b5 d5 4. e3" },
+    },
+  },
+  {
     id: "nimzo-trompowsky-pin",
     title: "尼姆佐印度防禦 ↔ 特龍普夫斯基／托雷攻擊",
     relation: "plan",
