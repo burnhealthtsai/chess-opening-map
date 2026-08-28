@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 16);
+  assert.ok(data.analogyGroups.length >= 17);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -940,6 +940,18 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.ok(kingsideFianchetto?.blackIds.includes("b-modern-defense"));
   assert.match(kingsideFianchetto?.summary ?? "", /王翼印度.*皮爾茨.*現代防禦/);
   assert.match(kingsideFianchetto?.difference ?? "", /e4.*d4|d4.*e4/);
+
+  const grunfeldCatalan = data.analogyGroups.find((group) => group.id === "grunfeld-catalan-long-diagonal");
+  assert.equal(grunfeldCatalan?.title, "格林菲爾德家族 ↔ 加泰隆尼亞開局");
+  assert.equal(grunfeldCatalan?.relation, "plan");
+  assert.deepEqual(grunfeldCatalan?.blackIds, ["b-grunfeld-defense", "b-neo-grunfeld-defense"]);
+  assert.deepEqual(grunfeldCatalan?.whiteIds, ["w-catalan-opening", "w-catalan-opening-open-defense"]);
+  assert.match(grunfeldCatalan?.examples.black.line ?? "", /3\. Nc3 d5 4\. cxd5 Nxd5/);
+  assert.match(grunfeldCatalan?.examples.white.line ?? "", /3\. g3 d5 4\. Bg2 dxc4/);
+  assert.match(grunfeldCatalan?.summary ?? "", /王翼象翼.*長斜線|長斜線.*王翼象翼/);
+  assert.match(grunfeldCatalan?.sharedIdeas.join(" ") ?? "", /d4.*d5|d5.*d4/);
+  assert.match(grunfeldCatalan?.difference ?? "", /e4/);
+  assert.match(grunfeldCatalan?.difference ?? "", /c4/);
 
   const benoniReti = data.analogyGroups.find((group) => group.id === "benoni-reti-reversed");
   assert.equal(benoniReti?.relation, "reversed");
@@ -1048,8 +1060,9 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(polishReversed?.difference ?? "", /e4.*Bxb5|Bxb5.*e4/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 8, structure: 3, plan: 5 },
+    { reversed: 8, structure: 3, plan: 6 },
   );
+  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 53);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));

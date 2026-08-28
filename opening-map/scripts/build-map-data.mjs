@@ -297,6 +297,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "grunfeld-catalan-long-diagonal",
+    title: "格林菲爾德家族 ↔ 加泰隆尼亞開局",
+    relation: "plan",
+    summary: "格林菲爾德／新格林菲爾德與加泰隆都先完成王翼象翼，再用 Bg7／Bg2 長斜線持續壓迫中央與后翼，並配合 c、d 兵張力打開線路。",
+    blackIds: ["b-grunfeld-defense", "b-neo-grunfeld-defense"],
+    whiteIds: ["w-catalan-opening", "w-catalan-opening-open-defense"],
+    sharedIdeas: ["王翼象翼後沿長斜線施壓后翼", "以 …d5、…c5 或 d4、c4 建立中央張力", "中心交換後讓象、后與車共同攻擊開放線上的固定目標"],
+    difference: "格林菲爾德由黑方用 …d5、…c5 攻擊白方 e4、d4 大中心，常以 …Nxc3 先拆除守子；加泰隆則由白方用 d4、c4 佔據中心，必要時暫時讓出 c4 兵換取長斜線與先手。兩邊可共用施壓方法，材料判斷與突破方向不能互換。",
+    examples: {
+      black: { openingId: "b-grunfeld-defense", label: "格林菲爾德拆中心", line: "1. d4 Nf6 2. c4 g6 3. Nc3 d5 4. cxd5 Nxd5 5. e4 Nxc3 6. bxc3 Bg7" },
+      white: { openingId: "w-catalan-opening-open-defense", label: "開放加泰隆長象壓力", line: "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Nf3 Be7 6. O-O O-O" },
+    },
+  },
+  {
     id: "dutch-bird-reversed",
     title: "荷蘭防禦 ↔ 伯德開局",
     relation: "reversed",
