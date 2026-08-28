@@ -480,6 +480,84 @@ test("standalone gambits explain their own compensation and concrete risks", () 
   assert.match(byId.get("b-duras-gambit").ideas, /1…f5.*2\.exf5.*王翼/);
 });
 
+test("extreme first moves explain their square impact and recovery plan", () => {
+  const ids = [
+    "w-grob-opening",
+    "w-ware-opening",
+    "w-amar-opening",
+    "w-bongcloud-attack",
+    "w-amazon-attack",
+    "w-barnes-opening",
+    "w-clemenz-opening",
+    "w-kadas-opening",
+    "w-sodium-attack",
+    "w-vant-kruijs-opening",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+  assert.ok(openings.every((opening) => !opening.ideas.includes("屬於非主流或趣味體系")));
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-grob-opening").ideas, /1\.g4.*Bg2.*g4 兵/);
+  assert.match(byId.get("w-ware-opening").ideas, /1\.a4.*b5.*中心/);
+  assert.match(byId.get("w-amar-opening").ideas, /1\.Nh3.*f4.*f2/);
+  assert.match(byId.get("w-bongcloud-attack").ideas, /2\.Ke2.*易位.*f1 象/);
+  assert.match(byId.get("w-amazon-attack").ideas, /2\.Qd3.*e4.*h7/);
+  assert.match(byId.get("w-barnes-opening").ideas, /1\.f3.*e4.*e1–h4/);
+  assert.match(byId.get("w-clemenz-opening").ideas, /1\.h3.*g4.*中心/);
+  assert.match(byId.get("w-kadas-opening").ideas, /1\.h4.*h5.*g3/);
+  assert.match(byId.get("w-sodium-attack").ideas, /1\.Na3.*c4.*b5/);
+  assert.match(byId.get("w-vant-kruijs-opening").ideas, /1\.e3.*d4.*f1 象/);
+});
+
+test("every former novelty template now teaches its actual formation", () => {
+  const ids = [
+    "w-amsterdam-attack",
+    "w-basque-opening",
+    "w-canard-opening",
+    "w-creepy-crawly-formation",
+    "w-formation",
+    "w-global-opening",
+    "w-lasker-simul-special",
+    "w-paleface-attack",
+    "w-portuguese-opening",
+    "w-valencia-opening",
+    "b-st-george-defense",
+    "b-polish-defense",
+    "b-hippopotamus-defense",
+    "b-australian-defense",
+    "b-barnes-defense",
+    "b-borg-defense",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-amsterdam-attack").ideas, /e3.*c4.*b3.*Bb2/);
+  assert.match(byId.get("w-basque-opening").ideas, /2\.b3.*Bb2.*d4 兵/);
+  assert.match(byId.get("w-canard-opening").ideas, /2\.f4.*e5.*荷蘭/);
+  assert.match(byId.get("w-creepy-crawly-formation").ideas, /1\.h3.*2\.a3.*…d5.*…e5/);
+  assert.match(byId.get("w-formation").ideas, /a3.*g3.*Bg2.*d3.*e3/);
+  assert.match(byId.get("w-global-opening").ideas, /1\.h3.*2\.a3.*Bg4.*Bb4/);
+  assert.match(byId.get("w-lasker-simul-special").ideas, /1\.g3.*h5.*Bg2/);
+  assert.match(byId.get("w-paleface-attack").ideas, /2\.f3.*e4.*f3 格/);
+  assert.match(byId.get("w-portuguese-opening").ideas, /2\.Bb5.*c6.*d7/);
+  assert.match(byId.get("w-valencia-opening").ideas, /1\.d3.*2\.Nd2.*e4.*c4/);
+  assert.match(byId.get("b-st-george-defense").ideas, /1…a6.*…b5.*…Bb7/);
+  assert.match(byId.get("b-polish-defense").ideas, /1\.d4 b5.*…Bb7.*g2/);
+  assert.match(byId.get("b-hippopotamus-defense").ideas, /…Nh6.*…g6.*…f6/);
+  assert.match(byId.get("b-australian-defense").ideas, /1\.d4 Na6.*c5.*b4/);
+  assert.match(byId.get("b-barnes-defense").ideas, /1\.e4 f6.*e5.*h5–e8/);
+  assert.match(byId.get("b-borg-defense").ideas, /1\.e4 g5.*…Bg7.*g5 兵/);
+  assert.deepEqual(catalog.openings.filter((opening) => opening.ideas.includes("屬於非主流或趣味體系")), []);
+});
+
 test("queen-pawn systems explain their distinct setups and named branches", () => {
   const ids = [
     "w-london-system-with-bd3",
