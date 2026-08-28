@@ -353,6 +353,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "scandinavian-center-game-queen-tempo",
+    title: "斯堪地那維亞防禦 ↔ 中心開局",
+    relation: "plan",
+    summary: "兩邊都用 d 兵立刻打開中心，以后取回交換後的中央兵，再接受對方用馬攻后、帶節奏發展；核心課題是把清楚的開放局面轉成快速出子，而不是繼續重複走后。",
+    blackIds: ["b-scandinavian-defense"],
+    whiteIds: ["w-center-game"],
+    sharedIdeas: ["早期 d 兵交換直接打開中心", "以后取兵並預先接受馬帶節奏攻后", "后退到安全格後立刻完成輕子發展與王安全"],
+    difference: "斯堪地那維亞由黑方少一個先手迎擊 1.e4，…Qxd5後要控制落後發展的風險；中心開局由白方主動 2.d4，雖讓黑方以…Nc6取得節奏，卻可利用先手與開放線準備長易位和攻王。",
+    examples: {
+      black: { openingId: "b-scandinavian-defense", label: "斯堪地那維亞后取兵", line: "1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5 4. d4 Nf6" },
+      white: { openingId: "w-center-game", label: "中心開局后取兵", line: "1. e4 e5 2. d4 exd4 3. Qxd4 Nc6 4. Qe3 Nf6 5. Nc3 Bb4" },
+    },
+  },
+  {
     id: "nimzo-trompowsky-pin",
     title: "尼姆佐印度防禦 ↔ 特龍普夫斯基／托雷攻擊",
     relation: "plan",

@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 10);
+  assert.ok(data.analogyGroups.length >= 11);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -978,6 +978,16 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.deepEqual(semiSlavColle?.whiteIds, ["w-colle-system"]);
   assert.match(semiSlavColle?.summary ?? "", /c6.*d5.*e6.*c3.*d4.*e3/);
   assert.match(semiSlavColle?.difference ?? "", /c4.*e4/);
+
+  const earlyQueenTempo = data.analogyGroups.find((group) => group.id === "scandinavian-center-game-queen-tempo");
+  assert.equal(earlyQueenTempo?.title, "斯堪地那維亞防禦 ↔ 中心開局");
+  assert.equal(earlyQueenTempo?.relation, "plan");
+  assert.deepEqual(earlyQueenTempo?.blackIds, ["b-scandinavian-defense"]);
+  assert.deepEqual(earlyQueenTempo?.whiteIds, ["w-center-game"]);
+  assert.match(earlyQueenTempo?.examples.black.line ?? "", /exd5 Qxd5.*Nc3/);
+  assert.match(earlyQueenTempo?.examples.white.line ?? "", /exd4 3\. Qxd4 Nc6/);
+  assert.match(earlyQueenTempo?.summary ?? "", /d 兵.*后.*馬.*節奏/);
+  assert.match(earlyQueenTempo?.difference ?? "", /黑方.*白方.*先手|白方.*黑方.*先手/);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));
