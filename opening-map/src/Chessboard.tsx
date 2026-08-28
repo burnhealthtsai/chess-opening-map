@@ -124,6 +124,8 @@ type ChessboardProps = {
   onManualMove?: (move: { san: string; from: Square; to: Square; fen: string }) => void;
   onManualUndo?: () => void;
   blind?: boolean;
+  preferredBestMove?: string;
+  preferredBestMoveFen?: string;
 };
 
 type PromotionPiece = "q" | "r" | "b" | "n";
@@ -137,7 +139,7 @@ function squareCenter(square: Square, orientation: "white" | "black") {
     : { x: 7 - file + .5, y: rank - .5 };
 }
 
-export function Chessboard({ line, initialFen, initialStep = 0, interactive = false, analysis = false, deferAnalysis = false, compact = false, showControls, autoPlay = false, autoPlayFromStep = 0, orientation = "white", onBestMove, onPositionChange, opponentLevel, playerColor = "white", onManualMove, onManualUndo, blind = false }: ChessboardProps) {
+export function Chessboard({ line, initialFen, initialStep = 0, interactive = false, analysis = false, deferAnalysis = false, compact = false, showControls, autoPlay = false, autoPlayFromStep = 0, orientation = "white", onBestMove, onPositionChange, opponentLevel, playerColor = "white", onManualMove, onManualUndo, blind = false, preferredBestMove, preferredBestMoveFen }: ChessboardProps) {
   const moves = useMemo(() => movesFromLine(line), [line]);
   const [step, setStep] = useState(() => autoPlay ? Math.min(autoPlayFromStep, moves.length) : Math.min(initialStep, moves.length));
   const [soundEnabled, setSoundEnabled] = useState(true);
@@ -179,27 +181,30 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
   if (orientation === "black") displayedSquares.reverse();
   const engineEnabled = Boolean(opponentLevel && opponentLevel > 1) || ((analysis || Boolean(onBestMove)) && analysisRequested);
   const engine = useStockfish(displayFen, engineEnabled);
-  const suggestedFrom = analysis && engine.bestMove ? engine.bestMove.slice(0, 2) as Square : null;
-  const suggestedTo = analysis && engine.bestMove ? engine.bestMove.slice(2, 4) as Square : null;
+  const positionKey = (value?: string) => String(value || "").split(" ").slice(0, 4).join(" ");
+  const preferredMoveApplies = preferredBestMove && (!preferredBestMoveFen || positionKey(preferredBestMoveFen) === positionKey(displayFen));
+  const displayedBestMove = preferredMoveApplies ? preferredBestMove : engine.bestMove;
+  const suggestedFrom = analysis && displayedBestMove ? displayedBestMove.slice(0, 2) as Square : null;
+  const suggestedTo = analysis && displayedBestMove ? displayedBestMove.slice(2, 4) as Square : null;
   useEffect(() => {
     if (!onBestMove) return;
     const analysisState = { status: engine.status, depth: engine.depth };
-    if (!engine.bestMove) {
+    if (!displayedBestMove) {
       onBestMove(null, displayFen, analysisState);
       return;
     }
     try {
       const game = new Chess(displayFen);
       const move = game.move({
-        from: engine.bestMove.slice(0, 2) as Square,
-        to: engine.bestMove.slice(2, 4) as Square,
-        promotion: (engine.bestMove[4] as "q" | "r" | "b" | "n" | undefined) ?? "q",
+        from: displayedBestMove.slice(0, 2) as Square,
+        to: displayedBestMove.slice(2, 4) as Square,
+        promotion: (displayedBestMove[4] as "q" | "r" | "b" | "n" | undefined) ?? "q",
       });
       onBestMove(move.san.replace(/[+#]+$/, ""), displayFen, analysisState);
     } catch {
       onBestMove(null, displayFen, analysisState);
     }
-  }, [displayFen, engine.bestMove, engine.depth, engine.status, onBestMove]);
+  }, [displayFen, displayedBestMove, engine.depth, engine.status, onBestMove]);
   const legalTargets = useMemo(() => new Set(selectedSquare
     ? displayGame.moves({ square: selectedSquare, verbose: true }).map((move) => move.to)
     : []), [displayGame, selectedSquare]);
@@ -447,7 +452,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
       : <MoveTokens moves={moves.slice(0, safeStep)} startPly={initialTurnPly} />}</div>}
     {interactive && <p className="arrow-help">右鍵拖曳：攻擊箭頭 · Shift＋右鍵拖曳：對手反擊</p>}
     {blind && <p className="blind-note">盲棋模式：只標示對手最後一步的起點與終點。{blindNote}</p>}
-    {analysis && <StockfishPanel analysis={engine} fen={displayFen} enabled={engineEnabled} initiallyCollapsed={deferAnalysis} onExpand={() => setAnalysisRequested(true)} />}
+    {analysis && <StockfishPanel analysis={preferredMoveApplies ? { ...engine, bestMove: preferredBestMove } : engine} fen={displayFen} enabled={engineEnabled} initiallyCollapsed={deferAnalysis} onExpand={() => setAnalysisRequested(true)} />}
   </section>;
 }
 

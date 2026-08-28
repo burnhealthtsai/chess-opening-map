@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "generate:data": "node scripts/build-map-data.mjs",
-    "generate:puzzles": "node scripts/export-notion-puzzles.mjs",
+    "generate:puzzles": "node scripts/export-notion-puzzles.mjs && node scripts/refresh-puzzle-solutions.mjs",
     "generate:engine": "node scripts/copy-stockfish.mjs",
     "dev": "pnpm generate:data && vite",
     "typecheck": "tsc --noEmit",

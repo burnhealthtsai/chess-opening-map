@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Chessboard } from "./Chessboard";
 import "./PuzzleExplorer.css";
 
@@ -6,6 +6,7 @@ type NotionPuzzle = {
   id: string; title: string; fen: string; side: "白方" | "黑方"; themes: string[];
   previousFen?: string; previousMove?: string;
   difficulty: string; classification: string; deltaCp: number; wrongMove: string;
+  answerUci: string; answerSan: string; solutionLine: string[]; answerEngine: string; engineDepth: number;
   stage: number; dueAt: string; attempts: number; accuracy: number;
   notionUrl: string; gameUrl: string;
 };
@@ -42,15 +43,7 @@ export default function PuzzleExplorer() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showStockfish, setShowStockfish] = useState(false);
   const [showAnswer, setShowAnswer] = useState(false);
-  const [puzzleAnswer, setPuzzleAnswer] = useState<string | null>(null);
-  const [answerVersion, setAnswerVersion] = useState(0);
-  const [puzzleFeedback, setPuzzleFeedback] = useState<{ kind: "correct" | "wrong" | "pending"; text: string } | null>(null);
-  const handlePuzzleBestMove = useCallback((move: string | null, fen: string, analysis: { status: "loading" | "thinking" | "ready" | "error"; depth: number }) => {
-    const expectedFen = catalog?.puzzles.find((puzzle) => puzzle.id === selectedId)?.fen;
-    const position = (value?: string) => String(value || "").split(" ").slice(0, 4).join(" ");
-    if (!move || analysis.status !== "ready") return;
-    if (position(fen) === position(expectedFen)) setPuzzleAnswer(move);
-  }, [catalog, selectedId]);
+  const [puzzleFeedback, setPuzzleFeedback] = useState<{ kind: "correct" | "wrong"; text: string } | null>(null);
   const configuredUrl = import.meta.env.VITE_PUZZLE_APP_URL?.trim();
   const puzzleUrl = configuredUrl || "http://127.0.0.1:8788/?tab=puzzles";
   useEffect(() => {
@@ -69,7 +62,7 @@ export default function PuzzleExplorer() {
       && (!needle || `${puzzle.title} ${puzzle.id} ${puzzle.themes.join(" ")} ${puzzle.classification}`.toLowerCase().includes(needle)));
   }, [catalog, difficulty, group, puzzleQuery, side, theme]);
   useEffect(() => { setPage(1); }, [difficulty, group, puzzleQuery, side, theme]);
-  useEffect(() => { setShowStockfish(false); setShowAnswer(false); setPuzzleAnswer(null); setPuzzleFeedback(null); }, [selectedId]);
+  useEffect(() => { setShowStockfish(false); setShowAnswer(false); setPuzzleFeedback(null); }, [selectedId]);
   const pageSize = 24;
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
   const visible = filtered.slice((page - 1) * pageSize, page * pageSize);
@@ -85,14 +78,12 @@ export default function PuzzleExplorer() {
         return <button className={group === item ? "active" : ""} key={item} onClick={() => setGroup(item)}><span>{item}</span><b>{count.toLocaleString()}</b></button>;
       })}</aside><div className={`notion-puzzle-layout ${selected ? "has-preview" : ""}`}>
         <div><div className="puzzle-result-heading"><b>{filtered.length.toLocaleString()} 題</b><small>目前篩選結果 · 第 {Math.min(page, pageCount)} / {pageCount} 頁</small></div><div className="notion-puzzle-grid">{visible.map((puzzle) => <button className={selectedId === puzzle.id ? "selected" : ""} key={puzzle.id} onClick={() => setSelectedId(puzzle.id)}><span className={puzzle.side === "白方" ? "white" : "black"}>{puzzle.side === "白方" ? "♙" : "♟"}</span><div><b>{puzzle.title}</b><small>{puzzle.themes.join(" · ")} · {puzzle.difficulty}</small><em>{puzzle.classification} · 損失 {puzzle.deltaCp} cp</em></div></button>)}</div><div className="puzzle-pagination"><button disabled={page <= 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>← 上一頁</button><span>{page} / {pageCount}</span><button disabled={page >= pageCount} onClick={() => setPage((value) => Math.min(pageCount, value + 1))}>下一頁 →</button></div></div>
-        {selected && <aside className="notion-puzzle-preview"><header><div><p className="eyebrow">NOTION PUZZLE</p><h3>{selected.title}</h3><small>{selected.side}走 · {selected.themes.join(" · ")} · {selected.difficulty}</small></div><span>階段 {selected.stage}</span></header>{selected.previousMove && <div className="puzzle-last-move"><span>對手上一手</span><b>{selected.previousMove}</b><small>先播放這一步，再輪到你</small></div>}<Chessboard key={`${selected.id}-${answerVersion}`} line={selected.previousFen && selected.previousMove ? selected.previousMove : ""} initialFen={selected.previousFen || selected.fen} initialStep={selected.previousFen && selected.previousMove ? 1 : 0} autoPlay={Boolean(selected.previousFen && selected.previousMove)} autoPlayFromStep={0} interactive analysis={showStockfish || showAnswer} orientation={selected.side === "黑方" ? "black" : "white"} onBestMove={handlePuzzleBestMove} onManualUndo={() => setPuzzleFeedback(null)} onManualMove={({ san }) => {
+        {selected && <aside className="notion-puzzle-preview"><header><div><p className="eyebrow">NOTION PUZZLE</p><h3>{selected.title}</h3><small>{selected.side}走 · {selected.themes.join(" · ")} · {selected.difficulty}</small></div><span>階段 {selected.stage}</span></header>{selected.previousMove && <div className="puzzle-last-move"><span>對手上一手</span><b>{selected.previousMove}</b><small>先播放這一步，再輪到你</small></div>}<Chessboard key={selected.id} line={selected.previousFen && selected.previousMove ? selected.previousMove : ""} initialFen={selected.previousFen || selected.fen} initialStep={selected.previousFen && selected.previousMove ? 1 : 0} autoPlay={Boolean(selected.previousFen && selected.previousMove)} autoPlayFromStep={0} interactive analysis={showStockfish} preferredBestMove={selected.answerUci} preferredBestMoveFen={selected.fen} orientation={selected.side === "黑方" ? "black" : "white"} onManualUndo={() => setPuzzleFeedback(null)} onManualMove={({ san }) => {
           const clean = (value: string) => value.replace(/[+#?!]+$/g, "").replace(/\s+/g, "");
-          setPuzzleFeedback(!puzzleAnswer
-            ? { kind: "pending", text: `Stockfish 還在核對答案，請按「←」返回並稍候再走一次。` }
-            : clean(san) === clean(puzzleAnswer)
-              ? { kind: "correct", text: `正確！${san} 與目前 Stockfish 最佳棋一致。` }
-              : { kind: "wrong", text: `${san} 與目前 Stockfish 最佳棋 ${puzzleAnswer} 不同。請按「←」返回，再找一次。` });
-        }} />{puzzleFeedback && <div className={`puzzle-feedback ${puzzleFeedback.kind}`} role="status"><span>{puzzleFeedback.kind === "correct" ? "✓" : "!"}</span><b>{puzzleFeedback.text}</b></div>}{showAnswer && <div className="puzzle-answer" role="status"><span>解答</span><b>{puzzleAnswer ? `最佳棋步：${puzzleAnswer}` : "Stockfish 正在計算最佳棋步…"}</b></div>}<div className="puzzle-preview-actions"><button className={showStockfish ? "active" : ""} onClick={() => setShowStockfish((value) => !value)}>{showStockfish ? "關閉 Stockfish" : "需要提示｜開啟 Stockfish"}</button><button className={showAnswer ? "answer-active" : ""} onClick={() => { setShowAnswer((value) => !value); setPuzzleAnswer(null); setAnswerVersion((value) => value + 1); }}>{showAnswer ? "隱藏解答" : "查看解答"}</button><a href={solveUrl} target="_blank" rel="noreferrer">進入完整作答 ↗</a><a href={selected.notionUrl} target="_blank" rel="noreferrer">Notion 題目 ↗</a>{selected.gameUrl && <a href={selected.gameUrl} target="_blank" rel="noreferrer">來源棋局 ↗</a>}</div><p>{showStockfish || showAnswer ? "Stockfish 已開啟，可查看局面評估與建議下法。" : "先自己思考與走棋；走錯時會提示，可用棋盤下方的「←」返回。"}</p></aside>}
+          setPuzzleFeedback(clean(san) === clean(selected.answerSan)
+            ? { kind: "correct", text: `正確！${san} 與 Stockfish 深度 ${selected.engineDepth} 最佳棋一致。` }
+            : { kind: "wrong", text: `${san} 與 Stockfish 深度 ${selected.engineDepth} 最佳棋 ${selected.answerSan} 不同。請按「←」返回，再找一次。` });
+        }} />{puzzleFeedback && <div className={`puzzle-feedback ${puzzleFeedback.kind}`} role="status"><span>{puzzleFeedback.kind === "correct" ? "✓" : "!"}</span><b>{puzzleFeedback.text}</b></div>}{showAnswer && <div className="puzzle-answer" role="status"><span>Stockfish 深度 {selected.engineDepth}</span><div><b>最佳棋步：{selected.answerSan}</b><small>建議延伸：{selected.solutionLine.join(" ")}</small></div></div>}<div className="puzzle-preview-actions"><button className={showStockfish ? "active" : ""} onClick={() => setShowStockfish((value) => !value)}>{showStockfish ? "關閉 Stockfish" : "需要提示｜開啟 Stockfish"}</button><button className={showAnswer ? "answer-active" : ""} onClick={() => setShowAnswer((value) => !value)}>{showAnswer ? "隱藏解答" : "查看解答"}</button><a href={solveUrl} target="_blank" rel="noreferrer">進入完整作答 ↗</a><a href={selected.notionUrl} target="_blank" rel="noreferrer">Notion 題目 ↗</a>{selected.gameUrl && <a href={selected.gameUrl} target="_blank" rel="noreferrer">來源棋局 ↗</a>}</div><p>{showStockfish ? "Stockfish 已開啟，可查看局面評估與建議下法。" : showAnswer ? `已顯示資料庫中 Stockfish 深度 ${selected.engineDepth} 的已驗證解答。` : "先自己思考與走棋；走錯時會提示，可用棋盤下方的「←」返回。"}</p></aside>}
       </div></div>
     </>}
   </section>;
