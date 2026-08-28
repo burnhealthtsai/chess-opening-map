@@ -42,6 +42,14 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(item["source"]["name"], "Old Indian Defense")
         self.assertNotIn("Bf5", item["mainline"])
 
+    def test_scotch_variations_are_named_continuations_not_recognition_prefixes(self):
+        item = next(x for x in self.data["openings"] if x["id"] == "w-scotch-game")
+        self.assertEqual(
+            [variation["name"] for variation in item["variations"]],
+            ["Classical Variation", "Schmidt Variation", "Steinitz Variation"],
+        )
+        self.assertTrue(all(variation["line"].startswith(item["mainline"] + " ") for variation in item["variations"]))
+
     def test_every_opening_has_valid_scoring_fields(self):
         if "popularity_pct" not in self.data["openings"][0]:
             self.skipTest("等待 Lichess 常用度寫入正式 catalog")

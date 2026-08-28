@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
+import { isOpeningMapData, readOpeningMapSnapshot, writeOpeningMapSnapshot } from "./catalogSnapshot";
 import { openingIcon } from "./openingIcon";
 import { readStoredBoolean, readStoredChoice, writeStoredPreference } from "./preferences";
 import { shouldStartLiveBoardMinimized } from "./responsive";
@@ -80,7 +81,7 @@ type BoardStyle = (typeof boardStyles)[number][0];
 const pieceStyleValues = pieceStyles.map(([value]) => value);
 const boardStyleValues = boardStyles.map(([value]) => value);
 export function App() {
-  const [data, setData] = useState<OpeningMapData | null>(null);
+  const [data, setData] = useState<OpeningMapData | null>(() => readOpeningMapSnapshot(openingSchemaVersion));
   const [mapError, setMapError] = useState<string | null>(null);
   const [mapRetry, setMapRetry] = useState(0);
   const [lens, setLens] = useState<Lens>("family");
@@ -111,22 +112,22 @@ export function App() {
 
   useEffect(() => {
     let active = true;
+    const snapshotRevision = data?.catalog_revision ?? null;
     setMapError(null);
     fetch("./opening-map.json", { cache: "no-cache" })
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const next = await response.json() as OpeningMapData;
-        if (next.schema_version !== openingSchemaVersion
-          || !/^[a-f0-9]{64}$/.test(next.catalog_revision)
-          || !Array.isArray(next.nodes)
-          || !next.nodes.length
-          || !next.navigation) throw new Error("Invalid opening catalog");
-        if (active) setData(next);
+        if (!isOpeningMapData(next, openingSchemaVersion)) throw new Error("Invalid opening catalog");
+        writeOpeningMapSnapshot(next, openingSchemaVersion);
+        if (active && next.catalog_revision !== snapshotRevision) setData(next);
       })
       .catch(() => {
         if (!active) return;
-        setData(null);
-        setMapError("開局地圖載入失敗，請檢查網路後重試。");
+        if (!snapshotRevision) {
+          setData(null);
+          setMapError("開局地圖載入失敗，請檢查網路後重試。");
+        }
       });
     return () => { active = false; };
   }, [mapRetry]);

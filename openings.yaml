@@ -121,19 +121,19 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Nxd4",
       "variations": [
         {
-          "name": "Scotch Game",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Nxd4",
-          "note": "蘇格蘭開局的「Scotch Game」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Nxd4 Bc5",
+          "note": "蘇格蘭開局的「Classical Variation」在第 4 回合由黑方走 Bc5 分歧；黑方立即發展並攻擊 d4 馬，白方要選擇 Be3、Nxc6 或 Nb3。"
         },
         {
-          "name": "Scotch Game",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4",
-          "note": "蘇格蘭開局的「Scotch Game」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Schmidt Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Nxd4 Nf6",
+          "note": "蘇格蘭開局的「Schmidt Variation」在第 4 回合由黑方走 Nf6 分歧；黑方施壓 e4，白方常以 Nxc6、e5 或 Nc3 維持中心主動。"
         },
         {
-          "name": "Scotch Game",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. d4",
-          "note": "蘇格蘭開局的「Scotch Game」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Steinitz Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Nxd4 Qh4",
+          "note": "蘇格蘭開局的「Steinitz Variation」在第 4 回合由黑方走 Qh4 分歧；黑后同時碰觸 e4 與 d4，白方需用 Nc3 或 Nb5 帶節奏發展。"
         }
       ],
       "ideas": "蘇格蘭開局以 3.d4立即解除 e5 中心，交換後用 Nxd4建立活躍子力；局面較早開放，白方要用發展速度與中心空間維持先手。",
@@ -1364,19 +1364,19 @@
       "mainline": "1. Nf3",
       "variations": [
         {
-          "name": "Zukertort Opening",
-          "line": "1. Nf3 Nf6",
-          "note": "楚克托特開局的「Zukertort Opening」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Kingside Fianchetto",
+          "line": "1. Nf3 g6",
+          "note": "楚克托特開局的「Kingside Fianchetto」以 1…g6準備王翼象翼；白方可用 g3、Bg2並依黑方中心轉入列蒂或英式體系。"
         },
         {
-          "name": "Zukertort Opening",
-          "line": "1. Nf3 d5",
-          "note": "楚克托特開局的「Zukertort Opening」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Queenside Fianchetto Variation",
+          "line": "1. Nf3 b6",
+          "note": "楚克托特開局的「Queenside Fianchetto Variation」以 1…b6準備…Bb7；白方要用 d4或 c4限制黑象對 e4的壓力。"
         },
         {
-          "name": "Zukertort Opening",
-          "line": "1. Nf3",
-          "note": "楚克托特開局的「Zukertort Opening」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Queen's Gambit Invitation",
+          "line": "1. Nf3 e6",
+          "note": "楚克托特開局的「Queen's Gambit Invitation」以 1…e6邀請白方走 d4、c4；白方也能用 g3保留列蒂與加泰隆轉置。"
         }
       ],
       "ideas": "楚克托特開局以 1.Nf3先控制 e5與 d4，不立刻決定中心兵形；白方可依黑方配置轉入列蒂、英格蘭、后兵或王翼象體系。",
@@ -2796,19 +2796,19 @@
       "mainline": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4",
       "variations": [
         {
-          "name": "Open Defense",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. g3 c6 5. Bg2 dxc4",
-          "note": "加泰隆尼亞開局：開放防禦的「Open Defense」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Alekhine Variation",
+          "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Qa4+ Nbd7 6. Qxc4 a6 7. Qc2",
+          "note": "加泰隆尼亞開局：開放防禦的「Alekhine Variation」以 5.Qa4+帶節奏取回 c4兵；白方保留長對角線壓力，黑方則爭取…c5解放。"
         },
         {
-          "name": "Open Defense",
-          "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Nf3",
-          "note": "加泰隆尼亞開局：開放防禦的「Open Defense」在第 5 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Modern Sharp Variation",
+          "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Nf3 Nc6 6. Qa4 Bb4+",
+          "note": "加泰隆尼亞開局：開放防禦的「Modern Sharp Variation」用…Nc6與…Bb4+快速護住 c4兵；白方需平衡取兵、中心與王的安全。"
         },
         {
-          "name": "Open Defense",
-          "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4",
-          "note": "加泰隆尼亞開局：開放防禦的「Open Defense」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Line",
+          "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 dxc4 5. Nf3 Be7",
+          "note": "加泰隆尼亞開局：開放防禦的「Classical Line」以…Be7穩健完成王翼發展；白方通常先易位，再用 Qc2或 Qa4取回兵。"
         }
       ],
       "ideas": "加泰隆尼亞開放防禦中黑方以…dxc4拿走 c4兵；白方通常不急著逐兵，而用 Bg2長對角線、快速發展與中心優勢換取持續補償。",
@@ -4712,9 +4712,9 @@
       "mainline": "1. e4 d5",
       "variations": [
         {
-          "name": "Scandinavian Defense",
-          "line": "1. e4 d5",
-          "note": "斯堪地那維亞防禦的「Scandinavian Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Main Line",
+          "line": "1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5",
+          "note": "斯堪地那維亞防禦的「Main Line」以…Qxd5取回兵並在 Nc3後退到 a5；黑方要利用后仍具壓力的同時快速完成出子。"
         },
         {
           "name": "Schiller-Pytel Variation, Modern Variation",
@@ -4814,14 +4814,14 @@
       "mainline": "1. e4 g6",
       "variations": [
         {
-          "name": "Modern Defense",
-          "line": "1. e4 g6 2. d4 Bg7",
-          "note": "現代防禦的「Modern Defense」在第 1 回合由白方走 e4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Standard Defense",
+          "line": "1. e4 g6 2. d4 Bg7 3. Nc3 d6",
+          "note": "現代防禦的「Standard Defense」以…d6限制 e5並準備…Nf6或…c5；黑方必須及時攻擊白方完整兵中心。"
         },
         {
-          "name": "Modern Defense",
-          "line": "1. e4 g6",
-          "note": "現代防禦的「Modern Defense」在第 1 回合由白方走 e4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Pseudo-Austrian Attack",
+          "line": "1. e4 g6 2. d4 Bg7 3. Nc3 d6 4. f4",
+          "note": "現代防禦的「Pseudo-Austrian Attack」讓白方以 f4建立王翼空間；黑方要用…c5、…Nc6或…e5在中心反擊。"
         },
         {
           "name": "Gurgenidze Defense",
@@ -4865,19 +4865,19 @@
       "mainline": "1. e4 Nf6",
       "variations": [
         {
-          "name": "Alekhine Defense",
-          "line": "1. e4 Nf6 2. e5 Nd5 3. d4 d6",
-          "note": "阿廖欣防禦的「Alekhine Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Normal Variation",
+          "line": "1. e4 Nf6 2. e5 Nd5",
+          "note": "阿廖欣防禦的「Normal Variation」以 2…Nd5誘導白方繼續推兵；黑方下一步要以…d6攻擊 e5中心尖端。"
         },
         {
-          "name": "Alekhine Defense",
-          "line": "1. e4 Nf6 2. e5 Nd5 3. d4",
-          "note": "阿廖欣防禦的「Alekhine Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Modern Variation",
+          "line": "1. e4 Nf6 2. e5 Nd5 3. d4 d6 4. Nf3",
+          "note": "阿廖欣防禦的「Modern Variation」以 Nf3支援中心且不急推 c 兵；黑方用…dxe5、…g6或…Bg4增加中心壓力。"
         },
         {
-          "name": "Alekhine Defense",
-          "line": "1. e4 Nf6",
-          "note": "阿廖欣防禦的「Alekhine Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Four Pawns Attack",
+          "line": "1. e4 Nf6 2. e5 Nd5 3. d4 d6 4. c4 Nb6 5. f4",
+          "note": "阿廖欣防禦的「Four Pawns Attack」讓白方用四兵建立巨大中心；黑方要立刻以…dxe5或…g5攻擊其根部。"
         }
       ],
       "ideas": "阿廖欣防禦以 1…Nf6立即攻擊 e4，誘導白方 e5、d4、c4擴張；黑方讓馬移動換取過度延伸的兵中心，再以…d6與…c5攻擊它。",
@@ -4967,9 +4967,9 @@
       "mainline": "1. e4 Nc6",
       "variations": [
         {
-          "name": "Nimzowitsch Defense",
-          "line": "1. e4 Nc6",
-          "note": "尼姆佐維奇防禦的「Nimzowitsch Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Colorado Countergambit",
+          "line": "1. e4 Nc6 2. Nf3 f5",
+          "note": "尼姆佐維奇防禦的「Colorado Countergambit」以…f5立即挑戰 e4；黑方換取主動線路，但必須精確處理王翼弱格。"
         },
         {
           "name": "Kennedy Variation, Main Line",
@@ -5477,19 +5477,19 @@
       "mainline": "1. d4 d5 2. c4 dxc4",
       "variations": [
         {
-          "name": "Queen's Gambit Accepted",
-          "line": "1. d4 d5 2. c4 e6 3. Nf3 Nf6 4. Nc3 dxc4 5. Bg5",
-          "note": "后翼棄兵接受的「Queen's Gambit Accepted」在第 5 回合由白方走 Bg5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Central Variation, Alekhine System",
+          "line": "1. d4 d5 2. c4 dxc4 3. e4 Nf6",
+          "note": "后翼棄兵接受的「Central Variation, Alekhine System」讓白方以 e4建立大中心，黑方用…Nf6立即施壓 e4兵。"
         },
         {
-          "name": "Queen's Gambit Accepted",
-          "line": "1. d4 d5 2. c4 dxc4 3. Nf3 Nf6",
-          "note": "后翼棄兵接受的「Queen's Gambit Accepted」在第 2 回合由黑方走 dxc4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Old Variation",
+          "line": "1. d4 d5 2. c4 dxc4 3. e3",
+          "note": "后翼棄兵接受的「Old Variation」以 e3準備 Bxc4穩健取回兵；白方避免過度擴張，黑方則爭取…e5或…c5。"
         },
         {
-          "name": "Queen's Gambit Accepted",
-          "line": "1. d4 d5 2. c4 dxc4",
-          "note": "后翼棄兵接受的「Queen's Gambit Accepted」在第 2 回合由黑方走 dxc4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Godes Variation",
+          "line": "1. d4 d5 2. c4 dxc4 3. Nf3 Nd7",
+          "note": "后翼棄兵接受的「Godes Variation」以…Nd7準備…e5並支援 c5；黑方暫緩王翼馬發展來爭取中心反擊。"
         }
       ],
       "ideas": "后翼棄兵接受以…dxc4暫時拿兵，放棄 d5支點來換取自由出子；黑方通常不長期守兵，而以…Nf6、…e6與…c5攻擊白方中心。",
@@ -5528,14 +5528,14 @@
       "mainline": "1. d4 d5 2. c4 c6",
       "variations": [
         {
-          "name": "Slav Defense",
-          "line": "1. d4 d5 2. c4 c6 3. Nc3",
-          "note": "斯拉夫防禦的「Slav Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Modern Line",
+          "line": "1. d4 d5 2. c4 c6 3. Nf3",
+          "note": "斯拉夫防禦的「Modern Line」以 Nf3自然發展並控制 e5；黑方通常接…Nf6，再決定…dxc4或…Bf5。"
         },
         {
-          "name": "Slav Defense",
-          "line": "1. d4 d5 2. c4 c6",
-          "note": "斯拉夫防禦的「Slav Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Quiet Variation",
+          "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3",
+          "note": "斯拉夫防禦的「Quiet Variation」以 e3穩固中心並準備 Bxc4；黑方應趁機讓 c8象到 f5或 g4。"
         },
         {
           "name": "Czech Variation, Classical System, Main Line",

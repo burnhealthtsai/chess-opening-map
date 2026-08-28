@@ -276,11 +276,15 @@ def recognition_fen(line: str) -> str:
 
 def make_item(pick: Pick, rows: list[dict[str, str]]) -> dict:
     candidates = select_rows(rows, pick.match, pick.category)
-    chosen: list[dict[str, str]] = []
-    seen_lines: set[str] = set()
-    for row in candidates:
-        if row["pgn"] not in seen_lines:
-            chosen.append(row); seen_lines.add(row["pgn"])
+    mainline_row = candidates[0]
+    chosen = [mainline_row]
+    seen_lines = {mainline_row["pgn"]}
+    for row in candidates[1:]:
+        # Upstream can contain several progressively longer recognition rows
+        # with the same generic name. They are not distinct named variations.
+        if row["name"] == mainline_row["name"] or row["pgn"] in seen_lines:
+            continue
+        chosen.append(row); seen_lines.add(row["pgn"])
         if len(chosen) == 4: break
     mainline = chosen[0]["pgn"]
     variations = []

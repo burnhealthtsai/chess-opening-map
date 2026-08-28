@@ -19,6 +19,7 @@ const transpositionCss = await readFile(new URL("../src/TranspositionExplorer.cs
 const analogyCss = await readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8").catch(() => "");
 const detailCss = await readFile(new URL("../src/OpeningDetail.css", import.meta.url), "utf8").catch(() => "");
 const positionPreview = await readFile(new URL("../src/OpeningPositionPreview.tsx", import.meta.url), "utf8").catch(() => "");
+const catalogSnapshot = await readFile(new URL("../src/catalogSnapshot.ts", import.meta.url), "utf8").catch(() => "");
 
 test("opening details and knowledge load only after an opening is selected", () => {
   assert.match(app, /const openingDetailModule = \(\) => import\("\.\/OpeningDetail"\)/);
@@ -63,9 +64,12 @@ test("chess rules and the full board stay out of the initial application chunk",
 
 test("the opening catalog validates its schema and exposes a retry state", () => {
   assert.match(app, /const openingSchemaVersion = 10/);
-  assert.match(app, /\^\[a-f0-9\]\{64\}\$/);
+  assert.match(catalogSnapshot, /\^\[a-f0-9\]\{64\}\$/);
   assert.match(app, /catalog_revision !== data\.catalog_revision/);
-  assert.match(app, /response\.ok.*schema_version !== openingSchemaVersion/s);
+  assert.match(app, /response\.ok.*isOpeningMapData\(next, openingSchemaVersion\)/s);
+  assert.match(app, /readOpeningMapSnapshot\(openingSchemaVersion\)/);
+  assert.match(app, /writeOpeningMapSnapshot\(next, openingSchemaVersion\)/);
+  assert.match(app, /if \(!snapshotRevision\).*setMapError/s);
   assert.match(app, /setMapError\("開局地圖載入失敗，請檢查網路後重試。"\)/);
   assert.match(app, /className="catalog-load-error" role="alert"/);
   assert.match(app, /setMapRetry\(\(value\) => value \+ 1\)/);
