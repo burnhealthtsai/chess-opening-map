@@ -220,6 +220,7 @@ export function App() {
       && (styleSide === all || node.side === styleSide));
   }, [category, data, query, styleSide]);
   const visibleSearchResults = useMemo(() => searchResults.slice(0, searchVisibleCount), [searchResults, searchVisibleCount]);
+  const searchScope = `${query.trim().toLowerCase()}\u0000${category}\u0000${styleSide}`;
 
   useEffect(() => {
     if (!openingIsModal) return;
@@ -377,7 +378,7 @@ export function App() {
       <a className="notion-opening-link" href="https://app.notion.com/p/3acea00652918196baa0c23ddfc859a5" target="_blank" rel="noreferrer"><span>▣</span>開啟 Notion 開局資料庫 ↗</a>
     </section>
 
-    {query.trim() ? <SearchResults nodes={searchResults} visibleNodes={visibleSearchResults} query={query} onSelect={selectOpening} onShowMore={() => setSearchVisibleCount((current) => Math.min(current + searchPageSize, searchResults.length))} /> : <div className={selected ? "workspace focused" : "workspace single"}>
+    {query.trim() ? <SearchResults nodes={searchResults} visibleNodes={visibleSearchResults} query={query} scope={searchScope} onSelect={selectOpening} onShowMore={() => setSearchVisibleCount((current) => Math.min(current + searchPageSize, searchResults.length))} /> : <div className={selected ? "workspace focused" : "workspace single"}>
       <section className={`explorer-panel ${lens === "family" && selectedSide && !selectedFamily ? "split-overview" : ""}`}>
         {lens === "family" ? <FamilyExplorer data={data} category={category} side={selectedSide} firstMove={selectedFirstMove} familyId={selectedFamily}
           selectedId={selectedId} onHome={home} onSide={openSide} onFirstMove={openFirstMove} onFamily={openFamily} onSelect={selectOpening} />
@@ -505,13 +506,23 @@ function SideSwitcher({ data, category, side, onSide }: { data: OpeningMapData; 
   </nav>;
 }
 
-function SearchResults({ nodes, visibleNodes, query, onSelect, onShowMore }: { nodes: Opening[]; visibleNodes: Opening[]; query: string; onSelect: (id: string) => void; onShowMore: () => void }) {
+function SearchResults({ nodes, visibleNodes, query, scope, onSelect, onShowMore }: { nodes: Opening[]; visibleNodes: Opening[]; query: string; scope: string; onSelect: (id: string) => void; onShowMore: () => void }) {
+  const priorBatch = useRef({ scope, count: visibleNodes.length });
   const remaining = nodes.length - visibleNodes.length;
-  return <section className="search-results"><p className="eyebrow">SEARCH RESULTS</p><h2 aria-live="polite">「{query}」找到 {nodes.length} 個開局</h2>{nodes.length ? <><div id="search-result-grid" className="opening-card-grid search-card-grid">{visibleNodes.map((node) => <OpeningCard key={node.id} node={node} preview onClick={() => onSelect(node.id)} />)}</div><footer className="search-results-footer"><p role="status">已顯示 {visibleNodes.length} / {nodes.length} 個開局</p>{remaining > 0 && <button type="button" className="search-load-more" aria-controls="search-result-grid" onClick={onShowMore}>顯示更多 <span>剩餘 {remaining} 個</span></button>}</footer></> : <Empty />}</section>;
+  useEffect(() => {
+    const previous = priorBatch.current;
+    if (previous.scope === scope && visibleNodes.length > previous.count) {
+      const firstNewCard = document.querySelector<HTMLButtonElement>(`.search-card-grid [data-search-index="${previous.count}"]`);
+      firstNewCard?.focus({ preventScroll: true });
+      firstNewCard?.scrollIntoView({ behavior: "auto", block: "nearest" });
+    }
+    priorBatch.current = { scope, count: visibleNodes.length };
+  }, [scope, visibleNodes.length]);
+  return <section className="search-results"><p className="eyebrow">SEARCH RESULTS</p><h2 aria-live="polite">「{query}」找到 {nodes.length} 個開局</h2>{nodes.length ? <><div id="search-result-grid" className="opening-card-grid search-card-grid">{visibleNodes.map((node, index) => <OpeningCard key={node.id} node={node} preview searchIndex={index} onClick={() => onSelect(node.id)} />)}</div><footer className="search-results-footer"><p role="status">已顯示 {visibleNodes.length} / {nodes.length} 個開局</p>{remaining > 0 && <button type="button" className="search-load-more" aria-controls="search-result-grid" onClick={onShowMore}>顯示更多 <span>剩餘 {remaining} 個</span></button>}</footer></> : <Empty />}</section>;
 }
 
-function OpeningCard({ node, selected, preview = false, onClick }: { node: Opening; selected?: boolean; preview?: boolean; onClick: () => void }) {
-  return <button className={`opening-card ${preview ? "has-preview" : ""} ${selected ? "selected" : ""}`} onClick={onClick}><span>{node.eco}</span><b>{openingIcon(node.title_zh, node.title_en) && <i className="opening-origin-icon" aria-hidden="true">{openingIcon(node.title_zh, node.title_en)}</i>}{node.title_zh}</b><small>{node.title_en}</small>{preview && <Suspense fallback={<span className="opening-position-preview preview-loading" aria-hidden="true">局面載入中…</span>}><OpeningPositionPreview opening={node} /></Suspense>}<em>{node.side} · {node.category}</em></button>;
+function OpeningCard({ node, selected, preview = false, searchIndex, onClick }: { node: Opening; selected?: boolean; preview?: boolean; searchIndex?: number; onClick: () => void }) {
+  return <button className={`opening-card ${preview ? "has-preview" : ""} ${selected ? "selected" : ""}`} data-search-index={searchIndex} onClick={onClick}><span>{node.eco}</span><b>{openingIcon(node.title_zh, node.title_en) && <i className="opening-origin-icon" aria-hidden="true">{openingIcon(node.title_zh, node.title_en)}</i>}{node.title_zh}</b><small>{node.title_en}</small>{preview && <Suspense fallback={<span className="opening-position-preview preview-loading" aria-hidden="true">局面載入中…</span>}><OpeningPositionPreview opening={node} /></Suspense>}<em>{node.side} · {node.category}</em></button>;
 }
 
 function MapBoardPreview({ opening, line, step, fromStep, level, label, onBestMove }: { opening: Opening; line?: string; step: number; fromStep: number; level: string; label: string; onBestMove?: (san: string | null) => void }) {

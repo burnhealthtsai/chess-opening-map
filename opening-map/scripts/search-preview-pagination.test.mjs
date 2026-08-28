@@ -8,7 +8,7 @@ const styles = await readFile(new URL("../src/styles.css", import.meta.url), "ut
 test("large search result sets render preview boards in bounded batches", () => {
   assert.match(app, /const searchPageSize = 24/);
   assert.match(app, /searchResults\.slice\(0, searchVisibleCount\)/);
-  assert.match(app, /visibleNodes\.map\(\(node\) => <OpeningCard[^>]+preview/);
+  assert.match(app, /visibleNodes\.map\(\(node, index\) => <OpeningCard[^>]+preview[^>]+searchIndex=\{index\}/);
   assert.match(app, /Math\.min\(current \+ searchPageSize, searchResults\.length\)/);
   assert.match(app, /className="search-load-more" aria-controls="search-result-grid"/);
   assert.match(app, /已顯示 \{visibleNodes\.length\} \/ \{nodes\.length\} 個開局/);
@@ -17,4 +17,12 @@ test("large search result sets render preview boards in bounded batches", () => 
 
 test("WASD navigation stays inside the currently rendered search batch", () => {
   assert.match(app, /if \(query\.trim\(\)\) \{\s*candidates = visibleSearchResults;/);
+});
+
+test("loading another preview batch focuses its first newly revealed card", () => {
+  assert.match(app, /const priorBatch = useRef\(\{ scope, count: visibleNodes\.length \}\)/);
+  assert.match(app, /previous\.scope === scope && visibleNodes\.length > previous\.count/);
+  assert.match(app, /data-search-index=\{searchIndex\}/);
+  assert.match(app, /firstNewCard\?\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(app, /firstNewCard\?\.scrollIntoView\(\{ behavior: "auto", block: "nearest" \}\)/);
 });
