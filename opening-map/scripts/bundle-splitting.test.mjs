@@ -159,6 +159,12 @@ test("secondary explorer CSS follows its lazy JavaScript chunk", () => {
   assert.doesNotMatch(globalCss, /\.(?:style-grid|transposition-layout|analogy-layout)/);
 });
 
+test("analogy comparison keeps full group and opening names readable on narrow screens", () => {
+  assert.match(analogyCss, /\.analogy-group-list button b, \.analogy-group-list button small \{[^}]*overflow-wrap: anywhere;[^}]*white-space: normal;/);
+  assert.match(analogyCss, /\.analogy-opening-card > b, \.analogy-opening-card > small \{[^}]*overflow-wrap: anywhere;[^}]*white-space: normal;/);
+  assert.match(analogyCss, /@media \(max-width: 480px\) \{\s*\.analogy-side > div \{ grid-template-columns: 1fr; \}/);
+});
+
 test("the puzzle browser CSS follows its lazy JavaScript chunk", () => {
   assert.match(puzzles, /import "\.\/PuzzleExplorer\.css"/);
   assert.match(puzzleCss, /\.puzzle-browser/);
