@@ -58,23 +58,24 @@ const passedPawnLessons = [
   },
 ];
 
-const tacticLessons = [
-  { group: "戰術", icon: "⚡", title: "閃將／發現攻擊", cue: "移開擋在車、象或后前面的棋子，讓後方長程棋子突然攻擊；若露出的線直接攻王，就是閃將。", steps: ["先找與敵王或高價棋子同一直線的長程子。", "檢查中間的己方棋子移開時，能否同時製造第二個威脅。", "優先計算將軍、吃子與雙重攻擊。"], exampleFen: "4k3/8/8/8/8/8/4B3/4R1K1 w - - 0 1", example: "例如：白象從 e2 移開，e1 白車立刻沿 e 線對黑王形成發現將軍。" },
-  { group: "戰術", icon: "📌", title: "牽制（Pin）", cue: "被牽制的棋子一移動，就會暴露後方更重要的王、后或車。王後方是絕對牽制，其餘是相對牽制。", steps: ["辨認被牽制棋子後方的目標。", "用兵或較低價棋子增加攻擊者。", "先防對手解除牽制，再決定是否吃掉。"], exampleFen: "4k3/4n3/8/8/8/8/8/4R1K1 b - - 0 1", example: "例如：e7 黑馬擋在 e1 白車與 e8 黑王之間，黑馬不能隨意離開 e 線。" },
-  { group: "戰術", icon: "⑂", title: "雙攻／叉攻", cue: "一手同時攻擊兩個目標；馬叉最常見，但兵、后與將軍也能形成雙攻。", steps: ["掃描所有帶將軍的落點。", "再找能同時攻擊后、車或無防守棋子的格子。", "確認落點不會被免費吃掉。"], exampleFen: "r3k3/8/8/1N6/8/8/8/6K1 w - - 0 1", example: "例如：白馬走 Nc7+，一面將軍、一面攻擊 a8 黑車，黑王回應後白馬再吃車。" },
-  { group: "戰術", icon: "↠", title: "串擊（Skewer）", cue: "先攻擊前方高價棋子，逼它移開後再吃後方目標，可視為反方向的牽制。", steps: ["沿直線尋找兩枚重疊的敵子。", "用車、象或后攻擊價值較高的前方棋子。", "預先確認前方棋子移開後能安全取得後方目標。"], exampleFen: "q7/k7/8/8/8/8/8/R5K1 b - - 0 1", example: "例如：白車沿 a 線先攻黑王；黑王離開後，後方 a8 的黑后就會被白車吃掉。" },
-  { group: "戰術", icon: "✂", title: "消除防守者／引離", cue: "交換、吃掉或誘開唯一的防守棋子，使原本安全的目標失去保護。", steps: ["點算目標的攻擊者與防守者。", "找出唯一或過載的防守者。", "先用交換、犧牲或威脅把它引離。"], exampleFen: "6k1/5ppp/8/8/2B5/8/8/3Q2K1 w - - 0 1", example: "例如：先找出守住 h7 的唯一棋子，用交換或威脅引離它，再對失去保護的王翼下手。" },
-  { group: "技巧", icon: "♞", title: "扇形關馬", cue: "用相連兵形成扇形，逐格奪走敵馬的退路；重點是限制，而不是急著追趕。", steps: ["先標出馬目前最多八個可達格。", "以兵控制其中兩至三個關鍵退路。", "最後才用棋子攻馬，避免推兵留下永久弱格。"], exampleFen: "6k1/8/8/2p1p3/3n4/2P1P3/3P4/6K1 w - - 0 1", example: "例如：用 c3、d2、e3 三兵形成扇形，先控制黑馬的 b4、c5、e5、f4 退路。" },
-  { group: "技巧", icon: "♗", title: "分辨好象／壞象", cue: "被己方同色兵鏈限制的是壞象；能在兵鏈外活動、攻擊對手弱格的是好象。", steps: ["查看己方多數兵落在哪一種顏色。", "壞象要移到兵鏈外、準備兵突破，或交換對手好象。", "好象通常應保留，尤其雙翼都有兵時。"], exampleFen: "6k1/8/8/2p1p3/2P1P3/3B4/8/6K1 w - - 0 1", example: "例如：白兵站在深色格時，深色象容易被自己的兵鏈堵住；應想辦法走到兵鏈外。" },
-  { group: "技巧", icon: "⬡", title: "建立馬前哨站", cue: "前哨站是不會被敵兵驅逐、且有己兵保護的深入格；封閉局面中特別強。", steps: ["尋找對手兵無法攻擊的中心或敵陣格。", "先交換能控制該格的輕子。", "用兵或另一枚棋子保護進駐的馬。"], exampleFen: "6k1/8/3p4/3N4/2P1P3/8/8/6K1 w - - 0 1", example: "例如：d5 白馬受 c4、e4 兵保護，且黑方沒有 c、e 兵能把它趕走，這就是前哨站。" },
-  { group: "技巧", icon: "♜", title: "佔領開放線", cue: "沒有兵的直線是開放線，只有一方兵的則是半開放線；車應在此進入第七橫線或攻擊落後兵。", steps: ["先把車放到開放或半開放線。", "雙車疊起前先確認前車有安全入侵格。", "若沒有入侵點，就沿線鎖定落後兵。"], exampleFen: "6k1/3r4/8/8/8/8/8/3R2K1 w - - 0 1", example: "例如：d 線沒有兵，雙方車都應爭奪 d 線；先控制第七橫線通常能攻擊更多兵。" },
-];
+type TacticLesson = {
+  group: "戰術" | "技巧";
+  icon: string;
+  title: string;
+  cue: string;
+  steps: string[];
+  exampleFen: string;
+  example: string;
+  exampleLine: string;
+};
+
+const tacticLessons = tacticLessonData as TacticLesson[];
 
 export default function ConceptExplorer() {
   const [selectedEndgame, setSelectedEndgame] = useState(endgameLessons[0]);
   const [selectedMate, setSelectedMate] = useState(mateLessons[0]);
   const [selectedPassedPawn, setSelectedPassedPawn] = useState(passedPawnLessons[0]);
-  const [selectedTactic, setSelectedTactic] = useState(tacticLessonData[0]);
+  const [selectedTactic, setSelectedTactic] = useState(tacticLessons[0]);
   const [activePhase, setActivePhase] = useState<"opening" | "middlegame" | "endgame" | "passed-pawn" | "checkmate" | "tactics">("opening");
   const phases = [
     { id: "opening" as const, roman: "Ⅰ", eyebrow: "OPENING", title: "開局下法", text: "控制中心、發展輕子、完成王的安全。不要為了吃兵而讓同一枚棋子重複移動。" },
@@ -107,7 +108,7 @@ export default function ConceptExplorer() {
       </div>
     </section>}
     {activePhase === "tactics" && <section className="tactics-library phase-content"><div className="section-heading"><div><p className="eyebrow">6 · TACTICS & TECHNIQUE</p><h3>基本戰術／技巧辨識</h3></div><small>先看局面特徵，再照步驟計算</small></div>
-      <div className="tactics-practice-layout"><div className="tactic-groups">{["戰術", "技巧"].map((group) => <section key={group}><h4>{group === "戰術" ? "強制戰術" : "局面技巧"}</h4><div>{tacticLessonData.filter((lesson) => lesson.group === group).map((lesson) => <button type="button" className={selectedTactic.title === lesson.title ? "active" : ""} key={lesson.title} onClick={() => setSelectedTactic(lesson)}><span>{lesson.icon}</span><b>{lesson.title}</b></button>)}</div></section>)}</div>
+      <div className="tactics-practice-layout"><div className="tactic-groups">{["戰術", "技巧"].map((group) => <section key={group}><h4>{group === "戰術" ? "強制戰術" : "局面技巧"}</h4><div>{tacticLessons.filter((lesson) => lesson.group === group).map((lesson) => <button type="button" className={selectedTactic.title === lesson.title ? "active" : ""} key={lesson.title} onClick={() => setSelectedTactic(lesson)}><span>{lesson.icon}</span><b>{lesson.title}</b></button>)}</div></section>)}</div>
         <article className="tactic-detail"><header><span>{selectedTactic.icon}</span><div><p className="eyebrow">{selectedTactic.group}</p><h3>{selectedTactic.title}</h3></div></header><p>{selectedTactic.cue}</p><div className="tactic-example"><div><p className="eyebrow">EXAMPLE POSITION</p><h4>可重播局面範例</h4><p>{selectedTactic.example}</p><p className="tactic-example-line"><b>範例走法</b><span>{selectedTactic.exampleLine}</span></p></div><Chessboard key={`${selectedTactic.title}-${selectedTactic.exampleLine}`} line={selectedTactic.exampleLine} initialFen={selectedTactic.exampleFen} orientation={sideFromFen(selectedTactic.exampleFen)} showControls /></div><h4>實戰辨識步驟</h4><ol>{selectedTactic.steps.map((step) => <li key={step}>{step}</li>)}</ol><aside><b>每回合先問：</b>我有將軍、吃子或直接威脅嗎？對手下一手又有什麼強制手段？</aside></article>
       </div>
     </section>}
