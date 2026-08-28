@@ -485,6 +485,42 @@ test("queen-pawn systems explain their distinct setups and named branches", () =
   assert.match(byId.get("w-blackmar-diemer-gambit-declined").ideas, /Weinsbach.*Pfrang.*4…e6/);
 });
 
+test("unorthodox d4 defenses explain their concrete move-order tradeoffs", () => {
+  const ids = [
+    "b-horwitz-defense",
+    "b-mikenas-defense",
+    "b-wade-defense",
+    "b-dory-defense",
+    "b-englund-gambit-declined",
+    "b-kangaroo-defense",
+    "b-mexican-defense",
+    "b-montevideo-defense",
+    "b-pterodactyl-defense",
+    "b-robatsch-defense",
+    "b-vulture-defense",
+    "b-zaire-defense",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("b-horwitz-defense").ideas, /1…e6.*法蘭西|1…e6.*后翼棄兵/);
+  assert.match(byId.get("b-mikenas-defense").ideas, /1…Nc6.*c 兵/);
+  assert.match(byId.get("b-wade-defense").ideas, /…d6.*…Bg4.*f3 馬/);
+  assert.match(byId.get("b-dory-defense").ideas, /2…Ne4.*f3|2…Ne4.*f4/);
+  assert.match(byId.get("b-englund-gambit-declined").ideas, /2\.d5.*…c6|2\.d5.*…Nf6/);
+  assert.match(byId.get("b-kangaroo-defense").ideas, /2…Bb4\+.*Bogo/);
+  assert.match(byId.get("b-mexican-defense").ideas, /2\.c4.*…Nc6.*d4.*c 兵/);
+  assert.match(byId.get("b-montevideo-defense").ideas, /Nc6–b8|Nc6.*Nb8.*節奏/);
+  assert.match(byId.get("b-pterodactyl-defense").ideas, /…g6.*…Bg7.*…Qa5\+/);
+  assert.match(byId.get("b-robatsch-defense").ideas, /…g6.*…Bg7.*4…Bg4/);
+  assert.match(byId.get("b-vulture-defense").ideas, /3\.d5.*…Ne4.*d5/);
+  assert.match(byId.get("b-zaire-defense").ideas, /Nc6–b8.*Nf6–g8.*多個節奏/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
