@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 9);
+  assert.ok(data.analogyGroups.length >= 10);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -961,10 +961,23 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.ok(qgdColle?.blackIds.includes("b-queens-gambit-declined-orthodox-defense"));
   assert.deepEqual(qgdColle?.whiteIds, ["w-colle-system"]);
 
-  const caroSlav = data.analogyGroups.find((group) => group.id === "caro-slav-london-colle");
-  assert.match(caroSlav?.summary ?? "", /半斯拉夫.*科勒.*后象受限.*解放中心/);
-  assert.ok(caroSlav?.sharedIdeas.some((idea) => /兵鏈封閉前安排后象.*解放性突破/.test(idea)));
+  const caroSlav = data.analogyGroups.find((group) => group.id === "caro-slav-london-structure");
+  assert.equal(caroSlav?.title, "Caro–Slav 家族 ↔ 倫敦體系");
+  assert.ok(!caroSlav?.blackIds.includes("b-semi-slav-defense"));
+  assert.ok(!caroSlav?.whiteIds.includes("w-colle-system"));
+  assert.deepEqual(caroSlav?.whiteIds, ["w-london-system"]);
+  assert.doesNotMatch(caroSlav?.title ?? "", /盎格魯斯拉夫/);
+  assert.ok(caroSlav?.sharedIdeas.some((idea) => /兵鏈封閉前安排后象/.test(idea)));
   assert.doesNotMatch(caroSlav?.sharedIdeas.join(" ") ?? "", /避免壞象被鎖/);
+
+  const semiSlavColle = data.analogyGroups.find((group) => group.id === "semi-slav-colle-reversed");
+  assert.equal(semiSlavColle?.title, "半斯拉夫防禦 ↔ 科勒體系");
+  assert.equal(semiSlavColle?.relation, "reversed");
+  assert.ok(semiSlavColle?.blackIds.includes("b-semi-slav-defense"));
+  assert.ok(semiSlavColle?.blackIds.includes("b-semi-slav-defense-meran-variation"));
+  assert.deepEqual(semiSlavColle?.whiteIds, ["w-colle-system"]);
+  assert.match(semiSlavColle?.summary ?? "", /c6.*d5.*e6.*c3.*d4.*e3/);
+  assert.match(semiSlavColle?.difference ?? "", /c4.*e4/);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));
