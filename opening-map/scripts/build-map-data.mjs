@@ -423,6 +423,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "englund-blackmar-diemer-reversed",
+    title: "英格蘭棄兵 ↔ 布萊克馬－迪默棄兵",
+    relation: "reversed",
+    summary: "英格蘭棄兵的 1.d4 e5 與布萊克馬－迪默棄兵的 1.d4 d5 2.e4，都是用 e 兵立即挑戰對方 d 兵、以中央兵換取發展速度與主動權的近似反色構想。",
+    blackIds: ["b-englund-gambit"],
+    whiteIds: ["w-blackmar-diemer-gambit", "w-blackmar-diemer-gambit-accepted"],
+    sharedIdeas: ["用 e 兵立即挑戰對手的 d 兵中心", "犧牲中央兵換取快速出子與主動權", "在對手易位前利用開放線與帶節奏招法"],
+    difference: "英格蘭棄兵由黑方使用，少一個先手，常要用 …Qe7、…Qb4+ 等后棋追兵，后若暴露反而會落後發展；BDG 白方則可用 f3 再棄兵並打開 f 線。兩邊都需要具體計算，不能把陷阱或補償逐手鏡像。",
+    examples: {
+      black: { openingId: "b-englund-gambit", label: "英格蘭棄兵追兵棋路", line: "1. d4 e5 2. dxe5 Nc6 3. Nf3 Qe7 4. Bf4 Qb4+ 5. Bd2 Qxb2 6. Nc3 Nb4" },
+      white: { openingId: "w-blackmar-diemer-gambit-accepted", label: "BDG f 線開放棋路", line: "1. d4 d5 2. e4 dxe4 3. Nc3 Nf6 4. f3 exf3 5. Nxf3" },
+    },
+  },
+  {
     id: "benko-polish-queenside-plan",
     title: "班科棄兵 ↔ 波蘭開局",
     relation: "plan",

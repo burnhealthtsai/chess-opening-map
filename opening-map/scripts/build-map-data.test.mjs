@@ -1036,6 +1036,18 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(budapestBdg?.summary ?? "", /BDG/);
   assert.match(budapestBdg?.difference ?? "", /補償.*爭議|爭議.*補償/);
 
+  const englundBdg = data.analogyGroups.find((group) => group.id === "englund-blackmar-diemer-reversed");
+  assert.equal(englundBdg?.title, "英格蘭棄兵 ↔ 布萊克馬－迪默棄兵");
+  assert.equal(englundBdg?.relation, "reversed");
+  assert.deepEqual(englundBdg?.blackIds, ["b-englund-gambit"]);
+  assert.deepEqual(englundBdg?.whiteIds, ["w-blackmar-diemer-gambit", "w-blackmar-diemer-gambit-accepted"]);
+  assert.match(englundBdg?.examples.black.line ?? "", /1\. d4 e5 2\. dxe5 Nc6/);
+  assert.match(englundBdg?.examples.white.line ?? "", /1\. d4 d5 2\. e4 dxe4/);
+  assert.match(englundBdg?.summary ?? "", /e 兵.*d 兵|d 兵.*e 兵/);
+  assert.match(englundBdg?.sharedIdeas.join(" ") ?? "", /中央兵.*主動權|主動權.*中央兵/);
+  assert.match(englundBdg?.difference ?? "", /黑方.*少一個先手|少一個先手.*黑方/);
+  assert.match(englundBdg?.difference ?? "", /f3/);
+
   const benkoPolish = data.analogyGroups.find((group) => group.id === "benko-polish-queenside-plan");
   assert.equal(benkoPolish?.title, "班科棄兵 ↔ 波蘭開局");
   assert.equal(benkoPolish?.relation, "plan");
@@ -1060,9 +1072,9 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(polishReversed?.difference ?? "", /e4.*Bxb5|Bxb5.*e4/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 8, structure: 3, plan: 6 },
+    { reversed: 9, structure: 3, plan: 6 },
   );
-  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 53);
+  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 54);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));
