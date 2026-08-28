@@ -37,7 +37,7 @@ test("opening dialogs announce themselves, trap focus and return it after Escape
 });
 
 test("WASD follows only the openings visible in the current explorer", () => {
-  assert.match(app, /if \(query\.trim\(\)\) \{\s*candidates = searchResults;/);
+  assert.match(app, /if \(query\.trim\(\)\) \{\s*candidates = visibleSearchResults;/);
   assert.match(app, /else if \(lens === "family"\)/);
   assert.match(app, /!selectedFirstMove \|\| node\.first_move === selectedFirstMove/);
   assert.match(app, /!selectedFamily \|\| node\.family\.id === selectedFamily/);

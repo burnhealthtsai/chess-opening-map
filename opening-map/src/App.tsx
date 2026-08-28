@@ -18,6 +18,7 @@ const chessboardModule = () => import("./Chessboard");
 const Chessboard = lazy(() => chessboardModule().then((module) => ({ default: module.Chessboard })));
 const pieceThemeModule = () => import("./pieceThemes");
 const openingSchemaVersion = 10;
+const searchPageSize = 24;
 
 function prepareChessSound() {
   void chessboardModule().then((module) => module.prepareChessSound()).catch(() => undefined);
@@ -84,6 +85,7 @@ export function App() {
   const [mapRetry, setMapRetry] = useState(0);
   const [lens, setLens] = useState<Lens>("family");
   const [query, setQuery] = useState("");
+  const [searchVisibleCount, setSearchVisibleCount] = useState(searchPageSize);
   const [category, setCategory] = useState(all);
   const [styleSide, setStyleSide] = useState(all);
   const [selectedSide, setSelectedSide] = useState<Opening["side"]>("白方");
@@ -217,6 +219,7 @@ export function App() {
       && (category === all || node.category === category)
       && (styleSide === all || node.side === styleSide));
   }, [category, data, query, styleSide]);
+  const visibleSearchResults = useMemo(() => searchResults.slice(0, searchVisibleCount), [searchResults, searchVisibleCount]);
 
   useEffect(() => {
     if (!openingIsModal) return;
@@ -250,7 +253,7 @@ export function App() {
   }, [detailError, detailedSelected, openingIsModal, selectedId]);
 
   function switchLens(next: Lens) {
-    setLens(next); setSelectedId(null); setQuery("");
+    setLens(next); setSelectedId(null); setQuery(""); setSearchVisibleCount(searchPageSize);
     if (data && ["transpositions", "analogies"].includes(next)) void loadOpeningExplorerData(data.catalog_revision).catch(() => undefined);
     if (next !== "style") setSelectedStyle(null);
   }
@@ -322,7 +325,7 @@ export function App() {
       if (!data || !["w", "a", "s", "d", "W", "A", "S", "D"].includes(event.key)) return;
       let candidates: Opening[] = [];
       if (query.trim()) {
-        candidates = searchResults;
+        candidates = visibleSearchResults;
       } else if (lens === "family") {
         candidates = data.nodes.filter((node) => (category === all || node.category === category)
           && node.side === selectedSide
@@ -345,7 +348,7 @@ export function App() {
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [category, data, lens, query, searchResults, selectedFamily, selectedFirstMove, selectedId, selectedSide, selectedStyle, styleSide]);
+  }, [category, data, lens, query, selectedFamily, selectedFirstMove, selectedId, selectedSide, selectedStyle, styleSide, visibleSearchResults]);
 
   if (!data) return mapError
     ? <main className="catalog-load-error" role="alert"><div><span aria-hidden="true">↻</span><h1>開局地圖暫時載入失敗</h1><p>{mapError}</p><button onClick={retryOpeningMap}>重新載入地圖</button></div></main>
@@ -367,14 +370,14 @@ export function App() {
     </nav>
 
     <section className="compact-toolbar" aria-label="搜尋與篩選">
-      <label className="search"><span aria-hidden="true">⌕</span><input aria-label="搜尋開局、中英文或 ECO" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜尋開局、中英文或 ECO" /></label>
-      {(lens === "style" || query) && <Filter label="陣營" value={styleSide} values={[all, "白方", "黑方"]} onChange={setStyleSide} />}
-      <Filter label="類別" value={category} values={[all, "主流", "趣味"]} onChange={setCategory} />
-      {(query || category !== all || styleSide !== all) && <button className="clear-button" onClick={() => { setQuery(""); setCategory(all); setStyleSide(all); }}>清除</button>}
+      <label className="search"><span aria-hidden="true">⌕</span><input aria-label="搜尋開局、中英文或 ECO" value={query} onChange={(event) => { setQuery(event.target.value); setSearchVisibleCount(searchPageSize); }} placeholder="搜尋開局、中英文或 ECO" /></label>
+      {(lens === "style" || query) && <Filter label="陣營" value={styleSide} values={[all, "白方", "黑方"]} onChange={(value) => { setStyleSide(value); setSearchVisibleCount(searchPageSize); }} />}
+      <Filter label="類別" value={category} values={[all, "主流", "趣味"]} onChange={(value) => { setCategory(value); setSearchVisibleCount(searchPageSize); }} />
+      {(query || category !== all || styleSide !== all) && <button className="clear-button" onClick={() => { setQuery(""); setCategory(all); setStyleSide(all); setSearchVisibleCount(searchPageSize); }}>清除</button>}
       <a className="notion-opening-link" href="https://app.notion.com/p/3acea00652918196baa0c23ddfc859a5" target="_blank" rel="noreferrer"><span>▣</span>開啟 Notion 開局資料庫 ↗</a>
     </section>
 
-    {query.trim() ? <SearchResults nodes={searchResults} query={query} onSelect={selectOpening} /> : <div className={selected ? "workspace focused" : "workspace single"}>
+    {query.trim() ? <SearchResults nodes={searchResults} visibleNodes={visibleSearchResults} query={query} onSelect={selectOpening} onShowMore={() => setSearchVisibleCount((current) => Math.min(current + searchPageSize, searchResults.length))} /> : <div className={selected ? "workspace focused" : "workspace single"}>
       <section className={`explorer-panel ${lens === "family" && selectedSide && !selectedFamily ? "split-overview" : ""}`}>
         {lens === "family" ? <FamilyExplorer data={data} category={category} side={selectedSide} firstMove={selectedFirstMove} familyId={selectedFamily}
           selectedId={selectedId} onHome={home} onSide={openSide} onFirstMove={openFirstMove} onFamily={openFamily} onSelect={selectOpening} />
@@ -502,8 +505,9 @@ function SideSwitcher({ data, category, side, onSide }: { data: OpeningMapData; 
   </nav>;
 }
 
-function SearchResults({ nodes, query, onSelect }: { nodes: Opening[]; query: string; onSelect: (id: string) => void }) {
-  return <section className="search-results"><p className="eyebrow">SEARCH RESULTS</p><h2>「{query}」找到 {nodes.length} 個開局</h2>{nodes.length ? <div className="opening-card-grid search-card-grid">{nodes.map((node) => <OpeningCard key={node.id} node={node} preview onClick={() => onSelect(node.id)} />)}</div> : <Empty />}</section>;
+function SearchResults({ nodes, visibleNodes, query, onSelect, onShowMore }: { nodes: Opening[]; visibleNodes: Opening[]; query: string; onSelect: (id: string) => void; onShowMore: () => void }) {
+  const remaining = nodes.length - visibleNodes.length;
+  return <section className="search-results"><p className="eyebrow">SEARCH RESULTS</p><h2 aria-live="polite">「{query}」找到 {nodes.length} 個開局</h2>{nodes.length ? <><div id="search-result-grid" className="opening-card-grid search-card-grid">{visibleNodes.map((node) => <OpeningCard key={node.id} node={node} preview onClick={() => onSelect(node.id)} />)}</div><footer className="search-results-footer"><p role="status">已顯示 {visibleNodes.length} / {nodes.length} 個開局</p>{remaining > 0 && <button type="button" className="search-load-more" aria-controls="search-result-grid" onClick={onShowMore}>顯示更多 <span>剩餘 {remaining} 個</span></button>}</footer></> : <Empty />}</section>;
 }
 
 function OpeningCard({ node, selected, preview = false, onClick }: { node: Opening; selected?: boolean; preview?: boolean; onClick: () => void }) {
