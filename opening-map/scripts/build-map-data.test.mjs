@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 13);
+  assert.ok(data.analogyGroups.length >= 14);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -1010,9 +1010,21 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(benkoPolish?.summary ?? "", /b 兵.*長斜線|長斜線.*b 兵/);
   assert.match(benkoPolish?.difference ?? "", /半開.*a.*b 線/);
   assert.match(benkoPolish?.difference ?? "", /目標/);
+
+  const polishReversed = data.analogyGroups.find((group) => group.id === "polish-defense-opening-reversed");
+  assert.equal(polishReversed?.title, "波蘭防禦 ↔ 波蘭開局");
+  assert.equal(polishReversed?.relation, "reversed");
+  assert.deepEqual(polishReversed?.blackIds, ["b-polish-defense"]);
+  assert.deepEqual(polishReversed?.whiteIds, ["w-polish-opening", "w-polish-opening-with-d5"]);
+  assert.match(polishReversed?.examples.black.line ?? "", /1\. d4 b5.*Bb7/);
+  assert.match(polishReversed?.examples.white.line ?? "", /1\. b4 d5 2\. Bb2/);
+  assert.match(polishReversed?.summary ?? "", /反色|類比/);
+  assert.match(polishReversed?.sharedIdeas.join(" ") ?? "", /b 兵.*長斜線|長斜線.*b 兵/);
+  assert.match(polishReversed?.difference ?? "", /少一個先手|慢一拍/);
+  assert.match(polishReversed?.difference ?? "", /e4.*Bxb5|Bxb5.*e4/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 6, structure: 3, plan: 4 },
+    { reversed: 7, structure: 3, plan: 4 },
   );
 
   for (const group of data.analogyGroups) {

@@ -395,6 +395,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "polish-defense-opening-reversed",
+    title: "波蘭防禦 ↔ 波蘭開局",
+    relation: "reversed",
+    summary: "波蘭防禦的 1…b5 是波蘭開局 1.b4 的黑方類比：兩邊都先用 b 兵取得后翼空間，再以 …Bb7／Bb2 沿長斜線影響中心。",
+    blackIds: ["b-polish-defense"],
+    whiteIds: ["w-polish-opening", "w-polish-opening-with-d5"],
+    sharedIdeas: ["提早推 b 兵取得后翼空間", "以 …Bb7／Bb2 控制長斜線", "用 a 兵或 c 兵支援、打開后翼線路"],
+    difference: "波蘭防禦由黑方使用，少一個先手且白方已用 d4 佔領中心；1…b5 也可能立刻受到 e4 與 Bxb5 的戰術壓力。白方波蘭開局雖多一拍，b4 兵仍可能被 …a5 或 …c5 攻擊，因此只能借用布局觀念，不能逐手鏡像。",
+    examples: {
+      black: { openingId: "b-polish-defense", label: "波蘭防禦長象配置", line: "1. d4 b5 2. Nf3 Bb7 3. e3 a6 4. Bd3 Nf6" },
+      white: { openingId: "w-polish-opening-with-d5", label: "波蘭開局反色配置", line: "1. b4 d5 2. Bb2 Nf6 3. e3 e6 4. Nf3 Be7" },
+    },
+  },
+  {
     id: "nimzo-trompowsky-pin",
     title: "尼姆佐印度防禦 ↔ 特龍普夫斯基／托雷攻擊",
     relation: "plan",
