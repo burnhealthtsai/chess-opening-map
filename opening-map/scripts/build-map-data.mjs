@@ -276,13 +276,13 @@ const curatedAnalogies = [
   },
   {
     id: "kings-indian-defense-attack",
-    title: "王翼印度防禦 ↔ 王翼印度攻擊",
+    title: "王翼象翼防禦群 ↔ 王翼印度攻擊",
     relation: "reversed",
-    summary: "王翼印度攻擊把黑方王翼印度的 Nf6、g6、Bg7、d6、e5 配置換成白方的 Nf3、g3、Bg2、d3、e4。",
-    blackIds: ["b-kings-indian-defense", "b-kings-indian-defense-orthodox-variation"],
+    summary: "王翼印度、皮爾茨與現代防禦都以 …g6、…Bg7、…d6 遠距離壓迫中心；王翼印度攻擊將這套配置反色為 Nf3、g3、Bg2、d3、e4。",
+    blackIds: ["b-kings-indian-defense", "b-kings-indian-defense-orthodox-variation", "b-pirc-defense", "b-modern-defense"],
     whiteIds: ["w-kings-indian-attack", "w-kings-indian-attack-with-e6"],
     sharedIdeas: ["王翼象翼與安全易位", "先讓對手建立中心再反擊", "以 e、f 兵推進製造王翼攻勢"],
-    difference: "同一套子力配置換色後，攻擊速度與中心責任會改變；白方多一手，通常先穩定完成 e4、d3 再準備 e5。",
+    difference: "王翼印度通常對抗 d4、c4 中心，皮爾茨與現代防禦則面對 e4、d4；反色成白方後還多一個先手，所以可借用配置與突破判斷，不能逐手複製攻擊時間。",
     examples: {
       black: { openingId: "b-kings-indian-defense", label: "王翼印度配置", line: "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O" },
       white: { openingId: "w-kings-indian-attack-with-e6", label: "反色王翼印度配置", line: "1. Nf3 d5 2. g3 Nf6 3. Bg2 e6 4. O-O Be7 5. d3 O-O 6. Nbd2 c5 7. e4" },

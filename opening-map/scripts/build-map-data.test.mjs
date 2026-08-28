@@ -922,6 +922,14 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.ok(!map.nodes.some((opening) => opening.title_zh.includes("英國式開局")));
   assert.match(sicilianEnglish.examples.white.line, /1\. c4 e5/);
 
+  const kingsideFianchetto = data.analogyGroups.find((group) => group.id === "kings-indian-defense-attack");
+  assert.equal(kingsideFianchetto?.title, "王翼象翼防禦群 ↔ 王翼印度攻擊");
+  assert.ok(kingsideFianchetto?.blackIds.includes("b-kings-indian-defense"));
+  assert.ok(kingsideFianchetto?.blackIds.includes("b-pirc-defense"));
+  assert.ok(kingsideFianchetto?.blackIds.includes("b-modern-defense"));
+  assert.match(kingsideFianchetto?.summary ?? "", /王翼印度.*皮爾茨.*現代防禦/);
+  assert.match(kingsideFianchetto?.difference ?? "", /e4.*d4|d4.*e4/);
+
   const benoniReti = data.analogyGroups.find((group) => group.id === "benoni-reti-reversed");
   assert.equal(benoniReti?.relation, "reversed");
   assert.ok(benoniReti?.blackIds.includes("b-benoni-defense-modern"));
@@ -957,6 +965,7 @@ test("analogy groups compare black defenses with white opening plans without cal
     assert.equal(group.whiteIds.length, new Set(group.whiteIds).size);
     assert.ok(group.blackIds.every((id) => openingById.get(id)?.side === "黑方"));
     assert.ok(group.whiteIds.every((id) => openingById.get(id)?.side === "白方"));
+    const examplePositions = [];
     for (const [side, example, members] of [["黑方", group.examples.black, group.blackIds], ["白方", group.examples.white, group.whiteIds]]) {
       assert.ok(members.includes(example.openingId), `${group.id}: ${side}示範不屬於群組`);
       assert.ok(example.label.length >= 4, `${group.id}: ${side}示範缺少標籤`);
@@ -964,7 +973,9 @@ test("analogy groups compare black defenses with white opening plans without cal
       const moves = sanMoves(example.line);
       assert.ok(moves.length >= 4, `${group.id}: ${side}示範過短`);
       for (const move of moves) assert.doesNotThrow(() => game.move(move), `${group.id}: ${side}示範含非法棋步 ${move}`);
+      examplePositions.push(game.fen().split(" ").slice(0, 4).join(" "));
     }
+    assert.notEqual(examplePositions[0], examplePositions[1], `${group.id}: 類似比較不得冒充精確轉置`);
   }
   assert.equal(new Set(data.analogyGroups.map(({ id }) => id)).size, data.analogyGroups.length);
   assert.equal(new Set(data.analogyGroups.map(({ summary }) => summary)).size, data.analogyGroups.length);
