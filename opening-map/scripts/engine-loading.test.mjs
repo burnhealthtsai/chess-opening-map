@@ -31,6 +31,7 @@ test("查看謎題解答使用已驗證解答，不在背景重算", () => {
   assert.doesNotMatch(puzzles, /analysis=\{showStockfish \|\| showAnswer\}/);
   assert.match(puzzles, /preferredBestMove=\{selected\.answerUci\}/);
   assert.match(puzzles, /preferredBestMoveFen=\{selected\.fen\}/);
+  assert.match(puzzles, /orientation=\{selected\.side === "黑方" \? "black" : "white"\}/);
   assert.match(puzzles, /selected\.solutionLine\.join\(" "\)/);
   assert.match(board, /preferredBestMove\?: string/);
   assert.match(board, /preferredBestMoveFen\?: string/);

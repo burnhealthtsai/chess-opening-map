@@ -4,7 +4,7 @@ import test from "node:test";
 import { Chess } from "chess.js";
 
 test("Notion puzzle export contains legal Stockfish-verified answers", () => {
-  const catalog = JSON.parse(readFileSync(new URL("../public/notion-puzzles.json", import.meta.url), "utf8"));
+  const catalog = JSON.parse(readFileSync(new URL("../data/notion-puzzles-source.json", import.meta.url), "utf8"));
   assert.equal(catalog.source, "Notion · 個人西洋棋謎題");
   assert.equal(catalog.count, catalog.puzzles.length);
   assert.ok(catalog.count > 0);
@@ -29,7 +29,7 @@ test("Notion puzzle export contains legal Stockfish-verified answers", () => {
 });
 
 test("synced puzzles replay the opponent's previous move into the puzzle position", () => {
-  const catalog = JSON.parse(readFileSync(new URL("../public/notion-puzzles.json", import.meta.url), "utf8"));
+  const catalog = JSON.parse(readFileSync(new URL("../data/notion-puzzles-source.json", import.meta.url), "utf8"));
   const animated = catalog.puzzles.filter((puzzle) => puzzle.previousFen && puzzle.previousMove);
   assert.ok(animated.length > 0, "expected puzzles with a verified previous move");
   assert.ok(animated.length >= Math.floor(catalog.count * 0.8), "most puzzles should include a verified previous move");

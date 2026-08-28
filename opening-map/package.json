@@ -4,12 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate:data": "node scripts/build-map-data.mjs",
-    "generate:puzzles": "node scripts/export-notion-puzzles.mjs && node scripts/refresh-puzzle-solutions.mjs",
+    "generate:data": "node scripts/build-map-data.mjs && node scripts/split-puzzle-catalog.mjs",
+    "generate:puzzle-catalog": "node scripts/split-puzzle-catalog.mjs",
+    "generate:puzzles": "node scripts/export-notion-puzzles.mjs && node scripts/refresh-puzzle-solutions.mjs && node scripts/split-puzzle-catalog.mjs",
     "generate:engine": "node scripts/copy-stockfish.mjs",
     "dev": "pnpm generate:data && vite",
     "typecheck": "tsc --noEmit",
-    "test": "node --test scripts/*.test.mjs",
+    "test": "pnpm generate:puzzle-catalog && node --test scripts/*.test.mjs",
     "build": "pnpm generate:data && pnpm generate:engine && tsc --noEmit && vite build"
   },
   "dependencies": {

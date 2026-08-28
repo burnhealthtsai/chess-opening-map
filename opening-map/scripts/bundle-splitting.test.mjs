@@ -93,6 +93,11 @@ test("the large puzzle browser loads only when its tab is opened", () => {
   assert.doesNotMatch(app, /fetch\("\.\/notion-puzzles\.json"\)/);
   assert.match(puzzles, /export default function PuzzleExplorer/);
   assert.match(puzzles, /fetch\("\.\/notion-puzzles\.json", \{ cache: "no-cache" \}\)/);
+  assert.match(puzzles, /catalog\.detailBase/);
+  assert.match(puzzles, /chunk-\$\{String\(chunk\)\.padStart\(3, "0"\)\}\.json/);
+  assert.match(puzzles, /正在載入棋盤與解答/);
+  assert.match(puzzles, /重新載入題目/);
+  assert.match(puzzles, /setDetailRetry\(\(value\) => value \+ 1\)/);
   assert.match(puzzles, /previousFen && selected\.previousMove/);
   assert.match(puzzles, /"查看解答"/);
   assert.match(puzzles, /analysis=\{showStockfish\}/);

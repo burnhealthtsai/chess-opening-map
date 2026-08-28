@@ -5,7 +5,7 @@ import { Chess } from "chess.js";
 
 const defaultDb = "/Users/ferociyyy/Documents/西洋棋計畫/data/chess.sqlite";
 const database = process.env.CHESS_PUZZLE_DB || defaultDb;
-const output = resolve("public/notion-puzzles.json");
+const output = resolve("data/notion-puzzles-source.json");
 const answerEngine = "Stockfish 18 Lite 18.0.8";
 const existingAnswers = new Map();
 

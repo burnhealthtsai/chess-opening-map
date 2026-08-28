@@ -40,8 +40,8 @@ jobs:
       - name: Test
         run: pnpm test
       - name: Build
-        # The checked-in puzzle export is the public, sanitized snapshot. The
-        # source SQLite database is intentionally local-only and never uploaded.
+        # The checked-in sanitized puzzle source is split into a lightweight
+        # search index and on-demand detail chunks. The SQLite DB stays local.
         run: pnpm build
       - name: Configure Pages
         uses: actions/configure-pages@v6

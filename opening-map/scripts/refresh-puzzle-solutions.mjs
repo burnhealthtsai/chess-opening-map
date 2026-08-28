@@ -4,7 +4,7 @@ import { availableParallelism } from "node:os";
 import { resolve } from "node:path";
 import { Chess } from "chess.js";
 
-const catalogPath = resolve("public/notion-puzzles.json");
+const catalogPath = resolve("data/notion-puzzles-source.json");
 const temporaryPath = `${catalogPath}.tmp`;
 const enginePath = resolve("node_modules/stockfish/bin/stockfish-18-lite-single.js");
 const answerEngine = "Stockfish 18 Lite 18.0.8";

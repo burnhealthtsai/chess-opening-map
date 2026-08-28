@@ -20,6 +20,8 @@ node_modules/.cache/wrangler/
 dist/
 public/opening-map.json
 public/stockfish/
+opening-map/public/notion-puzzles.json
+opening-map/public/notion-puzzle-details/
 
 # This sibling application deploys independently and is not part of the
 # chess-opening-map GitHub Pages source repository.
