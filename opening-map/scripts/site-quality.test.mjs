@@ -2,11 +2,12 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const [index, robots, sitemap, styles] = await Promise.all([
+const [index, robots, sitemap, styles, analogyStyles] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
   readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
   readFile(new URL("../src/styles.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8"),
 ]);
 
 const canonicalUrl = "https://chess-opening-map.pages.dev/";
@@ -50,4 +51,26 @@ test("classification labels meet WCAG AA normal-text contrast", () => {
     assert.match(styles, new RegExp(foreground));
   }
   assert.match(styles, /\.taxonomy-zone \.subgroup-symbol\.mover-black i \{ color: #fff; \}/);
+});
+
+test("analogy comparison labels meet WCAG AA in light and dark themes", () => {
+  const pairs = [
+    ["#1f7198", "#ffffff"],
+    ["#8a4d05", "#ffffff"],
+    ["#874b05", "#ffffff"],
+    ["#7fd2ff", "#17243a"],
+    ["#c8d7e9", "#22334c"],
+    ["#e6f2ff", "#4b5a6c"],
+    ["#d2e2f4", "#17243a"],
+    ["#7fcff2", "#17243a"],
+    ["#ffc36a", "#17243a"],
+    ["#ffca78", "#17243a"],
+    ["#c4d2e4", "#22334c"],
+  ];
+  for (const [foreground, background] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background} must reach 4.5:1`);
+    assert.ok(styles.includes(foreground) || analogyStyles.includes(foreground), `${foreground} must be present in explorer styles`);
+  }
+  assert.match(styles, /\[data-theme="dark"\] \.map-summary b/);
+  assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-ideas span/);
 });

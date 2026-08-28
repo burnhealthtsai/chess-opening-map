@@ -40,16 +40,22 @@
 .analogy-side > div { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; }
 .analogy-opening-card { display: grid; min-width: 0; padding: 9px; text-align: left; border: 1px solid var(--line); border-radius: 10px; background: color-mix(in srgb, var(--surface) 92%, #edf7fb); }
 .analogy-opening-card:hover { border-color: #d8902b; transform: translateY(-1px); }
-.analogy-opening-card > span { color: #2580a9; font-family: ui-monospace, monospace; font-size: .58rem; font-weight: 900; }
+.analogy-opening-card > span { color: #1f7198; font-family: ui-monospace, monospace; font-size: .58rem; font-weight: 900; }
 .analogy-opening-card > b, .analogy-opening-card > small { overflow-wrap: anywhere; white-space: normal; }
 .analogy-opening-card > b { margin-top: 2px; color: var(--navy); font-size: .68rem; line-height: 1.35; }
 .analogy-opening-card > small { color: var(--muted); font-size: .56rem; line-height: 1.35; }
 .analogy-opening-card .opening-position-preview { width: min(100%, 145px); margin: 8px auto 2px; }
-.analogy-opening-card > em { margin-top: 5px; color: #ba6d12; font-size: .58rem; font-style: normal; font-weight: 850; text-align: right; }
-.analogy-arrow { display: grid; place-content: center; color: #c1781c; text-align: center; }
+.analogy-opening-card > em { margin-top: 5px; color: #8a4d05; font-size: .58rem; font-style: normal; font-weight: 850; text-align: right; }
+.analogy-arrow { display: grid; place-content: center; color: #874b05; text-align: center; }
 .analogy-arrow b { font-size: 2rem; }.analogy-arrow small { font-size: .56rem; font-weight: 850; writing-mode: vertical-rl; }
 .analogy-difference { margin-top: 16px; padding: 11px 13px; border-left: 4px solid #e19934; border-radius: 8px; background: color-mix(in srgb, var(--surface) 78%, #fff0d5); }
 .analogy-difference p { margin: 4px 0 0; color: var(--muted); font-size: .68rem; line-height: 1.55; }
+[data-theme="dark"] .analogy-ideas span { color: #e6f2ff; }
+[data-theme="dark"] .analogy-examples code { color: #d2e2f4; }
+[data-theme="dark"] .analogy-opening-card > span { color: #7fcff2; }
+[data-theme="dark"] .analogy-opening-card > em { color: #ffc36a; }
+[data-theme="dark"] .analogy-arrow { color: #ffca78; }
+[data-theme="dark"] .analogy-difference p { color: #c4d2e4; }
 @media (max-width: 980px) {
   .analogy-layout { grid-template-columns: 1fr; }
   .analogy-group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
