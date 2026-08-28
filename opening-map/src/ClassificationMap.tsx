@@ -35,6 +35,7 @@ type OverviewProps = {
 export function ClassificationOverview({ data, side, category, activeMove, onMove, selectedOpeningId, recommendedMove, recommendedPly, onSubgroup, onPreviewOpening, onSelectOpening }: OverviewProps) {
   const [expandedSubgroup, setExpandedSubgroup] = useState<string | null>(null);
   const [collapsedMoves, setCollapsedMoves] = useState<Set<string>>(() => new Set());
+  const scrollHintId = `taxonomy-scroll-hint-${side === "白方" ? "white" : "black"}`;
   useEffect(() => {
     setExpandedSubgroup(null);
     setCollapsedMoves(new Set());
@@ -56,7 +57,8 @@ export function ClassificationOverview({ data, side, category, activeMove, onMov
     return { move, nodes, families: familyItems, subgroups };
   }).filter((zone) => zone.nodes.length);
 
-  return <div className="classification-atlas" aria-label={`${side}開局樹狀分類圖`}>
+  return <div className="classification-atlas" role="region" tabIndex={0} aria-label={`${side}開局樹狀分類圖`} aria-describedby={scrollHintId}>
+    <p className="taxonomy-scroll-hint" id={scrollHintId}><span aria-hidden="true">↔</span>左右滑動或使用方向鍵查看更多開局</p>
     <aside className={`engine-map-guide ${recommendedMove ? "ready" : ""}`} aria-live="polite">
       <span>★</span><div><b>Stockfish 最佳棋步</b><small>{recommendedMove ? `目前推薦：${recommendedMove}，對應圓圈會金色閃爍` : "點選棋步後，可在 Live Board 查看局面與分析"}</small></div>
     </aside>

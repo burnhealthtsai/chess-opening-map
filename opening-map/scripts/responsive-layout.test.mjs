@@ -5,6 +5,7 @@ import ts from "typescript";
 
 const source = await readFile(new URL("../src/responsive.ts", import.meta.url), "utf8");
 const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+const classification = await readFile(new URL("../src/ClassificationMap.tsx", import.meta.url), "utf8");
 const compiled = ts.transpileModule(source, {
   compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022 },
 }).outputText;
@@ -19,8 +20,18 @@ test("Mini Live Board starts collapsed on phones without disappearing", () => {
 
 test("mobile opening taxonomy contains its wide tree instead of widening the page", () => {
   assert.match(styles, /\.family-directory\.detached, \.taxonomy-with-board, \.classification-atlas \{ min-width: 0; max-width: 100%; \}/);
-  assert.match(styles, /\.classification-atlas \{ overflow-x: auto; \}/);
+  assert.match(styles, /\.classification-atlas \{[^}]*overflow-x: auto;/);
   assert.match(styles, /\.taxonomy-zones \{ min-width: 560px; \}/);
+});
+
+test("mobile opening taxonomy announces and exposes its horizontal scroll region", () => {
+  assert.match(classification, /className="classification-atlas" role="region" tabIndex=\{0\}/);
+  assert.match(classification, /aria-describedby=\{scrollHintId\}/);
+  assert.match(classification, /className="taxonomy-scroll-hint" id=\{scrollHintId\}/);
+  assert.match(classification, /左右滑動或使用方向鍵查看更多開局/);
+  assert.match(styles, /\.classification-atlas:focus-visible/);
+  assert.match(styles, /\.taxonomy-scroll-hint \{[^}]*display: flex;/);
+  assert.match(styles, /\[data-theme="dark"\] \.taxonomy-scroll-hint \{[^}]*color: #d8edff;/);
 });
 
 test("mobile filters wrap below the full-width search field", () => {
