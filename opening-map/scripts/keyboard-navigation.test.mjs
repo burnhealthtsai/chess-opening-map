@@ -35,3 +35,13 @@ test("opening dialogs announce themselves, trap focus and return it after Escape
   assert.match(app, /if \(trigger\?\.isConnected\) trigger\.focus\(\)/);
   assert.match(app, /<DetailLoadError[^>]+onClose=\{closeOpening\}/);
 });
+
+test("WASD follows only the openings visible in the current explorer", () => {
+  assert.match(app, /if \(query\.trim\(\)\) \{\s*candidates = searchResults;/);
+  assert.match(app, /else if \(lens === "family"\)/);
+  assert.match(app, /!selectedFirstMove \|\| node\.first_move === selectedFirstMove/);
+  assert.match(app, /!selectedFamily \|\| node\.family\.id === selectedFamily/);
+  assert.match(app, /else if \(lens === "style" && selectedStyle\)/);
+  assert.match(app, /const nextIndex = index < 0 \? \(change < 0 \? candidates\.length - 1 : 0\)/);
+  assert.doesNotMatch(app, /Math\.max\(0, candidates\.findIndex/);
+});

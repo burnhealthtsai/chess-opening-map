@@ -320,17 +320,32 @@ export function App() {
       }
       if (isFormField) return;
       if (!data || !["w", "a", "s", "d", "W", "A", "S", "D"].includes(event.key)) return;
-      const candidates = data.nodes.filter((node) => (category === all || node.category === category) && (lens !== "family" || node.side === selectedSide))
-        .sort((a, b) => a.eco.localeCompare(b.eco) || a.title_zh.localeCompare(b.title_zh, "zh-Hant"));
+      let candidates: Opening[] = [];
+      if (query.trim()) {
+        candidates = searchResults;
+      } else if (lens === "family") {
+        candidates = data.nodes.filter((node) => (category === all || node.category === category)
+          && node.side === selectedSide
+          && (!selectedFirstMove || node.first_move === selectedFirstMove)
+          && (!selectedFamily || node.family.id === selectedFamily))
+          .sort((a, b) => a.eco.localeCompare(b.eco) || a.title_zh.localeCompare(b.title_zh, "zh-Hant"));
+      } else if (lens === "style" && selectedStyle) {
+        const moveOrder = ["e4", "d4", "c4", "Nf3", "其他"];
+        candidates = data.nodes.filter((node) => node.styles.includes(selectedStyle)
+          && (category === all || node.category === category)
+          && (styleSide === all || node.side === styleSide))
+          .sort((a, b) => moveOrder.indexOf(a.first_move) - moveOrder.indexOf(b.first_move));
+      }
       if (!candidates.length) return;
       event.preventDefault();
-      const index = Math.max(0, candidates.findIndex((node) => node.id === selectedId));
+      const index = candidates.findIndex((node) => node.id === selectedId);
       const change = event.key.toLowerCase() === "w" || event.key.toLowerCase() === "a" ? -1 : 1;
-      selectOpening(candidates[(index + change + candidates.length) % candidates.length].id);
+      const nextIndex = index < 0 ? (change < 0 ? candidates.length - 1 : 0) : (index + change + candidates.length) % candidates.length;
+      selectOpening(candidates[nextIndex].id);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [category, data, lens, selectedId, selectedSide]);
+  }, [category, data, lens, query, searchResults, selectedFamily, selectedFirstMove, selectedId, selectedSide, selectedStyle, styleSide]);
 
   if (!data) return mapError
     ? <main className="catalog-load-error" role="alert"><div><span aria-hidden="true">↻</span><h1>開局地圖暫時載入失敗</h1><p>{mapError}</p><button onClick={retryOpeningMap}>重新載入地圖</button></div></main>
