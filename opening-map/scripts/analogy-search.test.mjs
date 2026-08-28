@@ -53,8 +53,22 @@ test("Escape clears the search before the relation filter without moving focus",
   assert.match(component, /if \(query\) \{[\s\S]*setQuery\(""\);[\s\S]*return;/);
   assert.match(component, /if \(relationFilter !== "all"\) \{[\s\S]*event\.preventDefault\(\);[\s\S]*setRelationFilter\("all"\)/);
   assert.match(component, /onKeyDown=\{clearSearchWithEscape\}/);
-  assert.match(component, /aria-keyshortcuts="Escape"/);
+  assert.match(component, /aria-keyshortcuts="\/ Escape"/);
   assert.match(component, /Esc：先清搜尋，再清分類/);
+});
+
+test("slash focuses analogy search without hijacking form input", () => {
+  assert.match(component, /const searchInputRef = useRef<HTMLInputElement>\(null\)/);
+  assert.match(component, /function focusSearchWithSlash\(event: KeyboardEvent<HTMLDivElement>\)/);
+  assert.match(component, /event\.key !== "\/"/);
+  assert.match(component, /event\.metaKey \|\| event\.ctrlKey \|\| event\.altKey/);
+  assert.match(component, /target\.matches\("input, textarea, select"\)/);
+  assert.match(component, /target\.isContentEditable/);
+  assert.match(component, /searchInputRef\.current\?\.focus\(\)/);
+  assert.match(component, /onKeyDown=\{focusSearchWithSlash\}/);
+  assert.match(component, /ref=\{searchInputRef\}/);
+  assert.match(component, /aria-keyshortcuts="\/ Escape"/);
+  assert.match(component, /／：跳到搜尋・Esc：先清搜尋，再清分類/);
 });
 
 test("analogy relation labels keep a text label and a relation-specific visual class", () => {
