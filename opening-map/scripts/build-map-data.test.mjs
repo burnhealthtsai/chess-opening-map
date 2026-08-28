@@ -385,6 +385,38 @@ test("major asymmetric king-pawn defenses keep distinct strategies and family li
   assert.match(byId.get("b-scandinavian-defense-portuguese-gambit").ideas, /2\.exd5.*…Nf6.*…Bg4/);
 });
 
+test("named open king-pawn systems keep structure-specific teaching", () => {
+  const ids = [
+    "w-scotch-game-scotch-gambit",
+    "w-vienna-game-vienna-gambit",
+    "w-ruy-lopez-exchange-variation",
+    "w-ruy-lopez-closed",
+    "w-vienna-gambit-with-max-lange-defense",
+    "b-petrovs-defense",
+    "b-philidor-defense",
+    "b-italian-game-two-knights-defense",
+    "b-ruy-lopez-berlin-defense",
+    "b-ruy-lopez-marshall-attack",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-scotch-game-scotch-gambit").ideas, /4\.Bc4.*f7/);
+  assert.match(byId.get("w-vienna-game-vienna-gambit").ideas, /3\.f4.*…d5/);
+  assert.match(byId.get("w-vienna-gambit-with-max-lange-defense").ideas, /…Nc6.*f4/);
+  assert.match(byId.get("w-ruy-lopez-exchange-variation").ideas, /Bxc6.*疊兵/);
+  assert.match(byId.get("w-ruy-lopez-closed").ideas, /c3.*d4.*后翼/);
+  assert.match(byId.get("b-petrovs-defense").ideas, /2…Nf6.*e4/);
+  assert.match(byId.get("b-philidor-defense").ideas, /2…d6.*c8 象/);
+  assert.match(byId.get("b-italian-game-two-knights-defense").ideas, /3…Nf6.*4\.Ng5.*…d5/);
+  assert.match(byId.get("b-ruy-lopez-berlin-defense").ideas, /3…Nf6.*e4/);
+  assert.match(byId.get("b-ruy-lopez-marshall-attack").ideas, /8…d5.*e4 兵/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
