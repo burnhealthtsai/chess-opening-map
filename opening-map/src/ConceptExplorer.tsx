@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Chess } from "chess.js";
 import { Chessboard } from "./Chessboard";
+import tacticLessonData from "./tacticLessons.json";
 import "./ConceptExplorer.css";
 
 function sideFromFen(fen: string) {
@@ -73,7 +74,7 @@ export default function ConceptExplorer() {
   const [selectedEndgame, setSelectedEndgame] = useState(endgameLessons[0]);
   const [selectedMate, setSelectedMate] = useState(mateLessons[0]);
   const [selectedPassedPawn, setSelectedPassedPawn] = useState(passedPawnLessons[0]);
-  const [selectedTactic, setSelectedTactic] = useState(tacticLessons[0]);
+  const [selectedTactic, setSelectedTactic] = useState(tacticLessonData[0]);
   const [activePhase, setActivePhase] = useState<"opening" | "middlegame" | "endgame" | "passed-pawn" | "checkmate" | "tactics">("opening");
   const phases = [
     { id: "opening" as const, roman: "Ⅰ", eyebrow: "OPENING", title: "開局下法", text: "控制中心、發展輕子、完成王的安全。不要為了吃兵而讓同一枚棋子重複移動。" },
@@ -106,8 +107,8 @@ export default function ConceptExplorer() {
       </div>
     </section>}
     {activePhase === "tactics" && <section className="tactics-library phase-content"><div className="section-heading"><div><p className="eyebrow">6 · TACTICS & TECHNIQUE</p><h3>基本戰術／技巧辨識</h3></div><small>先看局面特徵，再照步驟計算</small></div>
-      <div className="tactics-practice-layout"><div className="tactic-groups">{["戰術", "技巧"].map((group) => <section key={group}><h4>{group === "戰術" ? "強制戰術" : "局面技巧"}</h4><div>{tacticLessons.filter((lesson) => lesson.group === group).map((lesson) => <button type="button" className={selectedTactic.title === lesson.title ? "active" : ""} key={lesson.title} onClick={() => setSelectedTactic(lesson)}><span>{lesson.icon}</span><b>{lesson.title}</b></button>)}</div></section>)}</div>
-        <article className="tactic-detail"><header><span>{selectedTactic.icon}</span><div><p className="eyebrow">{selectedTactic.group}</p><h3>{selectedTactic.title}</h3></div></header><p>{selectedTactic.cue}</p><div className="tactic-example"><div><p className="eyebrow">EXAMPLE POSITION</p><h4>局面範例</h4><p>{selectedTactic.example}</p></div><Chessboard key={selectedTactic.title} line="" initialFen={selectedTactic.exampleFen} compact /></div><h4>實戰辨識步驟</h4><ol>{selectedTactic.steps.map((step) => <li key={step}>{step}</li>)}</ol><aside><b>每回合先問：</b>我有將軍、吃子或直接威脅嗎？對手下一手又有什麼強制手段？</aside></article>
+      <div className="tactics-practice-layout"><div className="tactic-groups">{["戰術", "技巧"].map((group) => <section key={group}><h4>{group === "戰術" ? "強制戰術" : "局面技巧"}</h4><div>{tacticLessonData.filter((lesson) => lesson.group === group).map((lesson) => <button type="button" className={selectedTactic.title === lesson.title ? "active" : ""} key={lesson.title} onClick={() => setSelectedTactic(lesson)}><span>{lesson.icon}</span><b>{lesson.title}</b></button>)}</div></section>)}</div>
+        <article className="tactic-detail"><header><span>{selectedTactic.icon}</span><div><p className="eyebrow">{selectedTactic.group}</p><h3>{selectedTactic.title}</h3></div></header><p>{selectedTactic.cue}</p><div className="tactic-example"><div><p className="eyebrow">EXAMPLE POSITION</p><h4>可重播局面範例</h4><p>{selectedTactic.example}</p><p className="tactic-example-line"><b>範例走法</b><span>{selectedTactic.exampleLine}</span></p></div><Chessboard key={`${selectedTactic.title}-${selectedTactic.exampleLine}`} line={selectedTactic.exampleLine} initialFen={selectedTactic.exampleFen} orientation={sideFromFen(selectedTactic.exampleFen)} showControls /></div><h4>實戰辨識步驟</h4><ol>{selectedTactic.steps.map((step) => <li key={step}>{step}</li>)}</ol><aside><b>每回合先問：</b>我有將軍、吃子或直接威脅嗎？對手下一手又有什麼強制手段？</aside></article>
       </div>
     </section>}
     {activePhase === "endgame" && <div className="endgame-library phase-content"><div className="section-heading"><div><p className="eyebrow">ENDGAME LIBRARY</p><h3>不同殘局下法</h3></div><small>點選後開啟棋盤與 Stockfish</small></div><div>{endgameLessons.map((lesson) => <button className={selectedEndgame.title === lesson.title ? "active" : ""} key={lesson.title} onClick={() => setSelectedEndgame(lesson)}><span>{lesson.icon}</span><h4>{lesson.title}</h4><p>{lesson.text}</p></button>)}</div>
