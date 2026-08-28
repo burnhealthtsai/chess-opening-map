@@ -26,6 +26,16 @@ test("analogy search reports results and keeps an accessible empty state", () =>
   assert.match(styles, /\.analogy-search-empty/);
 });
 
+test("analogy summary distinguishes unique opening coverage from repeated memberships", () => {
+  assert.match(component, /const coveredOpeningCount = useMemo\(\(\) => new Set\(groups\.flatMap\(\(group\) => \[\.\.\.group\.blackIds, \.\.\.group\.whiteIds\]\)\)\.size, \[groups\]\)/);
+  assert.match(component, /const comparisonCount = useMemo\(\(\) => groups\.reduce\(\(sum, item\) => sum \+ item\.blackIds\.length \+ item\.whiteIds\.length, 0\), \[groups\]\)/);
+  assert.match(component, /aria-label=\{`\$\{groups\.length\} 個比較群組，\$\{coveredOpeningCount\} 個不重複開局，\$\{comparisonCount\} 筆群組成員對照`\}/);
+  assert.match(component, /<b>\{coveredOpeningCount\}<\/b><small>唯一開局<\/small>/);
+  assert.match(component, /<b>\{comparisonCount\}<\/b><small>對照列次<\/small>/);
+  assert.doesNotMatch(component, /groups\.reduce\(\(sum, item\) => sum \+ item\.blackIds\.length \+ item\.whiteIds\.length, 0\)<\/b>/);
+  assert.match(styles, /\.analogy-explorer \.map-summary span/);
+});
+
 test("analogy groups can be filtered by relation while keeping search active", () => {
   assert.match(component, /const analogyRelationFilters/);
   assert.match(component, /useState<"all" \| AnalogyGroup\["relation"\]>/);
