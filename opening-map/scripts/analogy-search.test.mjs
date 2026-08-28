@@ -47,6 +47,16 @@ test("relation counts follow the active search and explain filtered empty result
   assert.match(component, /在「\{analogyRelationLabels\[relationFilter\]\}」分類沒有符合群組/);
 });
 
+test("Escape clears the search before the relation filter without moving focus", () => {
+  assert.match(component, /function clearSearchWithEscape\(event: KeyboardEvent<HTMLInputElement>\)/);
+  assert.match(component, /if \(event\.key !== "Escape"\) return/);
+  assert.match(component, /if \(query\) \{[\s\S]*setQuery\(""\);[\s\S]*return;/);
+  assert.match(component, /if \(relationFilter !== "all"\) \{[\s\S]*event\.preventDefault\(\);[\s\S]*setRelationFilter\("all"\)/);
+  assert.match(component, /onKeyDown=\{clearSearchWithEscape\}/);
+  assert.match(component, /aria-keyshortcuts="Escape"/);
+  assert.match(component, /Esc：先清搜尋，再清分類/);
+});
+
 test("analogy relation labels keep a text label and a relation-specific visual class", () => {
   assert.match(component, /className=\{`relation-\$\{item\.relation\}`\}/);
   assert.match(component, />\{analogyRelationLabels\[item\.relation\]\}<\/span>/);

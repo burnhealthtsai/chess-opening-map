@@ -2,6 +2,8 @@
 .analogy-explorer .directory-heading > div > p:last-child { max-width: 76ch; color: var(--muted); line-height: 1.6; }
 .analogy-search-row { display: flex; gap: 12px; align-items: end; justify-content: space-between; margin: 0 0 14px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); }
 .analogy-search { display: grid; width: min(100%, 440px); gap: 5px; color: var(--navy); font-size: .62rem; font-weight: 850; }
+.analogy-search > span { display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; }
+.analogy-search > span small { color: var(--muted); font-size: .53rem; font-weight: 650; }
 .analogy-search > div { position: relative; }
 .analogy-search i { position: absolute; top: 50%; left: 11px; color: #357493; font-size: 1rem; font-style: normal; transform: translateY(-53%); pointer-events: none; }
 .analogy-search input { width: 100%; min-height: 40px; padding: 8px 38px 8px 34px; color: var(--navy); border: 1px solid #a9c8d8; border-radius: 10px; outline: none; background: var(--surface-2); font: inherit; font-weight: 700; }

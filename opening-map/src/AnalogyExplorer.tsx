@@ -44,6 +44,18 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
     active?.focus({ preventScroll: true });
     active?.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" });
   }
+  function clearSearchWithEscape(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== "Escape") return;
+    if (query) {
+      event.preventDefault();
+      setQuery("");
+      return;
+    }
+    if (relationFilter !== "all") {
+      event.preventDefault();
+      setRelationFilter("all");
+    }
+  }
   function moveGroup(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
     const previous = ["ArrowUp", "ArrowLeft", "w", "a"].includes(key);
@@ -70,7 +82,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   return <div className="analogy-explorer">
     <div className="directory-heading with-summary"><div><p className="eyebrow">OPENING ANALOGY LAB</p><h2>黑方防禦 × 白方進攻類似比較</h2><p>把可以共用兵形判斷、出子配置或進攻計畫的開局放在一起。這裡比較的是「可移植的思考方式」，不是精確轉置，也不代表招法能逐手照搬。</p></div><aside className="map-summary"><span><b>{groups.length}</b><small>比較群組</small></span><i /><span><b>{groups.reduce((sum, item) => sum + item.blackIds.length + item.whiteIds.length, 0)}</b><small>開局對照</small></span></aside></div>
     <div className="analogy-search-row">
-      <label className="analogy-search"><span>查找類似體系</span><div><i aria-hidden="true">⌕</i><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="搜尋類似比較群組" placeholder="搜尋開局、ECO 或比較觀念" />{query && <button type="button" onClick={() => setQuery("")} aria-label="清除搜尋">×</button>}</div></label>
+      <label className="analogy-search"><span>查找類似體系 <small>Esc：先清搜尋，再清分類</small></span><div><i aria-hidden="true">⌕</i><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={clearSearchWithEscape} aria-label="搜尋類似比較群組" aria-keyshortcuts="Escape" placeholder="搜尋開局、ECO 或比較觀念" />{query && <button type="button" onClick={() => setQuery("")} aria-label="清除搜尋">×</button>}</div></label>
       <p aria-live="polite" className="analogy-search-status">{query.trim() || relationFilter !== "all" ? `顯示 ${visibleGroups.length} / ${groups.length} 個群組` : `共 ${groups.length} 個群組，可搜尋中英文名稱、ECO 與觀念`}</p>
     </div>
     <div className="analogy-relation-filters" role="group" aria-label="依類似關係篩選">{analogyRelationFilters.map((option) => {
