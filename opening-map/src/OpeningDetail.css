@@ -38,6 +38,11 @@
 .line-choices button.active { border-color: #a95f00; background: #fff7e6; }
 .line-choices button.active > span { color: white; border-color: #a95f00; background: #a95f00; }
 [data-theme="dark"] .line-choices button.active { background: #44351f; }
+.empty-variations { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 9px; margin-top: 10px; padding: 11px 12px; border: 1px solid #a9cdbb; border-radius: 11px; background: color-mix(in srgb, var(--surface) 88%, #e5f7ed); }
+.empty-variations > span { display: grid; width: 28px; height: 28px; place-items: center; color: #fff; border-radius: 50%; background: #21734a; font-size: .72rem; font-weight: 900; }
+.empty-variations b { color: #28734f; font-size: .72rem; line-height: 1.4; }
+.empty-variations p { margin: 3px 0 0; font-size: .68rem; line-height: 1.5; }
+[data-theme="dark"] .empty-variations b { color: #9cdbb8; }
 .variation-note { padding: 9px 11px; border-left: 3px solid #f0a11d; background: var(--surface-2); }
 
 .neighbours { display: grid; gap: 7px; }
