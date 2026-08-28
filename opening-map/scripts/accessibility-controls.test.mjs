@@ -33,3 +33,13 @@ test("puzzle result changes, pagination and detail loading have assistive semant
   assert.match(puzzles, /<nav className="puzzle-pagination" aria-label="謎題分頁">/);
   assert.match(puzzles, /className="notion-puzzle-preview puzzle-detail-state" role="status" aria-live="polite"/);
 });
+
+test("toolbar filters appear only where their values affect visible results", () => {
+  assert.match(app, /const searching = Boolean\(query\.trim\(\)\)/);
+  assert.match(app, /const showSideFilter = lens === "style" \|\| searching/);
+  assert.match(app, /const showCategoryFilter = lens === "family" \|\| lens === "style" \|\| searching/);
+  assert.match(app, /const showClearFilters = searching \|\| \(showCategoryFilter && category !== all\) \|\| \(showSideFilter && styleSide !== all\)/);
+  assert.match(app, /\{showSideFilter && <Filter label="陣營"/);
+  assert.match(app, /\{showCategoryFilter && <Filter label="類別"/);
+  assert.match(app, /\{showClearFilters && <button className="clear-button"/);
+});

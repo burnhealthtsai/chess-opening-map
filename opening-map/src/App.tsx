@@ -221,6 +221,10 @@ export function App() {
   }, [category, data, query, styleSide]);
   const visibleSearchResults = useMemo(() => searchResults.slice(0, searchVisibleCount), [searchResults, searchVisibleCount]);
   const searchScope = `${query.trim().toLowerCase()}\u0000${category}\u0000${styleSide}`;
+  const searching = Boolean(query.trim());
+  const showSideFilter = lens === "style" || searching;
+  const showCategoryFilter = lens === "family" || lens === "style" || searching;
+  const showClearFilters = searching || (showCategoryFilter && category !== all) || (showSideFilter && styleSide !== all);
 
   useEffect(() => {
     if (!openingIsModal) return;
@@ -380,9 +384,9 @@ export function App() {
 
     <section className="compact-toolbar" aria-label="搜尋與篩選">
       <label className="search"><span aria-hidden="true">⌕</span><input aria-label="搜尋開局、中英文或 ECO" value={query} onChange={(event) => { setQuery(event.target.value); setSearchVisibleCount(searchPageSize); }} placeholder="搜尋開局、中英文或 ECO" /></label>
-      {(lens === "style" || query) && <Filter label="陣營" value={styleSide} values={[all, "白方", "黑方"]} onChange={(value) => { setStyleSide(value); setSearchVisibleCount(searchPageSize); }} />}
-      <Filter label="類別" value={category} values={[all, "主流", "趣味"]} onChange={(value) => { setCategory(value); setSearchVisibleCount(searchPageSize); }} />
-      {(query || category !== all || styleSide !== all) && <button className="clear-button" onClick={() => { setQuery(""); setCategory(all); setStyleSide(all); setSearchVisibleCount(searchPageSize); }}>清除</button>}
+      {showSideFilter && <Filter label="陣營" value={styleSide} values={[all, "白方", "黑方"]} onChange={(value) => { setStyleSide(value); setSearchVisibleCount(searchPageSize); }} />}
+      {showCategoryFilter && <Filter label="類別" value={category} values={[all, "主流", "趣味"]} onChange={(value) => { setCategory(value); setSearchVisibleCount(searchPageSize); }} />}
+      {showClearFilters && <button className="clear-button" onClick={() => { setQuery(""); setCategory(all); setStyleSide(all); setSearchVisibleCount(searchPageSize); }}>清除</button>}
       <a className="notion-opening-link" href="https://app.notion.com/p/3acea00652918196baa0c23ddfc859a5" target="_blank" rel="noreferrer"><span>▣</span>開啟 Notion 開局資料庫 ↗</a>
     </section>
 
