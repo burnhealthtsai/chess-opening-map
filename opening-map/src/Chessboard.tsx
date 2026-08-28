@@ -425,7 +425,13 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
           return <button type="button" className={`square ${dark ? "dark" : "light"} ${selectedMarker ? "selected-square" : ""} ${targetMarker ? "legal-target" : ""} ${changed ? "changed-piece" : ""} ${suggested} ${blindLastMove} ${autoPlay && playback.lastTo === square ? "arrived" : ""}`}
             key={square} onClick={() => movePiece(square)} disabled={!interactive} draggable={canDrag}
             onContextMenu={(event) => event.preventDefault()}
-            onPointerDown={(event) => { if (event.button === 2) { event.preventDefault(); arrowStart.current = square; } }}
+            onPointerDown={(event) => {
+              if (event.button === 0) {
+                if (arrows.length) setArrows([]);
+                return;
+              }
+              if (event.button === 2) { event.preventDefault(); arrowStart.current = square; }
+            }}
             onPointerUp={(event) => { if (event.button === 2) { event.preventDefault(); addArrow(square, event.shiftKey); } }}
             onDragStart={(event) => { if (!canDrag || !piece) return; event.dataTransfer.effectAllowed = "move"; event.dataTransfer.setData("text/plain", square); setPieceDragImage(event, piece); setSelectedSquare(square); }}
             onDragOver={(event) => { if (interactive) event.preventDefault(); }}
