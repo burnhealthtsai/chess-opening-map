@@ -558,6 +558,44 @@ test("every former novelty template now teaches its actual formation", () => {
   assert.deepEqual(catalog.openings.filter((opening) => opening.ideas.includes("屬於非主流或趣味體系")), []);
 });
 
+test("Sicilian systems teach their own structures instead of two family templates", () => {
+  const ids = [
+    "w-sicilian-defense-alapin-variation",
+    "w-sicilian-defense-closed",
+    "w-sicilian-defense-smith-morra-gambit",
+    "w-sicilian-defense-grand-prix-attack",
+    "w-sicilian-defense-open",
+    "w-sicilian-defense-moscow-variation",
+    "w-sicilian-defense-nyezhmetdinov-rossolimo-attack",
+    "b-sicilian-defense",
+    "b-sicilian-defense-najdorf-variation",
+    "b-sicilian-defense-dragon-variation",
+    "b-sicilian-defense-classical-variation",
+    "b-sicilian-defense-kan-variation",
+    "b-sicilian-defense-lasker-pelikan-variation",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-sicilian-defense-alapin-variation").ideas, /2\.c3.*d4.*b1 馬/);
+  assert.match(byId.get("w-sicilian-defense-closed").ideas, /Nc3.*g3.*Bg2.*d3.*f4/);
+  assert.match(byId.get("w-sicilian-defense-smith-morra-gambit").ideas, /2\.d4 cxd4 3\.c3.*Nxc3/);
+  assert.match(byId.get("w-sicilian-defense-grand-prix-attack").ideas, /2\.Nc3.*3\.f4.*d4 格/);
+  assert.match(byId.get("w-sicilian-defense-open").ideas, /2\.Nf3.*3\.d4.*Nxd4.*c 線/);
+  assert.match(byId.get("w-sicilian-defense-moscow-variation").ideas, /2\.Nf3 d6 3\.Bb5\+.*…Bd7/);
+  assert.match(byId.get("w-sicilian-defense-nyezhmetdinov-rossolimo-attack").ideas, /3\.Bb5.*c6 馬.*雙兵/);
+  assert.match(byId.get("b-sicilian-defense").ideas, /1…c5.*半開 c 線.*…d5/);
+  assert.match(byId.get("b-sicilian-defense-najdorf-variation").ideas, /5…a6.*Bb5.*…b5/);
+  assert.match(byId.get("b-sicilian-defense-dragon-variation").ideas, /5…g6.*…Bg7.*c3 馬/);
+  assert.match(byId.get("b-sicilian-defense-classical-variation").ideas, /5…Nc6.*兩匹馬.*d4/);
+  assert.match(byId.get("b-sicilian-defense-kan-variation").ideas, /2…e6.*4…a6.*…Nf6/);
+  assert.match(byId.get("b-sicilian-defense-lasker-pelikan-variation").ideas, /5…e5.*d5.*d6/);
+});
+
 test("queen-pawn systems explain their distinct setups and named branches", () => {
   const ids = [
     "w-london-system-with-bd3",
