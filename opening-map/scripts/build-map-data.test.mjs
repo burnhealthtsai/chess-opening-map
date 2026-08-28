@@ -86,6 +86,50 @@ test("keeps variation explanations behind their own on-demand catalog", () => {
   }
 });
 
+test("replaces boilerplate variation notes with explanations grounded in the actual SAN line", () => {
+  const generated = buildVariationNotes(catalog);
+  let replaced = 0;
+  for (const [openingIndex, opening] of catalog.openings.entries()) {
+    for (const [variationIndex, variation] of opening.variations.entries()) {
+      const note = generated.notes[openingIndex][variationIndex];
+      const boilerplate = /比較中心張力、王安全與最差子力|找出此線專屬的突破時機/;
+      if (!boilerplate.test(variation.note)) {
+        assert.equal(note, variation.note, `${opening.id} / ${variation.name}: curated note should be preserved`);
+        continue;
+      }
+      replaced += 1;
+      assert.doesNotMatch(note, boilerplate, `${opening.id} / ${variation.name}: boilerplate leaked into output`);
+      const mainMoves = sanMoves(opening.mainline);
+      const variationMoves = sanMoves(variation.line);
+      let shared = 0;
+      while (shared < mainMoves.length && shared < variationMoves.length && mainMoves[shared] === variationMoves[shared]) shared += 1;
+      let distinguishingFocus = null;
+      for (let candidate = 0; candidate < variationMoves.length; candidate += 1) {
+        const sharesPrefix = opening.variations.some((sibling, siblingIndex) => {
+          if (siblingIndex === variationIndex) return false;
+          const siblingMoves = sanMoves(sibling.line);
+          return siblingMoves.length > candidate
+            && variationMoves.slice(0, candidate + 1).every((move, index) => siblingMoves[index] === move);
+        });
+        if (!sharesPrefix) {
+          distinguishingFocus = candidate;
+          break;
+        }
+      }
+      const focus = distinguishingFocus ?? (shared < variationMoves.length ? shared : Math.max(0, variationMoves.length - 1));
+      assert.ok(note.includes(variationMoves[focus]), `${opening.id} / ${variation.name}: note omits the actual focus move`);
+      assert.match(note, /白方|黑方/, `${opening.id} / ${variation.name}: note omits the moving side`);
+    }
+  }
+  assert.equal(replaced, 404);
+
+  const italianIndex = catalog.openings.findIndex((opening) => opening.id === "w-italian-game");
+  assert.match(generated.notes[italianIndex][0], /5\.d3.*d2兵.*d3/);
+  assert.match(generated.notes[italianIndex][1], /4…Qe7.*后.*d8.*e7/);
+  assert.match(generated.notes[italianIndex][2], /5\.d4.*d2兵.*d4/);
+  assert.equal(new Set(generated.notes[italianIndex]).size, 3);
+});
+
 test("keeps secondary explorer groups in a version-matched lazy catalog", () => {
   const revision = buildCatalogRevision(catalog, variationCatalog);
   const map = buildMapData(catalog, variationCatalog, revision);

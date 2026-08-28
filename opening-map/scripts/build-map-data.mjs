@@ -414,11 +414,99 @@ export function buildOpeningDetails(catalog, catalogRevision = buildCatalogRevis
   };
 }
 
+const boilerplateVariationNote = /比較中心張力、王安全與最差子力|找出此線專屬的突破時機/;
+const pieceNames = { p: "兵", n: "馬", b: "象", r: "車", q: "后", k: "王" };
+
+function plyLabel(index, san) {
+  const moveNumber = Math.floor(index / 2) + 1;
+  return index % 2 === 0 ? `${moveNumber}.${san}` : `${moveNumber}…${san}`;
+}
+
+function knightTargets(square) {
+  const file = square.charCodeAt(0) - 97;
+  const rank = Number(square[1]) - 1;
+  return [[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]]
+    .map(([fileOffset, rankOffset]) => [file + fileOffset, rank + rankOffset])
+    .filter(([targetFile, targetRank]) => targetFile >= 0 && targetFile < 8 && targetRank >= 0 && targetRank < 8)
+    .map(([targetFile, targetRank]) => `${String.fromCharCode(97 + targetFile)}${targetRank + 1}`);
+}
+
+function describeSanMove(chess, san) {
+  const move = chess.move(san);
+  const side = move.color === "w" ? "白方" : "黑方";
+  const homeRank = move.color === "w" ? "1" : "8";
+  if (/^O-O-O/.test(san)) return `${side}完成后翼易位，讓王離開中央並把 a${homeRank}車帶到 d${homeRank}`;
+  if (/^O-O/.test(san)) return `${side}完成王翼易位，安置王並把 h${homeRank}車帶到 f${homeRank}`;
+
+  const piece = pieceNames[move.piece] ?? "棋子";
+  let description = move.piece === "p" && move.captured
+    ? `${side}以 ${move.from}兵吃到 ${move.to}`
+    : move.piece === "p"
+    ? `${side}把 ${move.from}兵推到 ${move.to}`
+    : `${side}把${piece}從 ${move.from}移到 ${move.to}`;
+  if (move.captured && move.piece !== "p") description += `，並吃掉 ${move.to}上的${pieceNames[move.captured] ?? "棋子"}`;
+  if (move.promotion) description += `，升變成${pieceNames[move.promotion] ?? move.promotion}`;
+  if (move.piece === "n") description += `，馬由此控制 ${knightTargets(move.to).join("、")}`;
+  else if (move.piece === "b") description += "，讓象進入新的斜線";
+  else if (move.piece === "r") description += `，把車放到 ${move.to[0]} 線`;
+  else if (move.piece === "q") description += "，后提早參與局面並向多個方向施壓";
+  else if (move.piece === "p" && /[de]/.test(move.to[0])) description += "，直接改變中心控制";
+  else if (move.piece === "p" && /[cf]/.test(move.to[0])) description += "，從側面挑戰中心並準備開線";
+  else if (move.piece === "p") description += "，爭取側翼空間";
+  if (san.endsWith("#")) description += "，同時形成將死";
+  else if (san.endsWith("+")) description += "，同時將軍";
+  return description;
+}
+
+function concreteVariationNote(opening, variation, variationIndex) {
+  if (!boilerplateVariationNote.test(variation.note)) return variation.note;
+  const mainMoves = sanMoves(opening.mainline);
+  const variationMoves = sanMoves(variation.line);
+  let shared = 0;
+  while (shared < mainMoves.length && shared < variationMoves.length && mainMoves[shared] === variationMoves[shared]) shared += 1;
+  let distinguishingFocus = null;
+  for (let candidate = 0; candidate < variationMoves.length; candidate += 1) {
+    const sharesPrefix = opening.variations.some((sibling, siblingIndex) => {
+      if (siblingIndex === variationIndex) return false;
+      const siblingMoves = sanMoves(sibling.line);
+      return siblingMoves.length > candidate
+        && variationMoves.slice(0, candidate + 1).every((move, index) => siblingMoves[index] === move);
+    });
+    if (!sharesPrefix) {
+      distinguishingFocus = candidate;
+      break;
+    }
+  }
+  const focus = distinguishingFocus ?? (shared < variationMoves.length ? shared : Math.max(0, variationMoves.length - 1));
+  const chess = new Chess();
+  for (let index = 0; index < focus; index += 1) chess.move(variationMoves[index]);
+  const focusMove = variationMoves[focus];
+  const focusExplanation = describeSanMove(chess, focusMove);
+
+  let relationship;
+  if (distinguishingFocus !== null && opening.variations.length > 1) relationship = "在同組變例中確立自己的分支";
+  else if (shared < mainMoves.length && shared < variationMoves.length) relationship = "與官方辨識線分歧";
+  else if (shared === mainMoves.length && variationMoves.length > mainMoves.length) relationship = "從官方辨識局面繼續延伸";
+  else if (variationMoves.length < mainMoves.length) relationship = "標示官方辨識線中的較早節點";
+  else relationship = "與官方辨識棋路抵達同一節點";
+
+  let note = `「${variation.name}」以 ${plyLabel(focus, focusMove)} ${relationship}：${focusExplanation}。`;
+  if (variationMoves[focus + 1]) {
+    const reply = variationMoves[focus + 1];
+    note += ` 接著 ${plyLabel(focus + 1, reply)}：${describeSanMove(chess, reply)}。`;
+  }
+  if (variationMoves.length > focus + 2) {
+    const lastIndex = variationMoves.length - 1;
+    note += ` 來源棋路其後收錄至 ${plyLabel(lastIndex, variationMoves[lastIndex])}，可在上方棋盤逐步播放完整次序。`;
+  }
+  return note;
+}
+
 export function buildVariationNotes(catalog, catalogRevision = buildCatalogRevision(catalog)) {
   return {
     schema_version: schemaVersion,
     catalog_revision: catalogRevision,
-    notes: catalog.openings.map((item) => item.variations.map((variation) => variation.note)),
+    notes: catalog.openings.map((item) => item.variations.map((variation, variationIndex) => concreteVariationNote(item, variation, variationIndex))),
   };
 }
 
