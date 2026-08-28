@@ -14,6 +14,7 @@
 .style-results section > h3 { display: flex; gap: 9px; align-items: center; margin-bottom: 10px; font-size: 1rem; }
 .style-results h3 > span { padding: 5px 8px; color: white; border-radius: 7px; background: #1f80ba; font-family: ui-monospace, monospace; }
 .style-results h3 small { margin-left: auto; color: var(--muted); font-weight: 500; }
+[data-theme="dark"] .style-card small { color: #82cff1; }
 
 @media (max-width: 1050px) {
   .style-grid { grid-template-columns: repeat(3, 1fr); }
@@ -27,4 +28,3 @@
   .style-card > span { margin-bottom: 10px; }
   .style-card p { min-height: 58px; }
 }
-

@@ -7,6 +7,7 @@ const puzzles = readFileSync(new URL("../src/PuzzleExplorer.tsx", import.meta.ur
 const opponents = readFileSync(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8");
 const styles = readFileSync(new URL("../src/styles.css", import.meta.url), "utf8");
 const classification = readFileSync(new URL("../src/ClassificationMap.tsx", import.meta.url), "utf8");
+const styleExplorer = readFileSync(new URL("../src/StyleExplorer.tsx", import.meta.url), "utf8");
 
 test("global search has an explicit name, full pointer target and visible focus ring", () => {
   assert.match(app, /<span aria-hidden="true">⌕<\/span><input aria-label="搜尋開局、中英文或 ECO"/);
@@ -35,6 +36,10 @@ test("conditional taxonomy panels expose only references that exist", () => {
   assert.match(classification, /aria-controls=\{expanded \? `subgroup-\$\{side\}-\$\{zone\.move\}-\$\{subgroup\.id\}` : undefined\}/);
   assert.doesNotMatch(classification, /aria-controls=\{`subgroup-\$\{side\}-\$\{zone\.move\}-\$\{subgroup\.id\}`\}/);
   assert.match(classification, /<span aria-hidden="true">★<\/span>/);
+});
+
+test("learning-style symbols stay decorative", () => {
+  assert.match(styleExplorer, /<span aria-hidden="true">\{\["◎", "⚡", "↗", "◆", "♟"\]\[index\]\}<\/span>/);
 });
 
 test("autoplay pause control meets normal-text contrast", () => {

@@ -25,7 +25,7 @@ export default function StyleExplorer({ data, category, side, style, selectedId,
   if (!style) return <Level title="你喜歡怎樣下棋？" intro="一個開局可以同時屬於多種風格。先選最想練習的局面特質。" step="五種學習入口">
     <div className="style-grid">{data.navigation.styles.map((item, index) => {
       const count = data.nodes.filter((node) => node.styles.includes(item.value) && filter(node)).length;
-      return <button className={`style-card style-${index}`} key={item.value} onClick={() => onStyle(item.value)}><span>{["◎", "⚡", "↗", "◆", "♟"][index]}</span><b>{item.value}</b><p>{styleDescriptions[item.value]}</p><small>{count} 個開局　→</small></button>;
+      return <button className={`style-card style-${index}`} key={item.value} onClick={() => onStyle(item.value)}><span aria-hidden="true">{["◎", "⚡", "↗", "◆", "♟"][index]}</span><b>{item.value}</b><p>{styleDescriptions[item.value]}</p><small>{count} 個開局　→</small></button>;
     })}</div>
   </Level>;
   const members = data.nodes.filter((node) => node.styles.includes(style) && filter(node));

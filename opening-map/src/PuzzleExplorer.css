@@ -29,6 +29,13 @@
 .puzzle-big-groups h3 { margin: 0 0 5px; font-size: .78rem; }.puzzle-big-groups button { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 10px; color: var(--navy); border: 1px solid transparent; border-radius: 10px; background: transparent; font-size: .62rem; font-weight: 800; }.puzzle-big-groups button b { color: #74409d; font-size: .55rem; }.puzzle-big-groups button:hover, .puzzle-big-groups button.active { color: #fff; border-color: #74409d; background: #74409d; }.puzzle-big-groups button:hover b, .puzzle-big-groups button.active b { color: #fff; }
 .puzzle-pagination { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 13px; }.puzzle-pagination button { padding: 8px 12px; color: #74409d; border: 1px solid #cfb5e3; border-radius: 9px; background: var(--surface); font-size: .62rem; font-weight: 850; }.puzzle-pagination button:disabled { opacity: .4; }.puzzle-pagination span { color: var(--muted); font-size: .6rem; }
 
+[data-theme="dark"] .puzzle-stats b,
+[data-theme="dark"] .puzzle-big-groups button b,
+[data-theme="dark"] .puzzle-pagination button { color: #d8b9ef; }
+[data-theme="dark"] .notion-puzzle-grid button small { color: #d6b8ec; }
+[data-theme="dark"] .puzzle-big-groups button:hover b,
+[data-theme="dark"] .puzzle-big-groups button.active b { color: #fff; }
+
 @media (max-width: 1100px) {
   .notion-puzzle-layout { grid-template-columns: 1fr; }
   .notion-puzzle-preview { position: relative; top: 0; max-width: 620px; margin-inline: auto; }

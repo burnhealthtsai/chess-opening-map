@@ -2,12 +2,15 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const [index, robots, sitemap, styles, analogyStyles] = await Promise.all([
+const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
   readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
   readFile(new URL("../src/styles.css", import.meta.url), "utf8"),
   readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/PuzzleExplorer.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/StyleExplorer.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8"),
 ]);
 
 const canonicalUrl = "https://chess-opening-map.pages.dev/";
@@ -73,4 +76,24 @@ test("analogy comparison labels meet WCAG AA in light and dark themes", () => {
   }
   assert.match(styles, /\[data-theme="dark"\] \.map-summary b/);
   assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-ideas span/);
+});
+
+test("dark puzzle, style and transposition labels meet WCAG AA contrast", () => {
+  const pairs = [
+    ["#d8b9ef", "#17243a", puzzleStyles],
+    ["#d6b8ec", "#17243a", puzzleStyles],
+    ["#82cff1", "#17243a", styleStyles],
+    ["#1c668c", "#e5f4fb", transpositionStyles],
+    ["#c4d2e4", "#17243a", transpositionStyles],
+    ["#ffffff", "#176486", transpositionStyles],
+    ["#b8d6ea", "#17243a", transpositionStyles],
+    ["#7fd3f5", "#17243a", transpositionStyles],
+  ];
+  for (const [foreground, background, source] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background} must reach 4.5:1`);
+    assert.ok(source.includes(foreground) || (foreground === "#ffffff" && source.includes("#fff")), `${foreground} must be present in its lazy explorer styles`);
+  }
+  assert.match(puzzleStyles, /\[data-theme="dark"\] \.puzzle-stats b/);
+  assert.match(styleStyles, /\[data-theme="dark"\] \.style-card small/);
+  assert.match(transpositionStyles, /\[data-theme="dark"\] \.transposition-routes p/);
 });
