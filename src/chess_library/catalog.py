@@ -95,9 +95,23 @@ def validate_catalog(data: dict[str, Any], *, require_scores: bool = True) -> Ca
         if source.get("epd") != " ".join(_validate_pgn_line(item["mainline"], f"{opening_id} 主線").fen().split()[:4]):
             raise CatalogError(f"{opening_id} 主線與官方來源 EPD 不一致")
         lines = [variation["line"] for variation in item["variations"]]
+        names = [variation["name"] for variation in item["variations"]]
         if len(lines) != len(set(lines)):
             raise CatalogError(f"{opening_id} 含重複變例")
+        if len(names) != len(set(names)):
+            raise CatalogError(f"{opening_id} 含重複變例名稱")
         for variation in item["variations"]:
+            if variation["line"] == item["mainline"]:
+                raise CatalogError(f"{opening_id} 把主線重複列為變例")
+            source_name = source.get("name", "")
+            source_short_name = source_name.split(":", 1)[-1].strip()
+            generic_names = {
+                item["title_en"].casefold(),
+                source_name.casefold(),
+                source_short_name.casefold(),
+            }
+            if variation["name"].casefold() in generic_names:
+                raise CatalogError(f"{opening_id} 把未命名辨識前綴列為變例")
             _validate_pgn_line(variation["line"], f"{opening_id}/{variation['name']}")
     stats = CatalogStats(len(openings), counts["白方"], counts["黑方"], fun)
     if stats != CatalogStats(total=196, white=98, black=98, fun=39):

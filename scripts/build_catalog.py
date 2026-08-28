@@ -232,14 +232,27 @@ SOURCE_MATCH_OVERRIDES = {
     "Benoni Defense: Modern": "Benoni Defense: Modern Variation",
 }
 
+EXCLUDED_VARIATION_NAMES = {
+    # These are legal novelty sidelines, but they do not represent the
+    # standard Colle formation and should not be taught as its key branches.
+    "Colle System": {
+        "Colle System: Pterodactyl Variation",
+        "Colle System: Rhamphorhynchus Variation",
+    },
+}
+
 
 def select_rows(rows: list[dict[str, str]], match: str, category: str) -> list[dict[str, str]]:
     source_match = SOURCE_MATCH_OVERRIDES.get(match, match)
+    excluded_names = EXCLUDED_VARIATION_NAMES.get(match, set())
+    rows = [row for row in rows if row["name"] not in excluded_names]
     exact = [r for r in rows if r["name"] == source_match]
     descendants = [
         r for r in rows
         if r["name"].startswith(source_match + ":")
         or r["name"].startswith(source_match + ",")
+        or r["name"].startswith(source_match + " Accepted")
+        or r["name"].startswith(source_match + " Declined")
     ]
     found = exact + descendants
     if not found:
@@ -279,12 +292,13 @@ def make_item(pick: Pick, rows: list[dict[str, str]]) -> dict:
     mainline_row = candidates[0]
     chosen = [mainline_row]
     seen_lines = {mainline_row["pgn"]}
+    seen_names = {mainline_row["name"]}
     for row in candidates[1:]:
         # Upstream can contain several progressively longer recognition rows
         # with the same generic name. They are not distinct named variations.
-        if row["name"] == mainline_row["name"] or row["pgn"] in seen_lines:
+        if row["name"] in seen_names or row["pgn"] in seen_lines:
             continue
-        chosen.append(row); seen_lines.add(row["pgn"])
+        chosen.append(row); seen_lines.add(row["pgn"]); seen_names.add(row["name"])
         if len(chosen) == 4: break
     mainline = chosen[0]["pgn"]
     variations = []

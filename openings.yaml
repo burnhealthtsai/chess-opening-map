@@ -374,7 +374,23 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. e4 e5 2. f4",
-      "variations": [],
+      "variations": [
+        {
+          "name": "Abbazia Defense, Main Line",
+          "line": "1. e4 e5 2. f4 exf4 3. Nf3 d5 4. exd5 Nf6 5. Bb5+ c6 6. dxc6 bxc6 7. Bc4 Nd5",
+          "note": "王翼棄兵的「Abbazia Defense, Main Line」在第 2 回合由黑方走 exf4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Falkbeer Countergambit, Charousek Gambit, Main Line",
+          "line": "1. e4 e5 2. f4 d5 3. exd5 e4 4. d3 Nf6 5. dxe4 Nxe4 6. Nf3 Bc5 7. Qe2 Bf5",
+          "note": "王翼棄兵的「Falkbeer Countergambit, Charousek Gambit, Main Line」在第 2 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Classical, Svenonius Variation",
+          "line": "1. e4 e5 2. Bc4 Nc6 3. Nc3 Nf6 4. d3 Bc5 5. f4 d6 6. Nf3 Bg4 7. h3 Bxf3 8. Qxf3 exf4",
+          "note": "王翼棄兵的「Classical, Svenonius Variation」在第 2 回合由白方走 Bc4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        }
+      ],
       "ideas": "2.f4 直接挑戰黑方 e5 中心兵；若…exf4，白方以 Nf3、Bc4 與 d4 追求發展先手，再利用將來開放的 f 線施壓 f7。代價是 f2 兵離位後王翼變薄，補償來自節奏與開線，不是來自那顆棄兵本身。",
       "plans": [
         "黑方接受後先出 Nf3 阻止…Qh4+，再以 Bc4、d4 和 O-O 把子力對準 f7 與中心",
@@ -409,7 +425,23 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. e4 e5 2. d4 exd4 3. c3",
-      "variations": [],
+      "variations": [
+        {
+          "name": "Classical Defense",
+          "line": "1. e4 e5 2. d4 exd4 3. c3 dxc3 4. Bc4 cxb2 5. Bxb2 Nf6",
+          "note": "丹麥棄兵的「Classical Defense」在第 3 回合由黑方走 dxc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Chigorin Defense",
+          "line": "1. e4 e5 2. d4 exd4 3. c3 dxc3 4. Bc4 cxb2 5. Bxb2 Qe7",
+          "note": "丹麥棄兵的「Chigorin Defense」在第 3 回合由黑方走 dxc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Copenhagen Defense",
+          "line": "1. e4 e5 2. d4 exd4 3. c3 dxc3 4. Bc4 cxb2 5. Bxb2 Bb4+",
+          "note": "丹麥棄兵的「Copenhagen Defense」在第 3 回合由黑方走 dxc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        }
+      ],
       "ideas": "3.c3 邀請黑方用…dxc3 繼續吃兵；在完整雙兵犧牲中，白方以 Bc4、…cxb2 後 Bxb2 同時打開兩條對角線，用兩象、中心先手與 f7 壓力作為兩兵的補償。",
       "plans": [
         "黑方吃到 c3 後用 Nxc3 只棄一兵，或用 Bc4 進入雙兵犧牲；根據自己想承擔的風險選擇",
@@ -446,11 +478,6 @@
       "mainline": "1. e4 e5 2. d4 exd4 3. Qxd4",
       "variations": [
         {
-          "name": "Center Game",
-          "line": "1. e4 e5 2. d4",
-          "note": "中心開局的「Center Game」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Kupreichik Variation",
           "line": "1. e4 e5 2. d4 exd4 3. Qxd4 Nc6 4. Qe3 Nf6 5. Nc3 Bb4 6. Bd2 O-O 7. O-O-O Re8 8. Bc4 d6 9. Nh3",
           "note": "中心開局的「Kupreichik Variation」在第 3 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -459,6 +486,11 @@
           "name": "Normal Variation",
           "line": "1. e4 e5 2. d4 exd4 3. Qxd4 Nc6",
           "note": "中心開局的「Normal Variation」在第 3 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Charousek Variation",
+          "line": "1. e4 e5 2. d4 exd4 3. Qxd4 Nc6 4. Qe3 Bb4+ 5. c3 Be7",
+          "note": "中心開局的「Charousek Variation」在第 3 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "中心開局以 2.d4立即打開中心；黑方交換後，白方常以 Qxd4收回兵，但必須接受…Nc6帶節奏攻后的代價，換取開放線與快速出子的機會。",
@@ -548,19 +580,19 @@
       "mainline": "1. e4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. d3 d6 6. f4",
       "variations": [
         {
-          "name": "Closed",
-          "line": "1. e4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. d3 d6 6. Be3",
-          "note": "封閉式西西里的「Closed」在第 6 回合由白方走 Be3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed, Botvinnik Defense, Edge Variation",
+          "line": "1. e4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. d3 d6 6. f4 e5 7. Nh3 Nge7",
+          "note": "封閉式西西里的「Closed, Botvinnik Defense, Edge Variation」在第 6 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Closed",
-          "line": "1. e4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. d3 d6",
-          "note": "封閉式西西里的「Closed」延伸代表主線至第 5 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed, Traditional",
+          "line": "1. e4 c5 2. Nc3 Nc6",
+          "note": "封閉式西西里的「Closed, Traditional」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Closed",
-          "line": "1. e4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7",
-          "note": "封閉式西西里的「Closed」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed, Smyslov Variation",
+          "line": "1. e4 c5 2. Nc3 Nc6 3. g3 g6 4. Bg2 Bg7 5. d3 e6 6. Be3 Nd4 7. Nce2",
+          "note": "封閉式西西里的「Closed, Smyslov Variation」在第 5 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "Nc3、g3、Bg2、d3 保留中心兵鏈，再以 f4 直接擴張王翼。中心未交換使局面相對封閉；白方通常進攻王翼，黑方則以…Rb8、…b5 與…e6 在后翼和中心反擊。",
@@ -599,9 +631,19 @@
       "mainline": "1. e4 c5 2. d4 cxd4 3. c3",
       "variations": [
         {
-          "name": "Smith-Morra Gambit",
-          "line": "1. e4 c5 2. d4",
-          "note": "史密斯－莫拉棄兵的「Smith-Morra Gambit」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Smith-Morra Gambit Accepted, Classical Formation",
+          "line": "1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 d6 6. Bc4 a6 7. O-O Nf6",
+          "note": "史密斯－莫拉棄兵的「Smith-Morra Gambit Accepted, Classical Formation」在第 3 回合由黑方走 dxc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Smith-Morra Gambit Accepted, Chicago Defense",
+          "line": "1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Bc4 e6 6. Nf3 d6 7. O-O a6 8. Qe2 b5 9. Bb3 Ra7",
+          "note": "史密斯－莫拉棄兵的「Smith-Morra Gambit Accepted, Chicago Defense」在第 3 回合由黑方走 dxc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Smith-Morra Gambit Accepted, Larsen Defense",
+          "line": "1. e4 c5 2. d4 cxd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3 e6 6. Bc4 Qc7 7. Qe2 a6 8. O-O Bd6",
+          "note": "史密斯－莫拉棄兵的「Smith-Morra Gambit Accepted, Larsen Defense」在第 3 回合由黑方走 dxc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "2.d4 cxd4 3.c3 邀請黑方…dxc3；白方以 Nxc3 用一兵換取兩匹馬快速發展、半開 c、d 線與 Bc4 對 f7 的壓力。補償需要連續帶節奏；黑方若完成…e6、…d6 和易位，多兵會成為長期優勢。",
@@ -681,19 +723,19 @@
       "mainline": "1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6",
       "variations": [
         {
-          "name": "Advance Variation",
-          "line": "1. e4 e6 2. d4 d5 3. e5 c5 4. c3",
-          "note": "法蘭西防禦：推進變例的「Advance Variation」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Advance Variation, Milner-Barry Gambit, Main Line",
+          "line": "1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Qb6 6. Bd3 cxd4 7. cxd4 Bd7 8. O-O",
+          "note": "法蘭西防禦：推進變例的「Advance Variation, Milner-Barry Gambit, Main Line」在第 5 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Advance Variation",
-          "line": "1. e4 e6 2. d4 d5 3. e5 c5",
-          "note": "法蘭西防禦：推進變例的「Advance Variation」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Advance Variation, Main Line",
+          "line": "1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Qb6 6. a3",
+          "note": "法蘭西防禦：推進變例的「Advance Variation, Main Line」在第 5 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Advance Variation",
-          "line": "1. e4 e6 2. d4 d5 3. e5",
-          "note": "法蘭西防禦：推進變例的「Advance Variation」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Advance Variation, Milner-Barry Gambit, Sørensen Variation",
+          "line": "1. e4 e6 2. d4 d5 3. e5 c5 4. c3 Nc6 5. Nf3 Qb6 6. Bd3 cxd4 7. cxd4 Bd7 8. O-O Nxd4 9. Ng5",
+          "note": "法蘭西防禦：推進變例的「Advance Variation, Milner-Barry Gambit, Sørensen Variation」在第 5 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "法蘭西推進變例以 3.e5取得空間並建立 e5–d4兵鏈；黑方立即用…c5攻擊 d4根部，所以白方要以 c3穩住中心，再把空間轉成王翼攻勢。",
@@ -783,19 +825,19 @@
       "mainline": "1. e4 e6 2. d4 d5 3. exd5 exd5 4. Nf3",
       "variations": [
         {
-          "name": "Exchange Variation",
-          "line": "1. e4 e6 2. d4 d5 3. exd5 exd5 4. Nc3",
-          "note": "法蘭西防禦：兌換變例的「Exchange Variation」在第 4 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Exchange Variation",
-          "line": "1. e4 e6 2. d4 d5 3. exd5",
-          "note": "法蘭西防禦：兌換變例的「Exchange Variation」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Exchange Variation, Bogoljubow Variation",
           "line": "1. e4 e6 2. d4 d5 3. exd5 exd5 4. Nc3 Nf6 5. Bg5 Nc6",
           "note": "法蘭西防禦：兌換變例的「Exchange Variation, Bogoljubow Variation」在第 4 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Exchange Variation, Svenonius Variation",
+          "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. exd5 exd5 5. Bg5",
+          "note": "法蘭西防禦：兌換變例的「Exchange Variation, Svenonius Variation」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Exchange Variation, Monte Carlo Variation",
+          "line": "1. e4 e6 2. d4 d5 3. exd5 exd5 4. c4",
+          "note": "法蘭西防禦：兌換變例的「Exchange Variation, Monte Carlo Variation」在第 4 回合由白方走 c4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "法蘭西兌換變例以 3.exd5 exd5形成對稱兵形與開放 e 線，不再存在 e5–d4封閉兵鏈；白方要靠較快發展、Bd3與 c4製造不對稱，而非期待兵形自動給優勢。",
@@ -885,19 +927,19 @@
       "mainline": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nc6 5. Nc3 Nf6 6. Nf3 e6 7. cxd5 exd5 8. Bb5 Bd6 9. Bg5 O-O 10. O-O",
       "variations": [
         {
-          "name": "Panov Attack",
-          "line": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nc6 5. Nc3 Nf6 6. Nf3 e6 7. cxd5 exd5 8. Bb5 Bg4",
-          "note": "卡羅康防禦：帕諾夫攻擊的「Panov Attack」在第 8 回合由黑方走 Bg4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Panov Attack, Main Line",
+          "line": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nf6 5. Nc3 e6 6. Nf3 Bb4",
+          "note": "卡羅康防禦：帕諾夫攻擊的「Panov Attack, Main Line」在第 4 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Panov Attack",
-          "line": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nf6 5. Nc3 Nc6 6. Nf3 e6 7. c5",
-          "note": "卡羅康防禦：帕諾夫攻擊的「Panov Attack」在第 4 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Panov Attack, Modern Defense, Mieses Line",
+          "line": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nf6 5. Nc3 Nc6 6. Nf3 Bg4",
+          "note": "卡羅康防禦：帕諾夫攻擊的「Panov Attack, Modern Defense, Mieses Line」在第 4 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Panov Attack",
-          "line": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nf6 5. Nc3 e6",
-          "note": "卡羅康防禦：帕諾夫攻擊的「Panov Attack」在第 4 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Panov Attack, Modern Defense, Carlsbad Line",
+          "line": "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nf6 5. Nc3 Nc6 6. Bg5 e6",
+          "note": "卡羅康防禦：帕諾夫攻擊的「Panov Attack, Modern Defense, Carlsbad Line」在第 4 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "帕諾夫攻擊由 3.exd5 cxd5 4.c4立即攻擊黑方中心；交換 c、e兵後白方常留下孤立 d4兵，換取開放 c、e 線、活躍子力與 d5、e5前哨。",
@@ -975,7 +1017,23 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. d4 d5 2. c4",
-      "variations": [],
+      "variations": [
+        {
+          "name": "Classical Defense, Alekhine System, Main Line",
+          "line": "1. d4 d5 2. c4 dxc4 3. Nf3 Nf6 4. e3 e6 5. Bxc4 c5 6. O-O a6 7. Qe2 b5 8. Bb3 Bb7 9. Nc3",
+          "note": "后翼棄兵的「Classical Defense, Alekhine System, Main Line」在第 2 回合由黑方走 dxc4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Lasker Defense, Main Line",
+          "line": "1. d4 d5 2. c4 e6 3. Nc3 Be7 4. Nf3 Nf6 5. Bg5 h6 6. Bh4 O-O 7. e3 Ne4 8. Bxe7 Qxe7 9. cxd5 Nxc3 10. bxc3",
+          "note": "后翼棄兵的「Lasker Defense, Main Line」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Orthodox Defense, Main Line",
+          "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 Nbd7 6. Nf3 O-O 7. Rc1 h6 8. Bh4 c5",
+          "note": "后翼棄兵的「Orthodox Defense, Main Line」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        }
+      ],
       "ideas": "后翼棄兵以 1.d4 d5 2.c4直接攻擊 d5支點；若黑方…dxc4，白方通常用 e3、Bxc4自然取回兵，因此重點是中心控制與發展，不是永久犧牲一兵。",
       "plans": [
         "對…e6拒絕體系以 Nc3、Nf3、Bg5發展，再選 cxd5卡爾斯巴德或 e4突破",
@@ -1012,19 +1070,19 @@
       "mainline": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3 d6",
       "variations": [
         {
-          "name": "London System",
-          "line": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3",
-          "note": "倫敦體系的「London System」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "London System",
-          "line": "1. d4 Nf6 2. Nf3 g6 3. Bf4",
-          "note": "倫敦體系的「London System」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "London System, with Be2",
           "line": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3 d6 5. h3 c5 6. Be2",
           "note": "倫敦體系的「London System, with Be2」在第 5 回合由白方走 h3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "London System, with Bd3",
+          "line": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3 d6 5. Bd3",
+          "note": "倫敦體系的「London System, with Bd3」在第 5 回合由白方走 Bd3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Poisoned Pawn Variation",
+          "line": "1. d4 Nf6 2. Nf3 d5 3. Bf4 c5 4. e3 Qb6 5. Nc3",
+          "note": "倫敦體系的「Poisoned Pawn Variation」在第 2 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "倫敦體系先把 c1 象發展到 f4，再以 e3、Nf3與 c3建立穩固三角；白方保留 Ne5、Bd3、Nbd2與 e4 突破，但必須依黑方配置調整順序。",
@@ -1062,16 +1120,6 @@
       "difficulty": "初中階",
       "mainline": "1. d4 d5 2. Nc3 Nf6 3. Bf4 e6",
       "variations": [
-        {
-          "name": "Rapport-Jobava System",
-          "line": "1. d4 d5 2. Nc3 Nf6 3. Bf4 g6",
-          "note": "拉波特－喬巴瓦體系的「Rapport-Jobava System」在第 3 回合由黑方走 g6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Rapport-Jobava System",
-          "line": "1. d4 d5 2. Nc3 Nf6 3. Bf4",
-          "note": "拉波特－喬巴瓦體系的「Rapport-Jobava System」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
         {
           "name": "Rapport-Jobava System, with e6",
           "line": "1. d4 d5 2. Nc3 e6 3. Bf4",
@@ -1113,11 +1161,6 @@
       "difficulty": "初中階",
       "mainline": "1. d4 d5 2. Nf3 Nf6 3. e3 e6 4. Bd3",
       "variations": [
-        {
-          "name": "Colle System",
-          "line": "1. d4 d5 2. Nf3 Nf6 3. e3",
-          "note": "科勒體系以 d4、Nf3與 e3建立基本架構；接著通常以 Bd3、c3、Nbd2準備 e4。"
-        },
         {
           "name": "Traditional Colle",
           "line": "1. d4 Nf6 2. Nf3 e6 3. e3 c5 4. Bd3 d5 5. c3",
@@ -1262,19 +1305,19 @@
       "mainline": "1. d4 Nf6 2. c4 e6 3. g3 d5",
       "variations": [
         {
-          "name": "Catalan Opening",
-          "line": "1. d4 Nf6 2. c4 e6 3. g3",
-          "note": "加泰隆尼亞開局的「Catalan Opening」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Closed, Main Line",
           "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. g3 Be7 5. Bg2 O-O 6. O-O c6 7. Qc2 b6 8. Nbd2 Bb7 9. e4 Nbd7",
           "note": "加泰隆尼亞開局的「Closed, Main Line」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Closed, Main Line",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. g3 Be7 5. Bg2 O-O 6. O-O Nbd7 7. Qc2 c6 8. Nbd2",
-          "note": "加泰隆尼亞開局的「Closed, Main Line」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed Variation, Traditional Variation",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. g3 Be7 5. Bg2 O-O 6. O-O Nbd7 7. Qc2 c6 8. Nbd2 b6",
+          "note": "加泰隆尼亞開局的「Closed Variation, Traditional Variation」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Closed",
+          "line": "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 Be7 5. Nf3 O-O 6. O-O c6 7. Qc2 b6 8. Nbd2 Bb7 9. e4 Na6",
+          "note": "加泰隆尼亞開局的「Closed」在第 4 回合由白方走 Bg2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "加泰隆尼亞開局結合 d4、c4的后翼棄兵中心與 g3、Bg2王翼象；白方用長對角線持續壓迫黑方后翼，並保留 e4中心突破。",
@@ -1313,11 +1356,6 @@
       "mainline": "1. d4 Nf6 2. Nc3 d5 3. Bg5 Bf5",
       "variations": [
         {
-          "name": "Richter-Veresov Attack",
-          "line": "1. d4 Nf6 2. Nc3 d5 3. Bg5",
-          "note": "里赫特－韋列索夫攻擊的「Richter-Veresov Attack」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Two Knights System, Grünfeld Defense",
           "line": "1. d4 Nf6 2. Nc3 d5 3. Bg5 Nbd7 4. Nf3 g6",
           "note": "里赫特－韋列索夫攻擊的「Two Knights System, Grünfeld Defense」在第 3 回合由黑方走 Nbd7 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -1326,6 +1364,11 @@
           "name": "Richter Variation",
           "line": "1. d4 Nf6 2. Nc3 d5 3. Bg5 Bf5 4. f3",
           "note": "里赫特－韋列索夫攻擊的「Richter Variation」在第 4 回合由白方走 f3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Veresov Variation",
+          "line": "1. d4 Nf6 2. Nc3 d5 3. Bg5 Bf5 4. Bxf6",
+          "note": "里赫特－韋列索夫攻擊的「Veresov Variation」在第 4 回合由白方走 Bxf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "里赫特－韋列索夫攻擊以 Nc3、Bg5向 d5與 f6施壓，常用 f3支援 e4建立強中心；代價是 c 兵受 c3 馬阻擋，白方必須以積極發展證明配置。",
@@ -1415,11 +1458,6 @@
       "mainline": "1. d4 d5 2. e4 dxe4 3. Nc3 Nf6",
       "variations": [
         {
-          "name": "Blackmar-Diemer Gambit",
-          "line": "1. d4 d5 2. e4",
-          "note": "布萊克馬－迪默棄兵的「Blackmar-Diemer Gambit」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "von Popiel Gambit, Zilbermints Variation",
           "line": "1. d4 d5 2. e4 dxe4 3. Nc3 Nf6 4. Bg5 Bf5 5. Bxf6 exf6 6. g4 Bg6 7. Qe2 Bb4 8. Qb5+",
           "note": "布萊克馬－迪默棄兵的「von Popiel Gambit, Zilbermints Variation」在第 4 回合由白方走 Bg5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -1428,6 +1466,11 @@
           "name": "Zeller Defense, Soller Attack",
           "line": "1. d4 d5 2. e4 dxe4 3. Nc3 Bf5 4. f3 Nf6 5. Bc4",
           "note": "布萊克馬－迪默棄兵的「Zeller Defense, Soller Attack」在第 3 回合由黑方走 Bf5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "von Popiel Gambit",
+          "line": "1. d4 d5 2. e4 dxe4 3. Nc3 Nf6 4. Bg5",
+          "note": "布萊克馬－迪默棄兵的「von Popiel Gambit」在第 4 回合由白方走 Bg5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "1.d4 d5 2.e4 dxe4 3.Nc3 Nf6 後，白方通常用 4.f3 邀請…exf3，再以 Nxf3 用一兵換快速發展、半開 f 線與 e5 格。這是一個依賴子力活動的攻勢棄兵，若黑方及時…e6、…Be7 和易位，白方的材料不足會成為長期問題。",
@@ -1568,11 +1611,6 @@
       "mainline": "1. Nf3 Nf6 2. g3 d5",
       "variations": [
         {
-          "name": "King's Indian Attack",
-          "line": "1. Nf3 d5 2. g3",
-          "note": "王翼印度攻擊的「King's Indian Attack」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Keres Variation",
           "line": "1. Nf3 d5 2. g3 c6 3. Bg2 Bg4 4. O-O Nd7 5. d4 Ngf6 6. c4 e6 7. cxd5 exd5 8. Nc3 Bd6",
           "note": "王翼印度攻擊的「Keres Variation」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -1581,6 +1619,11 @@
           "name": "Sicilian Variation",
           "line": "1. e4 e6 2. d3 d5 3. Nd2 Nf6 4. Ngf3 c5 5. g3 Nc6 6. Bg2 Be7 7. O-O O-O 8. Re1",
           "note": "王翼印度攻擊的「Sicilian Variation」在第 1 回合由白方走 e4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "King's Indian Attack, with Bf5",
+          "line": "1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. d3 h6 6. c4 dxc4",
+          "note": "王翼印度攻擊的「King's Indian Attack, with Bf5」在第 3 回合由白方走 Bg2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "王翼印度攻擊以 Nf3、g3、Bg2、O-O完成王翼，再用 d3、Nbd2、e4建立封閉中心；白方常以 e5取得空間，安排 Re1、Nf1、h4向黑王進攻。",
@@ -1675,14 +1718,14 @@
           "note": "尼姆佐－拉森攻擊的「Classical Variation」在第 1 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Classical Variation",
-          "line": "1. b3 d5",
-          "note": "尼姆佐－拉森攻擊的「Classical Variation」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Modern Variation",
           "line": "1. b3 e5 2. Bb2 Nc6 3. c4 Nf6",
           "note": "尼姆佐－拉森攻擊的「Modern Variation」在第 1 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Spike Variation",
+          "line": "1. b3 Nf6 2. Bb2 g6 3. g4",
+          "note": "尼姆佐－拉森攻擊的「Spike Variation」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "尼姆佐－拉森攻擊以 1.b3、Bb2從長對角線控制 e5，讓黑方先表明中心；白方再用 e3、f4、c4或 Nf3攻擊中心根部。",
@@ -2184,19 +2227,19 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Bc5 6. d4 exd4 7. O-O d6 8. cxd4 Bb6 9. Nc3 Bg4",
       "variations": [
         {
-          "name": "Evans Gambit",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Ba5 6. O-O d6",
-          "note": "義大利開局：伊凡斯棄兵的「Evans Gambit」在第 5 回合由黑方走 Ba5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Evans Gambit",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4",
-          "note": "義大利開局：伊凡斯棄兵的「Evans Gambit」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Evans Gambit, McDonnell Defense, Main Line",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Bc5 6. d4 exd4 7. O-O d6 8. cxd4 Bb6",
           "note": "義大利開局：伊凡斯棄兵的「Evans Gambit, McDonnell Defense, Main Line」延伸代表主線至第 8 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Evans Gambit, Compromised Defense, Main Line",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Ba5 6. d4 exd4 7. O-O dxc3 8. Qb3 Qf6 9. e5 Qg6 10. Nxc3 Nge7 11. Ba3",
+          "note": "義大利開局：伊凡斯棄兵的「Evans Gambit, Compromised Defense, Main Line」在第 5 回合由黑方走 Ba5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Evans Gambit, Fraser Attack",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Bc5 4. b4 Bxb4 5. c3 Bc5 6. d4 exd4 7. O-O d6 8. cxd4 Bb6 9. Nc3 Bg4 10. Qa4",
+          "note": "義大利開局：伊凡斯棄兵的「Evans Gambit, Fraser Attack」在第 10 回合由白方走 Qa4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "伊凡斯棄兵以 4.b4犧牲后翼兵、逼退 c5 象，再用 c3與 d4搶佔中心；白方用一兵換發展節奏、開放線與對黑王的直接壓力。",
@@ -2388,19 +2431,19 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3",
       "variations": [
         {
-          "name": "Closed",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O",
-          "note": "西班牙開局：封閉變例的「Closed」延伸代表主線至第 8 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed, Flohr System",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Bb7",
+          "note": "西班牙開局：封閉變例的「Closed, Flohr System」在第 9 回合由黑方走 Bb7 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Closed",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O",
-          "note": "西班牙開局：封閉變例的「Closed」在第 7 回合由黑方走 O-O 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed, Zaitsev System",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Re8",
+          "note": "西班牙開局：封閉變例的「Closed, Zaitsev System」在第 9 回合由黑方走 Re8 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Closed",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3",
-          "note": "西班牙開局：封閉變例的「Closed」延伸代表主線至第 7 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Closed, Breyer Defense",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8",
+          "note": "西班牙開局：封閉變例的「Closed, Breyer Defense」在第 9 回合由黑方走 Nb8 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "封閉西班牙以 c3準備 d4建立中心，白方在中心開啟前用 h3與 Nbd2–f1–g3調度；黑方則以…b5、…Na5、…c5在后翼擴張，形成長期機動戰。",
@@ -2437,23 +2480,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nf6",
-      "variations": [
-        {
-          "name": "Open",
-          "line": "1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4",
-          "note": "開放式西西里的「Open」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Open",
-          "line": "1. e4 c5 2. Nf3 Nc6 3. d4 cxd4",
-          "note": "開放式西西里的「Open」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Open",
-          "line": "1. e4 c5 2. Nf3 Nc6 3. d4",
-          "note": "開放式西西里的「Open」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "2.Nf3 後 3.d4 直接交換 c5 兵，白方以 Nxd4 獲得中心發展馬與快速出子。黑方則得到半開 c 線、后翼多數兵與對 c2 的壓力；白方必須用發展與中心空間對沖這些長期優點。",
       "plans": [
         "以 Nc3、Be3、Qd2 或 Be2 完成子力，根據黑方…d6、…e6、…g6 選擇對應体系",
@@ -2602,9 +2629,9 @@
           "note": "法蘭西防禦：維納維爾變例的「Winawer Variation, Positional Variation」在第 4 回合由白方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Winawer Variation, Positional Variation",
-          "line": "1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Ne7 7. a4 Nbc6 8. Nf3 Qa5 9. Bd2 Bd7",
-          "note": "法蘭西防禦：維納維爾變例的「Winawer Variation, Positional Variation」在第 4 回合由白方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Winawer Variation, Poisoned Pawn Variation",
+          "line": "1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Ne7 7. Qg4 cxd4 8. Qxg7 Rg8 9. Qxh7 Nbc6",
+          "note": "法蘭西防禦：維納維爾變例的「Winawer Variation, Poisoned Pawn Variation」在第 4 回合由白方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "法蘭西維納維爾由 3.Nc3 Bb4牽制中心守護者；白方 a3後常承受 Bxc3+造成的 c 線雙兵，換取雙象、b 線與強大中心，再以 Qg4攻擊黑王。",
@@ -2643,19 +2670,19 @@
       "mainline": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 Be7 5. e5 Nfd7 6. Bxe7 Qxe7",
       "variations": [
         {
-          "name": "Classical Variation",
-          "line": "1. e4 e6 2. d4 d5 3. Nc3 a6 4. Nf3 Nf6 5. e5 Nfd7 6. Bg5",
-          "note": "法蘭西防禦：古典變例的「Classical Variation」在第 3 回合由黑方走 a6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Burn Variation, Main Line",
+          "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 dxe4 5. Nxe4 Be7 6. Bxf6 Bxf6 7. Nf3 O-O",
+          "note": "法蘭西防禦：古典變例的「Classical Variation, Burn Variation, Main Line」在第 4 回合由黑方走 dxe4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Classical Variation",
-          "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 dxe4 5. Nxe4 Be7",
-          "note": "法蘭西防禦：古典變例的「Classical Variation」在第 4 回合由黑方走 dxe4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Stahlberg Variation",
+          "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 Be7 5. e5 Nfd7 6. Bxe7 Qxe7 7. f4 O-O 8. Nf3 c5 9. Qd2 Nc6 10. O-O-O c4",
+          "note": "法蘭西防禦：古典變例的「Classical Variation, Stahlberg Variation」在第 7 回合由白方走 f4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Classical Variation",
-          "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5",
-          "note": "法蘭西防禦：古典變例的「Classical Variation」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Richter Attack",
+          "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 Be7 5. Bxf6 Bxf6 6. e5 Be7 7. Qg4",
+          "note": "法蘭西防禦：古典變例的「Classical Variation, Richter Attack」在第 5 回合由白方走 Bxf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "法蘭西古典變例以 3.Nc3 Nf6 4.Bg5牽制 f6 馬，再用 e5取得空間；黑方…Be7解除牽制後，白方常以 Bxe7交換並圍繞 d4根部與王翼突破作戰。",
@@ -2694,11 +2721,6 @@
       "mainline": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. h4 h6 7. Nf3 Nd7",
       "variations": [
         {
-          "name": "Classical Variation",
-          "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Bf5",
-          "note": "卡羅康防禦：古典變例的「Classical Variation」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Classical Variation, Spassky Variation",
           "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. h4 h6 7. Nf3 Nd7 8. h5",
           "note": "卡羅康防禦：古典變例的「Classical Variation, Spassky Variation」在第 8 回合由白方走 h5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -2707,6 +2729,11 @@
           "name": "Classical Variation, Lobron System",
           "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. h4 h6 7. Nf3 Nd7 8. h5 Bh7 9. Bd3 Bxd3 10. Qxd3 e6 11. Bd2 Ngf6 12. O-O-O Be7",
           "note": "卡羅康防禦：古典變例的「Classical Variation, Lobron System」在第 8 回合由白方走 h5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Classical Variation, Seirawan Variation",
+          "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. h4 h6 7. Nf3 Nd7 8. h5 Bh7 9. Bd3 Bxd3 10. Qxd3 Ngf6 11. Bd2 e6 12. O-O-O Bd6",
+          "note": "卡羅康防禦：古典變例的「Classical Variation, Seirawan Variation」在第 8 回合由白方走 h5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "卡羅康古典變例在…dxe4、Nxe4後讓黑方…Bf5把 c8 象發展到兵鏈外；白方以 Ng3、h4–h5取得空間並逼象表態，再準備 Bd3與王車易位。",
@@ -2745,19 +2772,19 @@
       "mainline": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. e3 Be7 5. cxd5 exd5 6. Bd3 O-O 7. Nf3 c6",
       "variations": [
         {
-          "name": "Exchange Variation",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. e3 b6 5. Nc3 Bd6 6. cxd5 exd5",
-          "note": "后翼棄兵拒絕：兌換變例的「Exchange Variation」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Exchange Variation",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 d5 4. cxd5",
-          "note": "后翼棄兵拒絕：兌換變例的「Exchange Variation」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Exchange Variation, Chameleon Variation",
           "line": "1. d4 Nf6 2. c4 e6 3. Nc3 d5 4. cxd5 exd5 5. Bg5 Be7 6. e3 O-O 7. Bd3 Nbd7 8. Qc2 Re8 9. Nge2 Nf8 10. O-O-O",
           "note": "后翼棄兵拒絕：兌換變例的「Exchange Variation, Chameleon Variation」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Exchange Variation, Reshevsky Variation",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 d5 4. cxd5 exd5 5. Bg5 c6 6. Qc2 Be7 7. e3 O-O 8. Bd3 h6 9. Bh4",
+          "note": "后翼棄兵拒絕：兌換變例的「Exchange Variation, Reshevsky Variation」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Exchange Variation, Carlsen Variation",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 d5 4. cxd5 exd5 5. Bg5 Be7 6. e3 h6 7. Bh4 Bg4",
+          "note": "后翼棄兵拒絕：兌換變例的「Exchange Variation, Carlsen Variation」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "后翼棄兵拒絕兌換變例以 cxd5 exd5形成卡爾斯巴德兵形；白方可用 b4–b5少數兵攻擊製造 c6弱兵，或準備 f3、e4在中心擴張。",
@@ -2884,11 +2911,6 @@
       "mainline": "1. Nf3 d5 2. c4 c6 3. g3 Nf6 4. Bg2 e6 5. b3 Be7 6. Bb2",
       "variations": [
         {
-          "name": "Anglo-Slav Variation",
-          "line": "1. c4 Nf6 2. g3 c6 3. Nf3 d5 4. b3",
-          "note": "列蒂開局：盎格魯斯拉夫變例的「Anglo-Slav Variation」在第 1 回合由白方走 c4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Anglo-Slav Variation, Bogoljubow Variation, Stonewall Line",
           "line": "1. Nf3 d5 2. c4 e6 3. g3 Nf6 4. Bg2 Be7 5. O-O O-O 6. b3 c6 7. Bb2",
           "note": "列蒂開局：盎格魯斯拉夫變例的「Anglo-Slav Variation, Bogoljubow Variation, Stonewall Line」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -2897,6 +2919,11 @@
           "name": "Anglo-Slav Variation, with g3",
           "line": "1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. d3 h6 6. c4 e6",
           "note": "列蒂開局：盎格魯斯拉夫變例的「Anglo-Slav Variation, with g3」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Anglo-Slav Variation, Torre System",
+          "line": "1. c4 Nf6 2. g3 c6 3. Nf3 d5 4. b3 Bg4 5. Bg2 e6 6. Bb2",
+          "note": "列蒂開局：盎格魯斯拉夫變例的「Anglo-Slav Variation, Torre System」在第 1 回合由白方走 c4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "列蒂盎格魯斯拉夫以 Nf3、c4、g3、Bg2牽制黑方 d5–c6中心，再用 b3、Bb2形成雙象長對角線；白方延後 d4，等待以 d3–e4或 cxd5改變中心。",
@@ -3021,9 +3048,9 @@
           "note": "巴恩斯開局的「Walkerling」在第 1 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Gedult Gambit",
-          "line": "1. f3 f5 2. e4 fxe4 3. Nc3",
-          "note": "巴恩斯開局的「Gedult Gambit」在第 1 回合由黑方走 f5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Fool's Mate",
+          "line": "1. f3 e5 2. g4 Qh4#",
+          "note": "巴恩斯開局的「Fool's Mate」在第 1 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "1.f3 支援下一步 e4，但它佔住王馬最自然的 f3 格，並打開通往白王的 e1–h4 對角線。若黑方以…d5 或…e5 占中心，白方必須快速 e4、d4 或 e3 修復節奏。",
@@ -3241,13 +3268,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. c4 Nf6 2. Nf3 g6 3. b4",
-      "variations": [
-        {
-          "name": "English Orangutan",
-          "line": "1. c4 Nf6 2. b4",
-          "note": "英國式猴子開局的「English Orangutan」在第 2 回合由白方走 b4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "英國式猴子開局在 1.c4、Nf3後以 3.b4搶佔后翼空間，準備 Bb2從長對角線支援中心；代價是 b4 兵可能遭…e5、…a5或…c5直接攻擊。",
       "plans": [
         "以 Bb2、g3、Bg2完成雙象長對角線配置，再依黑方中心選 d4或 e3",
@@ -3393,23 +3414,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. d3 h6 6. c4 dxc4",
-      "variations": [
-        {
-          "name": "King's Indian Attack, with Bf5",
-          "line": "1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. d3 e6 6. Nbd2",
-          "note": "王翼印度攻擊：對…Bf5的「King's Indian Attack, with Bf5」在第 5 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "King's Indian Attack, with Bf5",
-          "line": "1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. d3 e6 6. Nh4",
-          "note": "王翼印度攻擊：對…Bf5的「King's Indian Attack, with Bf5」在第 5 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "King's Indian Attack, with Bf5",
-          "line": "1. Nf3 Nf6 2. g3 d5 3. Bg2 c6 4. O-O Bf5 5. d3 h6",
-          "note": "王翼印度攻擊：對…Bf5的「King's Indian Attack, with Bf5」延伸代表主線至第 5 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "王翼印度攻擊對…Bf5時，黑方象已在…e6兵鏈外活動並控制 c2；白方可用 Nh4追象，或以 c4直接攻擊 d5，避免讓黑方無代價完成斯拉夫式配置。",
       "plans": [
         "黑方…e6前可 Nh4追擊 f5 象；若…Bg4，先判斷 f3 馬的牽制是否重要",
@@ -3444,13 +3449,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. Nf3 Nf6 2. g3 d5 3. Bg2 e6 4. O-O Be7",
-      "variations": [
-        {
-          "name": "King's Indian Attack, with e6",
-          "line": "1. Nf3 Nf6 2. g3 d5 3. Bg2 e6",
-          "note": "王翼印度攻擊：對…e6的「King's Indian Attack, with e6」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "王翼印度攻擊對…e6、…Be7的古典配置時，白方以 d3、Nbd2、e4–e5封閉中心，再把子力轉向王翼；黑方則會用…c5與…b5從后翼反擊。",
       "plans": [
         "完成 d3、Nbd2、e4、Re1後在黑馬 f6時走 e5，逼馬退並取得王翼空間",
@@ -3533,11 +3532,6 @@
       "mainline": "1. e4 e5",
       "variations": [
         {
-          "name": "King's Pawn Game",
-          "line": "1. e4",
-          "note": "王兵對局的「King's Pawn Game」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Tayler Opening, Inverted Hanham",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Be2 Nf6 4. d3 d5 5. Nbd2",
           "note": "王兵對局的「Tayler Opening, Inverted Hanham」在第 2 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -3546,6 +3540,11 @@
           "name": "Tayler Opening",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Be2 Nf6 4. d4",
           "note": "王兵對局的「Tayler Opening」在第 2 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Dresden Opening",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. c4",
+          "note": "王兵對局的「Dresden Opening」在第 2 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "王兵對局由 1.e4 e5形成對稱的開放王兵中心；雙方立即控制 d5、f5與 d4、f4，王后與 f1／f8象的線路打開，因此發展速度與王安全特別重要。",
@@ -3635,14 +3634,14 @@
           "note": "卡達斯開局的「Kádas Gambit」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Kádas Gambit",
-          "line": "1. h4 e5 2. d4 exd4 3. c3",
-          "note": "卡達斯開局的「Kádas Gambit」在第 1 回合由黑方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Myers Variation",
           "line": "1. h4 d5 2. d4 c5 3. e4",
           "note": "卡達斯開局的「Myers Variation」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Steinbok Gambit",
+          "line": "1. h4 f5 2. e4 fxe4 3. d3",
+          "note": "卡達斯開局的「Steinbok Gambit」在第 1 回合由黑方走 f5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "1.h4 立即取得 h5 格與王翼空間，可在黑方…g6 時用 h5 固定或打開 h 線。但 h 兵離位會削弱 g3 格與白王掩護，而且沒有阻止黑方…d5、…e5 占中心。",
@@ -3800,18 +3799,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3 d6 5. h3 c5 6. Be2",
-      "variations": [
-        {
-          "name": "London System, with Be2",
-          "line": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3 d6 5. Be2 O-O",
-          "note": "倫敦體系：象至 e2的「London System, with Be2」在第 5 回合由白方走 Be2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "London System, with Be2",
-          "line": "1. d4 Nf6 2. Nf3 g6 3. Bf4 Bg7 4. e3 d6 5. Be2",
-          "note": "倫敦體系：象至 e2的「London System, with Be2」在第 5 回合由白方走 Be2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "這個倫敦分支先以 h3替 f4 象保留 h2，再走 Be2穩健完成易位；象不直接瞄準 h7，但面對黑方…c5反擊時較少遭…e5帶節奏，可專注維持 d4中心。",
       "plans": [
         "以 O-O、c3、Nbd2完成安全配置，再依…c5選擇 Qb3或 Ne5",
@@ -3922,13 +3910,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. b4 d5 2. Bb2 Nf6 3. Nf3",
-      "variations": [
-        {
-          "name": "Polish Opening, with d5",
-          "line": "1. b4 d5",
-          "note": "波蘭開局：對…d5的「Polish Opening, with d5」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "波蘭開局以 1.b4對黑方…d5取得后翼空間，2.Bb2從長對角線向 e5、f6、g7施壓；黑方…Nf6堵住對角線後，白方要以 e3、c4攻擊 d5中心。",
       "plans": [
         "以 Nf3、e3、c4挑戰 d5，讓 b2 象的長對角線真正打開",
@@ -4011,19 +3993,19 @@
       "mainline": "1. d4 d5 2. e3 Nf6",
       "variations": [
         {
-          "name": "Queen's Pawn Game",
-          "line": "1. d4 d5 2. e3",
-          "note": "后兵對局的「Queen's Pawn Game」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Colle System",
+          "line": "1. d4 Nf6 2. Nf3 e6 3. e3 b6 4. Bd3 Bb7 5. O-O c5 6. b3 Be7 7. Bb2 O-O 8. Nbd2 d5",
+          "note": "后兵對局的「Colle System」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Queen's Pawn Game",
-          "line": "1. d4 d6",
-          "note": "后兵對局的「Queen's Pawn Game」在第 1 回合由黑方走 d6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Torre Attack, Grünfeld Variation, Main Line",
+          "line": "1. d4 Nf6 2. Nf3 g6 3. Bg5 Bg7 4. Nbd2 d5 5. e3 O-O",
+          "note": "后兵對局的「Torre Attack, Grünfeld Variation, Main Line」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Queen's Pawn Game",
-          "line": "1. d4 d5",
-          "note": "后兵對局的「Queen's Pawn Game」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Colle System, Traditional Colle",
+          "line": "1. d4 Nf6 2. Nf3 e6 3. e3 c5 4. Bd3 d5 5. c3",
+          "note": "后兵對局的「Colle System, Traditional Colle」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "這張后兵對局由 1.d4 d5 2.e3形成封閉中心入口；e3穩固 d4並準備 Bd3，但同時封住 c1 象，白方必須以 b3、Bd2或適時 e4解決它。",
@@ -4142,9 +4124,9 @@
           "note": "魯賓斯坦開局的「Semi-Slav Defense」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Semi-Slav Defense",
-          "line": "1. d4 d5 2. Nf3 Nf6 3. e3 e6 4. Bd3 Bd6 5. O-O O-O 6. b3 Nbd7 7. Bb2 c6",
-          "note": "魯賓斯坦開局的「Semi-Slav Defense」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Bogoljubow Defense",
+          "line": "1. d4 Nf6 2. Nf3 e6 3. e3 c5 4. Bd3 d5 5. b3 Nc6 6. O-O Bd6 7. Bb2 O-O",
+          "note": "魯賓斯坦開局的「Bogoljubow Defense」在第 5 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "魯賓斯坦開局以 Nf3、e3、Bd3建立穩健王翼，再用 b3、Bb2讓 c1 象壓向 e5；白方延後 c 兵決定，保留 c4、Nbd2與 e4等轉型。",
@@ -4234,11 +4216,6 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. Nc3 Bb4",
       "variations": [
         {
-          "name": "Three Knights Opening",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Nc3",
-          "note": "三馬開局的「Three Knights Opening」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Steinitz-Rosenthal Variation",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Nc3 g6 4. d4 exd4 5. Nd5",
           "note": "三馬開局的「Steinitz-Rosenthal Variation」在第 3 回合由黑方走 g6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -4247,6 +4224,11 @@
           "name": "Schlechter Variation",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Nc3 Bb4 4. Nd5 Nf6",
           "note": "三馬開局的「Schlechter Variation」在第 4 回合由白方走 Nd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Winawer Defense",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Nc3 f5",
+          "note": "三馬開局的「Winawer Defense」在第 3 回合由黑方走 f5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "三馬開局以 3.Nc3增加對 e4、d5控制；黑方 3…Bb4直接攻擊 c3 馬並保留 Bxc3造成雙兵，若黑方再…Nf6則常轉入四馬開局。",
@@ -4559,19 +4541,19 @@
       "mainline": "1. e4 c5 2. Nf3 d6 3. d4 cxd4",
       "variations": [
         {
-          "name": "Sicilian Defense",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4",
-          "note": "西西里防禦的「Sicilian Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Scheveningen Variation, Classical Main Line",
+          "line": "1. e4 c5 2. Nf3 e6 3. d4 cxd4 4. Nxd4 Nc6 5. Nc3 Qc7 6. Be2 a6 7. O-O Nf6 8. Be3 Be7 9. f4 d6 10. Qe1 O-O",
+          "note": "西西里防禦的「Scheveningen Variation, Classical Main Line」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Sicilian Defense",
-          "line": "1. e4 c5 2. Nf3",
-          "note": "西西里防禦的「Sicilian Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Najdorf Variation, Main Line",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7 9. O-O-O Nbd7",
+          "note": "西西里防禦的「Najdorf Variation, Main Line」在第 4 回合由白方走 Nxd4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Sicilian Defense",
-          "line": "1. e4 c5",
-          "note": "西西里防禦的「Sicilian Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Dragon Variation, Yugoslav Attack, Main Line",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3 Bg7 7. f3 O-O 8. Qd2 Nc6 9. Bc4 Bd7",
+          "note": "西西里防禦的「Dragon Variation, Yugoslav Attack, Main Line」在第 4 回合由白方走 Nxd4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "1…c5 不對稱地攻擊 d4；在 2.Nf3 d6 3.d4 cxd4 後，黑方得到半開 c 線與后翼多數兵，白方則獲得發展和中心空間。黑方的核心是用…Nf6、…Nc6 攻 e4，並在條件成熟時完成…d5 解放。",
@@ -4610,11 +4592,6 @@
       "mainline": "1. e4 e6 2. d4 d5",
       "variations": [
         {
-          "name": "French Defense",
-          "line": "1. e4 e6",
-          "note": "法蘭西防禦的「French Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Classical Variation, Burn Variation, Main Line",
           "line": "1. e4 e6 2. d4 d5 3. Nc3 Nf6 4. Bg5 dxe4 5. Nxe4 Be7 6. Bxf6 Bxf6 7. Nf3 O-O",
           "note": "法蘭西防禦的「Classical Variation, Burn Variation, Main Line」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -4623,6 +4600,11 @@
           "name": "Tarrasch Variation, Open System, Main Line",
           "line": "1. e4 e6 2. d4 d5 3. Nd2 c5 4. exd5 exd5 5. Ngf3 Nc6 6. Bb5 Bd6 7. dxc5 Bxc5 8. O-O Ne7 9. c3",
           "note": "法蘭西防禦的「Tarrasch Variation, Open System, Main Line」在第 3 回合由白方走 Nd2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Winawer Variation, Poisoned Pawn Variation, Main Line",
+          "line": "1. e4 e6 2. d4 d5 3. Nc3 Bb4 4. e5 c5 5. a3 Bxc3+ 6. bxc3 Ne7 7. Qg4 Qc7 8. Qxg7 Rg8 9. Qxh7 cxd4 10. Ne2",
+          "note": "法蘭西防禦的「Winawer Variation, Poisoned Pawn Variation, Main Line」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "法蘭西防禦以 1…e6、2…d5直接挑戰 e4，白方推 e5後用…c5攻擊 d4兵鏈根部；黑方的長期課題是讓被 e6兵封住的 c8 象找到有效路線。",
@@ -4661,19 +4643,19 @@
       "mainline": "1. e4 c6 2. d4 d5 3. Nc3 dxe4",
       "variations": [
         {
-          "name": "Caro-Kann Defense",
-          "line": "1. e4 c6 2. d4 d5 3. Nc3",
-          "note": "卡羅康防禦的「Caro-Kann Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Karpov Variation, Modern Main Line",
+          "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Nd7 5. Ng5 Ngf6 6. Bd3 e6 7. N1f3 Bd6 8. Qe2 h6 9. Ne4 Nxe4 10. Qxe4",
+          "note": "卡羅康防禦的「Karpov Variation, Modern Main Line」在第 3 回合由白方走 Nd2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Caro-Kann Defense",
-          "line": "1. e4 c6 2. Nc3 d5",
-          "note": "卡羅康防禦的「Caro-Kann Defense」在第 2 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Karpov Variation, Smyslov Variation, Main Line",
+          "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Nd7 5. Bc4 Ngf6 6. Ng5 e6 7. Qe2 Nb6 8. Bb3",
+          "note": "卡羅康防禦的「Karpov Variation, Smyslov Variation, Main Line」在第 3 回合由白方走 Nd2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Caro-Kann Defense",
-          "line": "1. e4 c6 2. d4 d5",
-          "note": "卡羅康防禦的「Caro-Kann Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Spassky Variation",
+          "line": "1. e4 c6 2. d4 d5 3. Nd2 dxe4 4. Nxe4 Bf5 5. Ng3 Bg6 6. h4 h6 7. Nf3 Nd7 8. h5",
+          "note": "卡羅康防禦的「Classical Variation, Spassky Variation」在第 3 回合由白方走 Nd2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "卡羅康主線以…c6、…d5建立中心，3.Nc3後常用…dxe4解除張力，再把 c8 象經…Bf5發展到兵鏈外；黑方完成…e6後以…c5挑戰 d4。",
@@ -4763,19 +4745,19 @@
       "mainline": "1. e4 d6 2. d4 Nf6 3. Nc3 g6",
       "variations": [
         {
-          "name": "Pirc Defense",
-          "line": "1. e4 d6 2. d4 Nf6",
-          "note": "皮爾茨防禦的「Pirc Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Quiet System, Chigorin Line",
+          "line": "1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Nf3 Bg7 5. Be2 O-O 6. O-O Nc6",
+          "note": "皮爾茨防禦的「Classical Variation, Quiet System, Chigorin Line」在第 4 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Pirc Defense",
-          "line": "1. e4 d6 2. d4",
-          "note": "皮爾茨防禦的「Pirc Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Quiet System, Czech Defense",
+          "line": "1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Nf3 Bg7 5. Be2 O-O 6. O-O c6",
+          "note": "皮爾茨防禦的「Classical Variation, Quiet System, Czech Defense」在第 4 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Pirc Defense",
-          "line": "1. e4 d6",
-          "note": "皮爾茨防禦的「Pirc Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Variation, Quiet System, Parma Defense",
+          "line": "1. e4 d6 2. d4 Nf6 3. Nc3 g6 4. Nf3 Bg7 5. Be2 O-O 6. O-O Bg4",
+          "note": "皮爾茨防禦的「Classical Variation, Quiet System, Parma Defense」在第 4 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "皮爾茨防禦以…d6、…Nf6、…g6、…Bg7讓白方建立 e4、d4中心，再用子力壓迫與…e5或…c5反擊；Nf6先攻 e4是它與現代防禦的重要差異。",
@@ -5069,19 +5051,19 @@
       "mainline": "1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3 Nxe4",
       "variations": [
         {
-          "name": "Petrov's Defense",
-          "line": "1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3",
-          "note": "彼得羅夫防禦的「Petrov's Defense」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Attack, Chigorin Variation, Main Line",
+          "line": "1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3 Nxe4 5. d4 d5 6. Bd3 Nc6 7. O-O Be7 8. c4 Nb4 9. Be2",
+          "note": "彼得羅夫防禦的「Classical Attack, Chigorin Variation, Main Line」在第 5 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Petrov's Defense",
-          "line": "1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6",
-          "note": "彼得羅夫防禦的「Petrov's Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Attack, Berger Variation",
+          "line": "1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3 Nxe4 5. d4 d5 6. Bd3 Be7 7. O-O Nc6 8. Re1 Bg4 9. c3 f5 10. Nbd2",
+          "note": "彼得羅夫防禦的「Classical Attack, Berger Variation」在第 5 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Petrov's Defense",
-          "line": "1. e4 e5 2. Nf3 Nf6 3. Nxe5",
-          "note": "彼得羅夫防禦的「Petrov's Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Classical Attack, Krause Variation",
+          "line": "1. e4 e5 2. Nf3 Nf6 3. Nxe5 d6 4. Nf3 Nxe4 5. d4 d5 6. Bd3 Nc6 7. O-O Be7 8. Re1 Bg4 9. c3 f5 10. c4",
+          "note": "彼得羅夫防禦的「Classical Attack, Krause Variation」在第 5 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "彼得羅夫防禦以 2…Nf6對稱反擊 e4，不急著保護 e5；白方交換後黑方用…d6先趕走 e5 馬，再取回 e4，換得穩固且子力活躍的中心。",
@@ -5120,19 +5102,19 @@
       "mainline": "1. e4 e5 2. Nf3 d6 3. Bc4 Be7",
       "variations": [
         {
-          "name": "Philidor Defense",
-          "line": "1. e4 e5 2. Nf3 d6 3. d4",
-          "note": "菲利多爾防禦的「Philidor Defense」在第 3 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Berger Variation",
+          "line": "1. e4 e5 2. Nf3 d6 3. d4 exd4 4. Nxd4 Nf6 5. Nc3 Be7 6. Be2 O-O 7. O-O c5 8. Nf3 Nc6 9. Bg5 Be6 10. Re1",
+          "note": "菲利多爾防禦的「Berger Variation」在第 3 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Philidor Defense",
-          "line": "1. e4 e5 2. Nf3 d6 3. Bc4",
-          "note": "菲利多爾防禦的「Philidor Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Lion Variation, Sozin Variation",
+          "line": "1. e4 d6 2. d4 Nf6 3. Nc3 e5 4. Nf3 Nbd7 5. Bc4 Be7 6. O-O O-O 7. Qe2 c6 8. a4 exd4",
+          "note": "菲利多爾防禦的「Lion Variation, Sozin Variation」在第 1 回合由黑方走 d6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Philidor Defense",
-          "line": "1. e4 e5 2. Nf3 d6",
-          "note": "菲利多爾防禦的「Philidor Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Lion Variation, Forcing Line",
+          "line": "1. e4 e5 2. Nf3 d6 3. d4 Nf6 4. Nc3 Nbd7 5. Bc4 Be7 6. Ng5 O-O 7. Bxf7+ Rxf7 8. Ne6",
+          "note": "菲利多爾防禦的「Lion Variation, Forcing Line」在第 3 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "菲利多爾防禦以 2…d6穩固 e5，但也暫時封住 c8 象；黑方要用…Nf6、…Be7與…c6完成發展，再選擇…exd4、…d5或后翼擴張解放局面。",
@@ -5273,19 +5255,19 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Na5 6. Bb5+ c6 7. dxc6 bxc6 8. Be2",
       "variations": [
         {
-          "name": "Two Knights Defense",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. O-O Bc5 5. d4 Bxd4 6. Nxd4 Nxd4 7. Bg5 d6",
-          "note": "義大利開局：雙馬防禦的「Two Knights Defense」在第 4 回合由白方走 O-O 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Two Knights Defense, Maróczy Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Ng5 d5 5. exd5 Na5 6. d3 h6 7. Nf3 e4 8. Qe2 Nxc4 9. dxc4 Be7",
+          "note": "義大利開局：雙馬防禦的「Two Knights Defense, Maróczy Variation」在第 6 回合由白方走 d3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Two Knights Defense",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. Nc3 Nxe4 5. Nxe4 d5",
-          "note": "義大利開局：雙馬防禦的「Two Knights Defense」在第 4 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Two Knights Defense, Keidansky Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6 4. d4 exd4 5. e5 d5 6. Bb5 Ne4 7. Nxd4 Bc5 8. Nxc6 Bxf2+ 9. Kf1 Qh4",
+          "note": "義大利開局：雙馬防禦的「Two Knights Defense, Keidansky Variation」在第 4 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Two Knights Defense",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bc4 Nf6",
-          "note": "義大利開局：雙馬防禦的「Two Knights Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Two Knights Defense, Max Lange Attack, Loman Defense",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. d4 exd4 4. Bc4 Bc5 5. O-O Nf6 6. e5 d5 7. exf6 dxc4 8. Re1+ Be6 9. Ng5 g6",
+          "note": "義大利開局：雙馬防禦的「Two Knights Defense, Max Lange Attack, Loman Defense」在第 3 回合由白方走 d4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "雙馬防禦以 3…Nf6主動反擊 e4；白方 4.Ng5攻 f7時，黑方用…d5打開中心，必要時暫時犧牲一兵換取發展、追象節奏與對白王的主動。",
@@ -5324,11 +5306,6 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O",
       "variations": [
         {
-          "name": "Berlin Defense",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6",
-          "note": "西班牙開局：柏林防禦的「Berlin Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Berlin Defense, Berlin Wall",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. d4 Nd6 6. Bxc6 dxc6 7. dxe5 Nf5 8. Qxd8+ Kxd8 9. Nc3 Bd7",
           "note": "西班牙開局：柏林防禦的「Berlin Defense, Berlin Wall」在第 4 回合由黑方走 Nxe4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -5337,6 +5314,11 @@
           "name": "Berlin Defense, Winawer Attack",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. d4 Be7 6. Qe2 Nd6 7. Bxc6 bxc6 8. dxe5 Nb7 9. Nd4",
           "note": "西班牙開局：柏林防禦的「Berlin Defense, Winawer Attack」在第 4 回合由黑方走 Nxe4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Berlin Defense, Pillsbury Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 Nf6 4. O-O Nxe4 5. d4 Be7 6. Qe2 Nd6 7. Bxc6 bxc6 8. dxe5 Nb7 9. b3",
+          "note": "西班牙開局：柏林防禦的「Berlin Defense, Pillsbury Variation」在第 4 回合由黑方走 Nxe4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "柏林防禦以 3…Nf6立即反擊 e4，既不走…a6也不先固守 e5；黑方可進入無后中局，以雙象與穩固兵形補償失去易位權。",
@@ -5375,11 +5357,6 @@
       "mainline": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. c3 d5",
       "variations": [
         {
-          "name": "Marshall Attack",
-          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. c3 d5 9. exd5 Nxd5 10. a4 Bb7",
-          "note": "西班牙開局：馬歇爾攻擊的「Marshall Attack」在第 9 回合由白方走 exd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Marshall Attack, Main Line",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. c3 d5 9. exd5 Nxd5 10. Nxe5 Nxe5 11. Rxe5 c6 12. d4",
           "note": "西班牙開局：馬歇爾攻擊的「Marshall Attack, Main Line」在第 9 回合由白方走 exd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -5388,6 +5365,11 @@
           "name": "Marshall Attack, Modern Main Line",
           "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. c3 d5 9. exd5 Nxd5 10. Nxe5 Nxe5 11. Rxe5 c6 12. d4 Bd6 13. Re1 Qh4 14. g3 Qh3",
           "note": "西班牙開局：馬歇爾攻擊的「Marshall Attack, Modern Main Line」在第 9 回合由白方走 exd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Marshall Attack, Steiner Variation",
+          "line": "1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 O-O 8. c3 d5 9. exd5 e4",
+          "note": "西班牙開局：馬歇爾攻擊的「Marshall Attack, Steiner Variation」在第 9 回合由白方走 exd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "馬歇爾攻擊以 8…d5立即炸開中心，通常犧牲 e4 兵換取領先發展；黑方用…Bd6、…Qh4與車沿 e、h 線集結，對白王建立長期攻勢。",
@@ -5426,19 +5408,19 @@
       "mainline": "1. d4 d5 2. c4 e6",
       "variations": [
         {
-          "name": "Queen's Gambit Declined",
-          "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. Nf3 c6 6. e3 dxc4 7. Bxc4",
-          "note": "后翼棄兵拒絕的「Queen's Gambit Declined」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Lasker Defense, Main Line",
+          "line": "1. d4 d5 2. c4 e6 3. Nc3 Be7 4. Nf3 Nf6 5. Bg5 h6 6. Bh4 O-O 7. e3 Ne4 8. Bxe7 Qxe7 9. cxd5 Nxc3 10. bxc3",
+          "note": "后翼棄兵拒絕的「Lasker Defense, Main Line」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Queen's Gambit Declined",
-          "line": "1. d4 d5 2. c4 e6 3. Nf3 Nf6 4. Nc3 Nc6 5. Bg5 Be7 6. e3 O-O",
-          "note": "后翼棄兵拒絕的「Queen's Gambit Declined」延伸代表主線至第 6 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Orthodox Defense, Main Line",
+          "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 Nbd7 6. Nf3 O-O 7. Rc1 h6 8. Bh4 c5",
+          "note": "后翼棄兵拒絕的「Orthodox Defense, Main Line」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Queen's Gambit Declined",
-          "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. Bg5 Nbd7 6. e3",
-          "note": "后翼棄兵拒絕的「Queen's Gambit Declined」在第 2 回合由黑方走 c6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Harrwitz Attack, Main Line",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Nc3 Be7 5. Bf4 O-O 6. e3 c5 7. dxc5 Bxc5",
+          "note": "后翼棄兵拒絕的「Harrwitz Attack, Main Line」在第 1 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "后翼棄兵拒絕以…e6牢固支援 d5、不接受 c4 兵；代價是 c8 象暫時受困，因此黑方必須完成發展並以…c5或…e5解放中心。",
@@ -5589,9 +5571,9 @@
           "note": "半斯拉夫防禦的「Normal Variation」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Normal Variation",
-          "line": "1. Nf3 d5 2. e3 Nf6 3. c4 c6 4. Nc3 e6 5. b3 Bd6 6. Bb2 O-O 7. d4 Nbd7",
-          "note": "半斯拉夫防禦的「Normal Variation」在第 1 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Meran Variation",
+          "line": "1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. e3 e6 5. Nf3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 a6 9. e4 c5",
+          "note": "半斯拉夫防禦的「Meran Variation」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "半斯拉夫防禦同時用…c6與…e6牢固支援 d5，形成非常堅實但暫時封住 c8 象的結構；黑方以…dxc4後的…b5、或…e5與…c5尋求解放。",
@@ -5732,11 +5714,6 @@
       "mainline": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O 5. Nf3",
       "variations": [
         {
-          "name": "Nimzo-Indian Defense",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4",
-          "note": "尼姆佐印度防禦的「Nimzo-Indian Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Normal Variation, Gligoric System, Bernstein Defense",
           "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O 5. Bd3 d5 6. Nf3 c5 7. O-O Nc6 8. a3 dxc4 9. Bxc4 cxd4",
           "note": "尼姆佐印度防禦的「Normal Variation, Gligoric System, Bernstein Defense」在第 5 回合由白方走 Bd3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -5745,6 +5722,11 @@
           "name": "Normal Variation, Bernstein Defense",
           "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O 5. Bd3 d5 6. Nf3 c5 7. O-O Nc6 8. a3 Bxc3 9. bxc3 dxc4 10. Bxc4",
           "note": "尼姆佐印度防禦的「Normal Variation, Bernstein Defense」在第 5 回合由白方走 Bd3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Normal Variation, Bernstein Defense, Exchange Line",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O 5. Bd3 d5 6. Nf3 c5 7. O-O Nc6 8. a3 Bxc3 9. bxc3",
+          "note": "尼姆佐印度防禦的「Normal Variation, Bernstein Defense, Exchange Line」在第 5 回合由白方走 Bd3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "尼姆佐印度防禦以…Bb4牽制 c3 馬，阻止白方無代價建立 e4 中心；黑方可交換象製造 c 線疊兵，或保留象並以…d5、…c5攻擊中心。",
@@ -5839,14 +5821,14 @@
           "note": "博戈印度防禦的「Retreat Variation」在第 3 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Retreat Variation",
-          "line": "1. d4 Nf6 2. c4 e6 3. g3 Bb4+ 4. Bd2 Be7 5. Bg2 d5 6. Nf3 Nbd7 7. O-O O-O 8. Qc2 c6 9. b3",
-          "note": "博戈印度防禦的「Retreat Variation」在第 3 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Monticelli Trap",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 b6 4. g3 Bb7 5. Bg2 Bb4+ 6. Bd2 Bxd2+ 7. Qxd2 O-O 8. Nc3 Ne4 9. Qc2 Nxc3 10. Ng5",
+          "note": "博戈印度防禦的「Monticelli Trap」在第 3 回合由黑方走 b6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Retreat Variation",
-          "line": "1. d4 Nf6 2. c4 e6 3. g3 Bb4+ 4. Bd2 Be7 5. Bg2 d5 6. Nf3 Nbd7 7. O-O O-O 8. Qc2 c6 9. Rc1",
-          "note": "博戈印度防禦的「Retreat Variation」在第 3 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Haiti Variation",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 Bb4+ 4. Bd2 Nc6",
+          "note": "博戈印度防禦的「Haiti Variation」在第 4 回合由白方走 Bd2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "博戈印度防禦以…Bb4+迫使白方決定如何擋將，藉此干擾自然發展；黑方通常建立穩固中心，再依白方的 Bd2、Nbd2或其他應將選擇交換或退象。",
@@ -5885,11 +5867,6 @@
       "mainline": "1. d4 Nf6 2. c4 d6",
       "variations": [
         {
-          "name": "Old Indian Defense",
-          "line": "1. d4 d6 2. c4",
-          "note": "古印度防禦的「Old Indian Defense」在第 1 回合由黑方走 d6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Janowski Variation, Main Line",
           "line": "1. d4 Nf6 2. c4 d6 3. Nc3 Bf5 4. f3",
           "note": "古印度防禦的「Janowski Variation, Main Line」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -5898,6 +5875,11 @@
           "name": "Normal Variation",
           "line": "1. d4 Nf6 2. c4 d6 3. Nc3 Nbd7 4. e4 e5 5. Nf3",
           "note": "古印度防禦的「Normal Variation」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Duz-Khotimirsky Variation",
+          "line": "1. d4 Nf6 2. c4 d6 3. Nc3 e5 4. e3 Nbd7 5. Bd3",
+          "note": "古印度防禦的「Duz-Khotimirsky Variation」在第 3 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "古印度防禦以…d6支撐…e5，通常把王象發展到 e7，而不是像王翼印度那樣走…g6、…Bg7；黑方接受較少空間，換取穩固而有彈性的中心。",
@@ -5936,11 +5918,6 @@
       "mainline": "1. d4 Nf6 2. c4 e6 3. Nf3 c5 4. d5 exd5 5. cxd5 d6 6. Nc3 g6",
       "variations": [
         {
-          "name": "Benoni Defense",
-          "line": "1. d4 Nf6 2. c4 c5",
-          "note": "別諾尼防禦的「Benoni Defense」在第 2 回合由黑方走 c5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Classical Variation, Main Line",
           "line": "1. d4 Nf6 2. c4 c5 3. d5 e6 4. Nc3 exd5 5. cxd5 d6 6. e4 g6 7. Nf3 Bg7 8. Be2 O-O 9. O-O",
           "note": "別諾尼防禦的「Classical Variation, Main Line」在第 2 回合由黑方走 c5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -5949,6 +5926,11 @@
           "name": "Four Pawns Attack, Main Line",
           "line": "1. d4 Nf6 2. c4 c5 3. d5 e6 4. Nc3 exd5 5. cxd5 d6 6. e4 g6 7. f4 Bg7 8. Nf3 O-O 9. Be2 Re8",
           "note": "別諾尼防禦的「Four Pawns Attack, Main Line」在第 2 回合由黑方走 c5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Fianchetto Variation, Hastings Defense, Main Line",
+          "line": "1. d4 Nf6 2. c4 e6 3. g3 c5 4. d5 exd5 5. cxd5 d6 6. Nc3 g6 7. Bg2 Bg7 8. Nf3 O-O 9. O-O a6 10. a4 Nbd7 11. Nd2 Re8",
+          "note": "別諾尼防禦的「Fianchetto Variation, Hastings Defense, Main Line」在第 3 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "別諾尼防禦以早期…c5逼白方決定 d4 兵的去向；白方通常取得中心與后翼空間，黑方則尋求 e 線、王翼象長對角線及后翼兵多數的動態反擊。",
@@ -6028,11 +6010,6 @@
       "mainline": "1. d4 Nf6 2. c4 c5 3. d5 b5 4. cxb5 a6 5. bxa6 g6 6. Nc3 Bxa6 7. e4 Bxf1 8. Kxf1 d6 9. g3",
       "variations": [
         {
-          "name": "Benko Gambit",
-          "line": "1. d4 Nf6 2. c4 c5 3. d5 b5",
-          "note": "班科棄兵的「Benko Gambit」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Nd2 Variation",
           "line": "1. d4 Nf6 2. c4 c5 3. d5 b5 4. cxb5 a6 5. bxa6 Bxa6 6. Nc3 d6 7. Nf3 g6 8. Nd2",
           "note": "班科棄兵的「Nd2 Variation」在第 5 回合由黑方走 Bxa6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -6041,6 +6018,11 @@
           "name": "Fianchetto Variation",
           "line": "1. d4 Nf6 2. c4 c5 3. d5 b5 4. cxb5 a6 5. bxa6 Bxa6 6. Nc3 d6 7. Nf3 g6 8. g3",
           "note": "班科棄兵的「Fianchetto Variation」在第 5 回合由黑方走 Bxa6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Nescafe Frappe Attack",
+          "line": "1. d4 Nf6 2. c4 c5 3. d5 b5 4. cxb5 a6 5. Nc3 axb5 6. e4 b4 7. Nb5 d6 8. Bc4",
+          "note": "班科棄兵的「Nescafe Frappe Attack」在第 5 回合由白方走 Nc3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "班科棄兵以 3…b5、後續…a6犧牲后翼兵，換取開放 a、b 線及 g7 象對 b2 的長期壓力；補償來自持續子力活動，而不是立刻把兵吃回來。",
@@ -6079,11 +6061,6 @@
       "mainline": "1. d4 f5 2. c4",
       "variations": [
         {
-          "name": "Dutch Defense",
-          "line": "1. d4 f5",
-          "note": "荷蘭防禦的「Dutch Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Classical Variation, Ilyin-Zhenevsky Variation, Modern Main Line",
           "line": "1. d4 f5 2. c4 Nf6 3. g3 e6 4. Bg2 Be7 5. Nf3 O-O 6. O-O d6 7. Nc3 Qe8 8. b3",
           "note": "荷蘭防禦的「Classical Variation, Ilyin-Zhenevsky Variation, Modern Main Line」在第 2 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -6092,6 +6069,11 @@
           "name": "Classical Variation, Ilyin-Zhenevsky Variation, Winter Variation",
           "line": "1. d4 f5 2. c4 Nf6 3. g3 e6 4. Bg2 Be7 5. Nf3 O-O 6. O-O d6 7. Nc3 Qe8 8. Re1",
           "note": "荷蘭防禦的「Classical Variation, Ilyin-Zhenevsky Variation, Winter Variation」在第 2 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Classical Variation, Ilyin-Zhenevsky Variation, Alatortsev-Lisitsyn Line",
+          "line": "1. d4 f5 2. c4 Nf6 3. g3 e6 4. Bg2 Be7 5. Nf3 O-O 6. O-O d6 7. Nc3 Qe8 8. Qc2",
+          "note": "荷蘭防禦的「Classical Variation, Ilyin-Zhenevsky Variation, Alatortsev-Lisitsyn Line」在第 2 回合由黑方走 Nf6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "荷蘭防禦以 1…f5直接控制 e4並爭取王翼空間，但同時削弱 e6、e8–h5斜線與黑王周圍；黑方須用…Nf6及…e6／…g6把主動權兌現。",
@@ -6128,7 +6110,23 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. d4 Nf6 2. c4 e5",
-      "variations": [],
+      "variations": [
+        {
+          "name": "Budapest Gambit Accepted, Main Line, Alekhine Variation, Abonyi Variation",
+          "line": "1. d4 Nf6 2. c4 e5 3. dxe5 Ng4 4. e4 Nxe5",
+          "note": "布達佩斯棄兵的「Budapest Gambit Accepted, Main Line, Alekhine Variation, Abonyi Variation」在第 3 回合由白方走 dxe5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Budapest Gambit Accepted, Main Line, Alekhine Variation, Tartakower Defense",
+          "line": "1. d4 Nf6 2. c4 e5 3. dxe5 Ng4 4. e4 d6",
+          "note": "布達佩斯棄兵的「Budapest Gambit Accepted, Main Line, Alekhine Variation, Tartakower Defense」在第 3 回合由白方走 dxe5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Budapest Gambit Accepted, Main Line, Adler Variation",
+          "line": "1. d4 Nf6 2. c4 e5 3. dxe5 Ng4 4. Nf3",
+          "note": "布達佩斯棄兵的「Budapest Gambit Accepted, Main Line, Adler Variation」在第 3 回合由白方走 dxe5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        }
+      ],
       "ideas": "布達佩斯棄兵用 2…e5誘使 3.dxe5，再以…Ng4、…Nc6與…Qe7集中攻擊 e5 兵；黑方用快速發展和逼迫白方守兵來換取暫時少一兵的補償。",
       "plans": [
         "3.dxe5後先…Ng4，配合…Nc6與…Qe7增加 e5 的攻擊者，而非單獨用后搶兵",
@@ -6216,19 +6214,19 @@
       "mainline": "1. d4 d5 2. c4 Nc6 3. Nc3 dxc4",
       "variations": [
         {
-          "name": "Chigorin Defense",
-          "line": "1. d4 d5 2. c4 Nc6 3. Nc3",
-          "note": "奇戈林防禦的「Chigorin Defense」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Chigorin Defense",
-          "line": "1. d4 d5 2. c4 Nc6",
-          "note": "奇戈林防禦的「Chigorin Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Chigorin Defense, Exchange Variation, Costa's Line",
           "line": "1. d4 d5 2. c4 Nc6 3. cxd5 Qxd5 4. e3 e5 5. Nc3 Bb4 6. Bd2 Bxc3 7. Bxc3 exd4 8. Ne2",
           "note": "奇戈林防禦的「Chigorin Defense, Exchange Variation, Costa's Line」在第 3 回合由白方走 cxd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Chigorin Defense, Main Line, Alekhine Variation",
+          "line": "1. d4 d5 2. c4 Nc6 3. Nf3 Bg4 4. Qa4",
+          "note": "奇戈林防禦的「Chigorin Defense, Main Line, Alekhine Variation」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Chigorin Defense, Main Line",
+          "line": "1. d4 d5 2. c4 Nc6 3. Nf3 Bg4",
+          "note": "奇戈林防禦的「Chigorin Defense, Main Line」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "奇戈林防禦以 2…Nc6直接增加對 d4、d5的子力壓力，接受后馬阻住 c 兵的代價；黑方追求快速出子與…e5，而非傳統后翼棄兵的穩固兵鏈。",
@@ -6410,11 +6408,6 @@
       "mainline": "1. d4 e6 2. c4 b6",
       "variations": [
         {
-          "name": "English Defense",
-          "line": "1. d4 b6",
-          "note": "英國式防禦的「English Defense」在第 1 回合由黑方走 b6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Perrin Variation",
           "line": "1. d4 e6 2. c4 b6 3. e4 Bb7 4. Bd3 Nc6",
           "note": "英國式防禦的「Perrin Variation」在第 3 回合由白方走 e4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -6423,6 +6416,11 @@
           "name": "Poli Gambit",
           "line": "1. d4 e6 2. c4 b6 3. e4 Bb7 4. f3 f5 5. exf5 Nh6",
           "note": "英國式防禦的「Poli Gambit」在第 3 回合由白方走 e4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Hartlaub Gambit Accepted",
+          "line": "1. c4 e6 2. d4 b6 3. Nc3 Bb7 4. e4 f5 5. exf5 Nf6",
+          "note": "英國式防禦的「Hartlaub Gambit Accepted」在第 1 回合由白方走 c4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "英國式防禦以 1.d4 e6 2.c4 b6準備…Bb7，從長對角線直接質疑白方 e4中心；黑方允許白方佔空間，再用…f5、…Bb4+或…c5反擊。",
@@ -6656,13 +6654,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. e4 Nh6 2. d4 g6 3. c4 f6",
-      "variations": [
-        {
-          "name": "Hippopotamus Defense",
-          "line": "1. e4 Nh6",
-          "note": "河馬防禦的「Hippopotamus Defense」延伸代表主線至第 1 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "這條河馬防禦以…Nh6、…g6、…f6 把子兵放在王翼後方，準備…Nf7、…Bg7 與延後中心反擊。但…f6 削弱 e6、g6 與 h5–e8 對角線，白方又已有 e4–d4–c4 寬中心，黑方不能無限期等待。",
       "plans": [
         "用…Nf7、…Bg7、…d6 先完成王翼協調，避免 h6 馬與 g8 馬互相擋路",
@@ -6707,6 +6699,11 @@
           "name": "Duz-Khotimirsky Variation",
           "line": "1. d4 Nf6 2. c4 e6 3. Nf3 c5 4. d5 b5 5. Bg5",
           "note": "布盧門菲爾德反棄兵的「Duz-Khotimirsky Variation」在第 5 回合由白方走 Bg5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Blumenfeld Countergambit Accepted",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 c5 4. d5 b5 5. dxe6 fxe6 6. cxb5 d5",
+          "note": "布盧門菲爾德反棄兵的「Blumenfeld Countergambit Accepted」在第 5 回合由白方走 dxe6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "布盧門菲爾德反棄兵先以…c5逼 d5，再走 4…b5引開 c4 兵；若白方接受，黑方以 e6、d5中央雙兵、快速出子與開放線補償后翼兵。",
@@ -6745,19 +6742,19 @@
       "mainline": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Be7",
       "variations": [
         {
-          "name": "Najdorf Variation",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4",
-          "note": "西西里防禦：納道夫變例的「Najdorf Variation」延伸代表主線至第 7 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Najdorf Variation, Main Line",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7 9. O-O-O Nbd7",
+          "note": "西西里防禦：納道夫變例的「Najdorf Variation, Main Line」在第 8 回合由白方走 Qf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Najdorf Variation",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6",
-          "note": "西西里防禦：納道夫變例的「Najdorf Variation」延伸代表主線至第 6 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Najdorf Variation, Traditional Line",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5 e6 7. f4 Be7 8. Qf3 Qc7",
+          "note": "西西里防禦：納道夫變例的「Najdorf Variation, Traditional Line」在第 8 回合由白方走 Qf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Najdorf Variation",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Bg5",
-          "note": "西西里防禦：納道夫變例的「Najdorf Variation」延伸代表主線至第 6 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Najdorf Variation, Opocensky Variation, Traditional Line",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 a6 6. Be2 e5 7. Nb3 Be7 8. O-O O-O",
+          "note": "西西里防禦：納道夫變例的「Najdorf Variation, Opocensky Variation, Traditional Line」在第 6 回合由白方走 Be2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "5…a6 先阻止 Bb5+ 並準備…b5，同時保留后馬走 d7 或 c6、e 兵走 e6 或 e5 的彈性。在 6.Bg5 e6 7.f4 後，黑方要同時處理 f6 馬的釘住、白方 e5 突破與后翼反擊。",
@@ -6796,19 +6793,19 @@
       "mainline": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3",
       "variations": [
         {
-          "name": "Dragon Variation",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6",
-          "note": "西西里防禦：龍式變例的「Dragon Variation」延伸代表主線至第 5 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Dragon Variation, Yugoslav Attack, Main Line",
           "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3 Bg7 7. f3 O-O 8. Qd2 Nc6 9. Bc4 Bd7",
           "note": "西西里防禦：龍式變例的「Dragon Variation, Yugoslav Attack, Main Line」在第 6 回合由黑方走 Bg7 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Dragon Variation, Yugoslav Attack, Main Line",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be3 Bg7 7. f3 O-O 8. Qd2 Nc6 9. Bc4",
-          "note": "西西里防禦：龍式變例的「Dragon Variation, Yugoslav Attack, Main Line」在第 6 回合由黑方走 Bg7 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Dragon Variation, Classical Variation, Alekhine Line",
+          "line": "1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 g6 5. Nc3 Bg7 6. Be3 Nf6 7. Be2 O-O 8. O-O d6 9. Nb3 a5",
+          "note": "西西里防禦：龍式變例的「Dragon Variation, Classical Variation, Alekhine Line」在第 2 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Dragon Variation, Classical Variation, Normal Line",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 g6 6. Be2 Bg7 7. O-O O-O 8. Be3 Nc6 9. Nb3",
+          "note": "西西里防禦：龍式變例的「Dragon Variation, Classical Variation, Normal Line」在第 6 回合由白方走 Be2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "5…g6 準備…Bg7，讓王象沿 h8–a1 長對角線施壓 c3 馬與 b2。黑方出子快、c 線壓力強；但南斯拉夫攻擊的 Be3、f3、Qd2、Bc4 會快速直指黑王。",
@@ -6847,11 +6844,6 @@
       "mainline": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6 6. Be2",
       "variations": [
         {
-          "name": "Classical Variation",
-          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6",
-          "note": "西西里防禦：古典變例的「Classical Variation」延伸代表主線至第 5 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Classical Variation, Dragon Transfer",
           "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6 6. Be2 Nxd4 7. Qxd4 g6",
           "note": "西西里防禦：古典變例的「Classical Variation, Dragon Transfer」在第 6 回合由黑方走 Nxd4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -6860,6 +6852,11 @@
           "name": "Classical Variation, Anti-Sozin Variation",
           "line": "1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 d6 6. Bc4 Qb6",
           "note": "西西里防禦：古典變例的「Classical Variation, Anti-Sozin Variation」在第 2 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Classical Variation, Sozin Attack",
+          "line": "1. e4 c5 2. Nf3 d6 3. d4 cxd4 4. Nxd4 Nf6 5. Nc3 Nc6 6. Bc4",
+          "note": "西西里防禦：古典變例的「Classical Variation, Sozin Attack」在第 6 回合由白方走 Bc4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "5…Nc6 讓兩匹馬自然發展，一起攻擊 d4 馬與 e5 格，並保留…e6、…g6 多種配置。黑方不像納道夫先走…a6，因此必須準備應對 Bc4 Sozin 攻擊與 Bg5 釘住。",
@@ -7148,14 +7145,14 @@
           "note": "后翼棄兵拒絕：正統防禦的「Orthodox Defense, Main Line」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Orthodox Defense, Main Line",
-          "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 Nbd7 7. Rc1 c6 8. Bd3 dxc4 9. Bxc4 Nd5 10. Bxe7 Qxe7 11. O-O",
-          "note": "后翼棄兵拒絕：正統防禦的「Orthodox Defense, Main Line」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Orthodox Defense, Classical Variation",
+          "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 Nbd7 7. Rc1 c6 8. Bd3 dxc4 9. Bxc4 Nd5 10. Bxe7 Qxe7 11. O-O Nxc3 12. Rxc3 e5",
+          "note": "后翼棄兵拒絕：正統防禦的「Orthodox Defense, Classical Variation」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Orthodox Defense, Main Line",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Nc3 Be7 5. Bg5 O-O 6. e3 Nbd7 7. Rc1 c6",
-          "note": "后翼棄兵拒絕：正統防禦的「Orthodox Defense, Main Line」在第 7 回合由白方走 Rc1 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Orthodox Defense, Capablanca System",
+          "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 Nbd7 7. Rc1 c6 8. Bd3 dxc4 9. Bxc4 Nd5",
+          "note": "后翼棄兵拒絕：正統防禦的「Orthodox Defense, Capablanca System」在第 1 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "正統防禦用…Nf6、…Be7、易位與…Nbd7建立經典后翼棄兵拒絕配置；黑方先解除 Bg5牽制，再尋找…c5或…e5的解放時機。",
@@ -7194,11 +7191,6 @@
       "mainline": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. Bg5 Nbd7 6. e3 Qa5 7. cxd5",
       "variations": [
         {
-          "name": "Cambridge Springs Defense",
-          "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. Bg5 Nbd7 6. e3 Qa5",
-          "note": "后翼棄兵拒絕：劍橋泉防禦的「Cambridge Springs Defense」延伸代表主線至第 6 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Cambridge Springs Defense, Argentine Variation",
           "line": "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Nbd7 5. e3 c6 6. Nf3 Qa5 7. Nd2 Bb4 8. Qc2 O-O 9. Bh4",
           "note": "后翼棄兵拒絕：劍橋泉防禦的「Cambridge Springs Defense, Argentine Variation」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -7207,6 +7199,11 @@
           "name": "Cambridge Springs Defense, Bogoljubow Variation",
           "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. Bg5 Nbd7 6. e3 Qa5 7. Nd2 Bb4 8. Qc2",
           "note": "后翼棄兵拒絕：劍橋泉防禦的「Cambridge Springs Defense, Bogoljubow Variation」在第 7 回合由白方走 Nd2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Cambridge Springs Defense, Yugoslav Variation",
+          "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. Bg5 Nbd7 6. e3 Qa5 7. cxd5 Nxd5",
+          "note": "后翼棄兵拒絕：劍橋泉防禦的「Cambridge Springs Defense, Yugoslav Variation」在第 7 回合由黑方走 Nxd5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "劍橋泉防禦用…Nbd7後的…Qa5同時牽制 c3 馬並向 a2施壓，接著…Bb4加強釘住與中心戰術；黑方以具體威脅換取后提早出動的風險。",
@@ -7244,11 +7241,6 @@
       "difficulty": "初中階",
       "mainline": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 a6 5. e3 Bf5",
       "variations": [
-        {
-          "name": "Chebanenko Variation",
-          "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 a6",
-          "note": "斯拉夫防禦：切巴年科變例的「Chebanenko Variation」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
         {
           "name": "Chebanenko Variation, Advance System",
           "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 a6 5. c5",
@@ -7291,19 +7283,19 @@
       "mainline": "1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. e3 e6 5. Nf3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 a6 9. e4 c5",
       "variations": [
         {
-          "name": "Meran Variation",
-          "line": "1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. e3 e6 5. Nf3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 a6",
-          "note": "半斯拉夫防禦：梅蘭變例（米蘭體系）的「Meran Variation」延伸代表主線至第 8 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Meran Variation",
-          "line": "1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. e3 e6 5. Nf3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5",
-          "note": "半斯拉夫防禦：梅蘭變例（米蘭體系）的「Meran Variation」延伸代表主線至第 7 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Meran Variation, Pirc Variation",
           "line": "1. d4 d5 2. c4 e6 3. Nc3 c6 4. e3 Nf6 5. Nf3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 a6 9. e4 b4",
           "note": "半斯拉夫防禦：梅蘭變例（米蘭體系）的「Meran Variation, Pirc Variation」在第 2 回合由黑方走 e6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Meran Variation, Old Variation",
+          "line": "1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. e3 e6 5. Nf3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 a6 9. e4 c5 10. e5",
+          "note": "半斯拉夫防禦：梅蘭變例（米蘭體系）的「Meran Variation, Old Variation」在第 10 回合由白方走 e5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Meran Variation, Reynolds' Variation",
+          "line": "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6 5. e3 Nbd7 6. Bd3 dxc4 7. Bxc4 b5 8. Bd3 a6 9. e4 c5 10. d5",
+          "note": "半斯拉夫防禦：梅蘭變例（米蘭體系）的「Meran Variation, Reynolds' Variation」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "梅蘭變例在白方 Bd3後以…dxc4引象到 c4，再用…b5帶節奏趕象；…a6穩固后翼後，黑方以…c5或…e5打開中心並釋放 c8 象。",
@@ -7342,19 +7334,19 @@
       "mainline": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5 7. O-O Nbd7 8. Re1",
       "variations": [
         {
-          "name": "Orthodox Variation",
-          "line": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5 7. O-O",
-          "note": "王翼印度防禦：正統變例的「Orthodox Variation」延伸代表主線至第 7 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Orthodox Variation, Positional Defense, Main Line",
+          "line": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5 7. O-O Nbd7 8. Re1 c6 9. Bf1 a5",
+          "note": "王翼印度防禦：正統變例的「Orthodox Variation, Positional Defense, Main Line」在第 8 回合由黑方走 c6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Orthodox Variation",
-          "line": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5",
-          "note": "王翼印度防禦：正統變例的「Orthodox Variation」延伸代表主線至第 6 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Orthodox Variation, Classical System",
+          "line": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5 7. O-O Nc6 8. d5 Ne7 9. Ne1",
+          "note": "王翼印度防禦：正統變例的「Orthodox Variation, Classical System」在第 7 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Orthodox Variation",
-          "line": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2",
-          "note": "王翼印度防禦：正統變例的「Orthodox Variation」延伸代表主線至第 6 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Orthodox Variation, Classical System, Neo-Classical Line",
+          "line": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O 6. Be2 e5 7. O-O Nc6 8. d5 Ne7 9. Ne1 Nd7 10. Be3",
+          "note": "王翼印度防禦：正統變例的「Orthodox Variation, Classical System, Neo-Classical Line」在第 7 回合由黑方走 Nc6 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "王翼印度正統變例由白方 Be2、Nf3與短易位完成發展，黑方以…e5封住中心；白方 d5後通常在后翼擴張，黑方則以…Nh5、…f5爭取王翼攻勢。",
@@ -7393,19 +7385,19 @@
       "mainline": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 c5",
       "variations": [
         {
-          "name": "Rubinstein System",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3",
-          "note": "尼姆佐印度防禦：魯賓斯坦體系的「Rubinstein System」延伸代表主線至第 4 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Rubinstein System, Hübner Variation",
           "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 c5 5. Bd3 Nc6 6. Nf3 Bxc3+ 7. bxc3 d6 8. O-O O-O",
           "note": "尼姆佐印度防禦：魯賓斯坦體系的「Rubinstein System, Hübner Variation」在第 5 回合由白方走 Bd3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         },
         {
-          "name": "Rubinstein System, Hübner Variation",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 c5 5. Bd3 Nc6 6. Nf3 Bxc3+ 7. bxc3 d6",
-          "note": "尼姆佐印度防禦：魯賓斯坦體系的「Rubinstein System, Hübner Variation」在第 5 回合由白方走 Bd3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Rubinstein System, Rubinstein Variation, Main Line",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 c5 5. Ne2 cxd4 6. exd4 O-O 7. a3",
+          "note": "尼姆佐印度防禦：魯賓斯坦體系的「Rubinstein System, Rubinstein Variation, Main Line」在第 5 回合由白方走 Ne2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Rubinstein System, Rubinstein Variation, Sherbakov Attack",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 c5 5. Ne2 cxd4 6. exd4 O-O 7. c5",
+          "note": "尼姆佐印度防禦：魯賓斯坦體系的「Rubinstein System, Rubinstein Variation, Sherbakov Attack」在第 5 回合由白方走 Ne2 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "尼姆佐印度魯賓斯坦體系以 4.e3穩固 d4並準備 Bd3、Nf3；黑方用…c5立即攻擊中心，並視情況 Bxc3製造 c 線疊兵，再針對 c4、d4弱點施壓。",
@@ -7444,11 +7436,6 @@
       "mainline": "1. d4 f5 2. c4 Nf6 3. g3 g6 4. Bg2 Bg7 5. Nf3",
       "variations": [
         {
-          "name": "Leningrad Variation",
-          "line": "1. d4 f5 2. c4 Nf6 3. g3 g6",
-          "note": "荷蘭防禦：列寧格勒變例的「Leningrad Variation」延伸代表主線至第 3 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Leningrad Variation, Warsaw Variation",
           "line": "1. d4 f5 2. g3 Nf6 3. Bg2 g6 4. Nf3 Bg7 5. O-O O-O 6. c4 d6 7. Nc3 c6",
           "note": "荷蘭防禦：列寧格勒變例的「Leningrad Variation, Warsaw Variation」在第 2 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
@@ -7457,6 +7444,11 @@
           "name": "Leningrad Variation, Matulovic Variation",
           "line": "1. d4 f5 2. g3 Nf6 3. Bg2 g6 4. Nf3 Bg7 5. O-O O-O 6. c4 d6 7. Nc3 Nc6",
           "note": "荷蘭防禦：列寧格勒變例的「Leningrad Variation, Matulovic Variation」在第 2 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Leningrad Variation, Carlsbad Variation",
+          "line": "1. d4 f5 2. g3 g6 3. Bg2 Bg7 4. Nh3",
+          "note": "荷蘭防禦：列寧格勒變例的「Leningrad Variation, Carlsbad Variation」在第 2 回合由白方走 g3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "列寧格勒荷蘭把…f5與…g6、…Bg7結合，既控制 e4又讓王象沿長對角線施壓；黑方通常完成易位與…d6後以…e5撞擊白方中心。",
@@ -8487,19 +8479,19 @@
       "mainline": "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. Nf3 O-O 5. g3 d5 6. cxd5 Nxd5 7. Bg2 c5 8. O-O",
       "variations": [
         {
-          "name": "Delayed Exchange Variation",
-          "line": "1. d4 Nf6 2. Nf3 g6 3. c4 Bg7 4. g3 O-O 5. Bg2 d5 6. cxd5 Nxd5 7. O-O c5 8. dxc5",
-          "note": "新格林菲爾德防禦的「Delayed Exchange Variation」在第 2 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Delayed Exchange Variation",
-          "line": "1. d4 Nf6 2. c4 g6 3. Nf3 Bg7 4. g3 O-O 5. Bg2 d5 6. cxd5 Nxd5 7. O-O Nb6",
-          "note": "新格林菲爾德防禦的「Delayed Exchange Variation」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
           "name": "Ultra-Delayed Exchange Variation",
           "line": "1. d4 Nf6 2. c4 g6 3. Nf3 Bg7 4. g3 O-O 5. Bg2 c6 6. O-O d5 7. cxd5 cxd5",
           "note": "新格林菲爾德防禦的「Ultra-Delayed Exchange Variation」在第 3 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Classical Variation, Modern Defense",
+          "line": "1. d4 Nf6 2. Nf3 g6 3. g3 Bg7 4. Bg2 O-O 5. O-O d5 6. c4 dxc4",
+          "note": "新格林菲爾德防禦的「Classical Variation, Modern Defense」在第 2 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+        },
+        {
+          "name": "Classical Variation, Polgar Variation",
+          "line": "1. d4 Nf6 2. Nf3 g6 3. g3 Bg7 4. Bg2 O-O 5. O-O d5 6. c4 Nc6",
+          "note": "新格林菲爾德防禦的「Classical Variation, Polgar Variation」在第 2 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "新格林菲爾德面對白方王翼象翼配置，以…d5立即挑戰 d4，再用…c5與 g7 象共同壓迫中心；白方不建立 e4大中心，因此攻防重點落在 d4與后翼。",
@@ -8536,13 +8528,7 @@
       ],
       "difficulty": "初中階",
       "mainline": "1. d4 Nf6 2. Nf3 b6 3. e3 Bb7 4. Bd3 e6 5. Nbd2 c5 6. b3 Be7",
-      "variations": [
-        {
-          "name": "Pseudo Queen's Indian Defense",
-          "line": "1. d4 Nf6 2. Nf3 b6",
-          "note": "類后翼印度防禦的「Pseudo Queen's Indian Defense」延伸代表主線至第 2 回合；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        }
-      ],
+      "variations": [],
       "ideas": "類后翼印度防禦以 2.Nf3 b6、…Bb7先控制 e4；因白方沒有 c4、黑方也未先…e6，這只是后翼印度式配置，黑方須依 e3、b3或 c4決定中央兵形。",
       "plans": [
         "以…Bb7盯住 e4，再按白方配置接…e6、…c5與…Be7完成發展",
@@ -8665,19 +8651,9 @@
       "mainline": "1. d4 Nf6 2. Nf3 e6 3. e3 b6 4. Bd3 Bb7 5. Nbd2 c5 6. b3 Be7 7. Bb2 d6 8. O-O O-O 9. c4",
       "variations": [
         {
-          "name": "Queen's Indian Defense, with e3",
-          "line": "1. Nf3 d5 2. e3 Nf6 3. c4 e6 4. Nc3 Be7 5. d4 O-O 6. b3 b6 7. cxd5 exd5 8. Bb2 Bb7 9. Bd3",
-          "note": "后翼印度防禦：e3 體系的「Queen's Indian Defense, with e3」在第 1 回合由白方走 Nf3 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Queen's Indian Defense, with e3",
-          "line": "1. d4 Nf6 2. Nf3 d5 3. c4 e6 4. e3 b6 5. b3 Bb7 6. Bd3 Nbd7 7. O-O Bd6 8. Bb2 O-O 9. Nbd2",
-          "note": "后翼印度防禦：e3 體系的「Queen's Indian Defense, with e3」在第 2 回合由黑方走 d5 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
-        },
-        {
-          "name": "Queen's Indian Defense, with e3",
-          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. e3 Be7 5. b3 O-O 6. Bb2 b6 7. Nbd2 Bb7 8. Bd3",
-          "note": "后翼印度防禦：e3 體系的「Queen's Indian Defense, with e3」在第 2 回合由白方走 c4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
+          "name": "Queen's Indian Defense, with e3, Bb4+ Line",
+          "line": "1. d4 Nf6 2. c4 e6 3. Nf3 Bb4+ 4. Nbd2 b6 5. e3 Bb7",
+          "note": "后翼印度防禦：e3 體系的「Queen's Indian Defense, with e3, Bb4+ Line」在第 2 回合由白方走 c4 分歧；比較中心張力、王安全與最差子力，找出此線專屬的突破時機。"
         }
       ],
       "ideas": "后翼印度 e3 體系由白方 e3、Bd3、Nbd2及 b3、Bb2建立穩固雙象配置，黑方以…b6、…Bb7對抗長對角線，再用…c5攻擊 d4。",

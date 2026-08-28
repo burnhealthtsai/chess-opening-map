@@ -23,7 +23,15 @@ class CatalogTests(unittest.TestCase):
             game = chess.pgn.read_game(io.StringIO('[Result "*"]\n\n' + item["mainline"] + ' *'))
             self.assertGreaterEqual(sum(1 for _ in game.mainline_moves()), 1)
             self.assertEqual(len({x["line"] for x in item["variations"]}), len(item["variations"]))
+            self.assertEqual(len({x["name"] for x in item["variations"]}), len(item["variations"]))
             self.assertNotIn(item["mainline"], {x["line"] for x in item["variations"]})
+            source_name = item["source"]["name"]
+            generic_names = {
+                item["title_en"].casefold(),
+                source_name.casefold(),
+                source_name.split(":", 1)[-1].strip().casefold(),
+            }
+            self.assertTrue(all(x["name"].casefold() not in generic_names for x in item["variations"]))
 
     def test_every_line_matches_its_official_recognition_position(self):
         for item in self.data["openings"]:
@@ -99,6 +107,21 @@ class CatalogTests(unittest.TestCase):
         changed["openings"][0]["id"] = "../unsafe"
         with self.assertRaises(CatalogError):
             validate_catalog(changed)
+
+    def test_rejects_mainline_or_generic_recognition_rows_as_variations(self):
+        for field in ("line", "name", "short_name", "duplicate_name"):
+            changed = copy.deepcopy(self.data)
+            opening = changed["openings"][0]
+            if field == "line":
+                opening["variations"][0]["line"] = opening["mainline"]
+            elif field == "name":
+                opening["variations"][0]["name"] = opening["source"]["name"]
+            elif field == "short_name":
+                opening["source"]["name"] = f"Family: {opening['variations'][0]['name']}"
+            else:
+                opening["variations"][1]["name"] = opening["variations"][0]["name"]
+            with self.assertRaisesRegex(CatalogError, "主線重複|未命名辨識前綴|重複變例名稱"):
+                validate_catalog(changed, require_scores=False)
 
 
 if __name__ == "__main__": unittest.main()
