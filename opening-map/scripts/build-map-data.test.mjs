@@ -521,6 +521,52 @@ test("unorthodox d4 defenses explain their concrete move-order tradeoffs", () =>
   assert.match(byId.get("b-zaire-defense").ideas, /Nc6–b8.*Nf6–g8.*多個節奏/);
 });
 
+test("every remaining flank first move and e4 sideline has concrete teaching", () => {
+  const ids = [
+    "w-van-geet-opening",
+    "w-hungarian-opening",
+    "w-mieses-opening",
+    "w-saragossa-opening",
+    "w-anderssens-opening",
+    "w-polish-opening-with-d5",
+    "w-three-knights-opening",
+    "b-czech-defense",
+    "b-carr-defense",
+    "b-fried-fox-defense",
+    "b-goldsmith-defense",
+    "b-lemming-defense",
+    "b-lion-defense",
+    "b-rat-defense",
+    "b-ware-defense",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+  assert.deepEqual(
+    catalog.openings.filter((opening) => opening.ideas.includes("以協調發展和中心控制進入可下的中局")),
+    [],
+  );
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-van-geet-opening").ideas, /1\.Nc3.*d5.*e4.*c 兵/);
+  assert.match(byId.get("w-hungarian-opening").ideas, /1\.g3.*Bg2/);
+  assert.match(byId.get("w-mieses-opening").ideas, /1\.d3.*e4/);
+  assert.match(byId.get("w-saragossa-opening").ideas, /1\.c3.*d4.*c3.*后馬/);
+  assert.match(byId.get("w-anderssens-opening").ideas, /1\.a3.*b4.*中心/);
+  assert.match(byId.get("w-polish-opening-with-d5").ideas, /1\.b4.*…d5.*Bb2/);
+  assert.match(byId.get("w-three-knights-opening").ideas, /3\.Nc3.*3…Bb4.*Bxc3/);
+  assert.match(byId.get("b-czech-defense").ideas, /3…c6.*…e5|3…c6.*…Qa5/);
+  assert.match(byId.get("b-carr-defense").ideas, /1…h6.*中心.*節奏/);
+  assert.match(byId.get("b-fried-fox-defense").ideas, /1…f6.*2…Kf7.*易位/);
+  assert.match(byId.get("b-goldsmith-defense").ideas, /1…h5.*中心.*g5/);
+  assert.match(byId.get("b-lemming-defense").ideas, /1…Na6.*b4.*c5/);
+  assert.match(byId.get("b-lion-defense").ideas, /3…Nbd7.*…e5/);
+  assert.match(byId.get("b-rat-defense").ideas, /…g6.*…d6.*3…c6/);
+  assert.match(byId.get("b-ware-defense").ideas, /1…a5.*b4.*中心/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
