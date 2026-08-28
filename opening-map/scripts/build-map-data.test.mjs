@@ -467,6 +467,59 @@ test("French and Caro-Kann branches teach their actual pawn structures", () => {
   assert.match(byId.get("b-caro-kann-defense-tartakower-variation").ideas, /5\.Nxf6\+ exf6.*疊兵.*e 線/);
 });
 
+test("the catalog contains no title-swapped teaching templates", () => {
+  for (const field of ["ideas", "plans", "mistakes"]) {
+    const groups = new Map();
+    for (const opening of catalog.openings) {
+      const content = Array.isArray(opening[field]) ? opening[field].join("|") : opening[field];
+      const normalized = content.replaceAll(opening.title_zh, "<TITLE>");
+      const members = groups.get(normalized) ?? [];
+      members.push(opening.id);
+      groups.set(normalized, members);
+    }
+    const duplicates = [...groups.values()].filter((members) => members.length > 1);
+    assert.deepEqual(duplicates, [], `${field} still contains title-swapped templates: ${JSON.stringify(duplicates)}`);
+  }
+});
+
+test("remaining Slav, flank, queen's gambit and KIA branches teach concrete formations", () => {
+  const ids = [
+    "b-queens-gambit-declined-cambridge-springs-defense",
+    "b-slav-defense-chebanenko-variation",
+    "b-semi-slav-defense-meran-variation",
+    "b-semi-slav-defense-accepted",
+    "b-slav-indian",
+    "w-english-orangutan",
+    "b-english-defense",
+    "b-english-opening-symmetrical",
+    "b-zukertort-defense",
+    "w-queens-gambit",
+    "w-queens-gambit-declined-exchange-variation",
+    "w-reti-opening-anglo-slav-variation",
+    "w-kings-indian-attack",
+    "w-kings-indian-attack-with-bf5",
+    "w-kings-indian-attack-with-e6",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("b-queens-gambit-declined-cambridge-springs-defense").ideas, /…Qa5.*c3 馬.*…Bb4/);
+  assert.match(byId.get("b-slav-defense-chebanenko-variation").ideas, /4…a6.*…b5.*…Bf5/);
+  assert.match(byId.get("b-semi-slav-defense-meran-variation").ideas, /…dxc4.*…b5.*…c5/);
+  assert.match(byId.get("b-semi-slav-defense-accepted").ideas, /5\.Bg5 dxc4.*e4/);
+  assert.match(byId.get("b-slav-indian").ideas, /1\.d4 Nf6 2\.c4 c6.*尚未.*…d5/);
+  assert.match(byId.get("w-english-orangutan").ideas, /3\.b4.*Bb2.*b4 兵/);
+  assert.match(byId.get("b-english-defense").ideas, /1\.d4 e6 2\.c4 b6.*…Bb7.*e4/);
+  assert.match(byId.get("b-english-opening-symmetrical").ideas, /…c5.*…b6、…Bb7.*刺蝟/);
+  assert.match(byId.get("b-zukertort-defense").ideas, /1\.Nf3 Nh6.*…g6、…Bg7.*f5/);
+  assert.match(byId.get("w-queens-gambit").ideas, /1\.d4 d5 2\.c4.*d5/);
+  assert.match(byId.get("w-queens-gambit-declined-exchange-variation").ideas, /cxd5 exd5.*卡爾斯巴德.*b4–b5/);
+  assert.match(byId.get("w-reti-opening-anglo-slav-variation").ideas, /Nf3、c4、g3、Bg2.*b3、Bb2.*d5/);
+  assert.match(byId.get("w-kings-indian-attack").ideas, /Nf3、g3、Bg2、O-O.*d3、Nbd2、e4.*e5/);
+  assert.match(byId.get("w-kings-indian-attack-with-bf5").ideas, /…Bf5.*兵鏈外.*Nh4|…Bf5.*兵鏈外.*c4/);
+  assert.match(byId.get("w-kings-indian-attack-with-e6").ideas, /…e6、…Be7.*e4–e5.*王翼/);
+});
+
 test("named open king-pawn systems keep structure-specific teaching", () => {
   const ids = [
     "w-scotch-game-scotch-gambit",
