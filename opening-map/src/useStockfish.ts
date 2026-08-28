@@ -55,6 +55,7 @@ export function useStockfish(fen: string, enabled: boolean) {
   useEffect(() => {
     if (!enabled) return;
     const workerUrl = `${import.meta.env.BASE_URL}stockfish/stockfish-18-lite-single.js`;
+    let active = true;
     let worker: Worker;
     try {
       worker = new Worker(workerUrl);
@@ -67,6 +68,7 @@ export function useStockfish(fen: string, enabled: boolean) {
     setAnalysis(initialAnalysis);
 
     worker.onmessage = (event: MessageEvent<unknown>) => {
+      if (!active) return;
       const message = String(event.data);
       if (message === "uciok") {
         sendCommand(worker, "isready");
@@ -98,14 +100,23 @@ export function useStockfish(fen: string, enabled: boolean) {
         setAnalysis((current) => ({ ...current, status: "ready", bestMove: bestMove ?? current.bestMove }));
       }
     };
-    worker.onerror = markEngineUnavailable;
+    worker.onerror = (event) => {
+      event.preventDefault();
+      if (active) markEngineUnavailable();
+    };
     sendCommand(worker, "uci");
 
     return () => {
+      active = false;
       readyRef.current = false;
       workerRef.current = null;
+      worker.onmessage = null;
+      worker.onerror = (event) => { event.preventDefault(); };
       try { worker.postMessage("stop"); } catch { /* The worker may already be unavailable. */ }
-      try { worker.terminate(); } catch { /* Termination is best-effort during cleanup. */ }
+      try { worker.postMessage("quit"); } catch { /* The worker may already be unavailable. */ }
+      window.setTimeout(() => {
+        try { worker.terminate(); } catch { /* Termination is best-effort during cleanup. */ }
+      }, 50);
     };
   }, [enabled]);
 

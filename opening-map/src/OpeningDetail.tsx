@@ -47,7 +47,7 @@ export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, o
     <div className="detail-title"><div><p className="eyebrow">{opening.eco} · {opening.side}</p><h2>{openingIcon(opening.title_zh, opening.title_en) && <i className="opening-origin-icon" aria-hidden="true">{openingIcon(opening.title_zh, opening.title_en)}</i>}{opening.title_zh}</h2><p>{opening.title_en}</p></div><span className={`category ${opening.category === "趣味" ? "fun" : ""}`}>{opening.category}</span></div>
     <div className="tags">{opening.styles.map((tag) => <span key={tag}>{tag}</span>)}</div>
     <div className="active-line-heading"><span>{activeLine === "main" ? "主" : Number(activeLine) + 1}</span><div><small>目前棋路</small><b>{lineTitle}</b></div></div>
-    <Chessboard key={`${opening.id}-${activeLine}`} line={line} initialStep={lineLength} orientation={opening.side === "黑方" ? "black" : "white"} autoPlay autoPlayFromStep={0} interactive analysis />
+    <Chessboard key={`${opening.id}-${activeLine}`} line={line} initialStep={lineLength} orientation={opening.side === "黑方" ? "black" : "white"} autoPlay autoPlayFromStep={0} interactive analysis deferAnalysis />
     <section className="line-choices"><h3>這個開局怎麼形成</h3><p>官方辨識棋路停在足以確認名稱的局面；下方具名變例只顯示資料來源實際收錄的棋路。</p><div>
       <button className={activeLine === "main" ? "active" : ""} onClick={() => setActiveLine("main")}><span>主</span><b>官方辨識棋路</b><small>{opening.eco}</small></button>
       {opening.variations.slice(0, 3).map((variation, index) => <button className={activeLine === index ? "active" : ""} key={`${variation.name}-${index}`} onClick={() => { setActiveLine(index); onRequestVariationNotes(); }}><span>{index + 1}</span><b>{variation.name}</b><small>重點變例</small></button>)}

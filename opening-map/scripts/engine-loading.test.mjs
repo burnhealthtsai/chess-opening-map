@@ -4,6 +4,7 @@ import test from "node:test";
 
 const board = await readFile(new URL("../src/Chessboard.tsx", import.meta.url), "utf8");
 const app = await readFile(new URL("../src/App.tsx", import.meta.url), "utf8");
+const openingDetail = await readFile(new URL("../src/OpeningDetail.tsx", import.meta.url), "utf8");
 const opponents = await readFile(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8");
 const puzzles = await readFile(new URL("../src/PuzzleExplorer.tsx", import.meta.url), "utf8");
 const stockfish = await readFile(new URL("../src/useStockfish.ts", import.meta.url), "utf8");
@@ -22,6 +23,15 @@ test("entry-level blind chess does not start Stockfish in the background", () =>
   assert.match(opponents, /analysis=\{matchMode === "normal" \|\| blindStockfish\}/);
   assert.match(opponents, /deferAnalysis=\{matchMode === "normal" && level === 1\}/);
   assert.match(opponents, /const \[blindStockfish, setBlindStockfish\] = useState\(false\)/);
+});
+
+test("opening details defer Stockfish and shut an expanded engine down cleanly", () => {
+  assert.match(openingDetail, /<Chessboard[^>]+interactive analysis deferAnalysis/);
+  assert.match(stockfish, /worker\.onmessage = null/);
+  assert.match(stockfish, /worker\.onerror = \(event\) => \{ event\.preventDefault\(\); \}/);
+  assert.match(stockfish, /worker\.postMessage\("stop"\)/);
+  assert.match(stockfish, /worker\.postMessage\("quit"\)/);
+  assert.match(stockfish, /window\.setTimeout\(\(\) => \{[\s\S]*worker\.terminate\(\)[\s\S]*\}, 50\)/);
 });
 
 test("查看謎題解答使用已驗證解答，不在背景重算", () => {

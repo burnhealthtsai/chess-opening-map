@@ -39,3 +39,10 @@ test("mobile filters wrap below the full-width search field", () => {
   assert.match(styles, /\.compact-toolbar \.filter \{ flex: 1 1 100px; min-width: 0; \}/);
   assert.match(styles, /\.compact-toolbar \.filter select \{ width: 100%; min-width: 0; \}/);
 });
+
+test("mobile opening details cannot restore the desktop focused workspace widths", () => {
+  const desktopFocusedWidth = styles.lastIndexOf(".workspace.focused { grid-template-columns: minmax(440px, .82fr) minmax(540px, 1.18fr); }");
+  const mobileFocusedWidth = styles.indexOf("@media (max-width: 820px) {\n  .workspace.focused { grid-template-columns: minmax(0, 1fr); }\n}", desktopFocusedWidth);
+  assert.ok(desktopFocusedWidth >= 0, "missing desktop focused workspace layout");
+  assert.ok(mobileFocusedWidth > desktopFocusedWidth, "mobile override must follow the final desktop focused layout");
+});
