@@ -92,8 +92,9 @@
 [data-theme="dark"] .analogy-search input { border-color: #486d87; }
 [data-theme="dark"] .analogy-search i, [data-theme="dark"] .analogy-search button { color: #7fd3f5; }
 [data-theme="dark"] .analogy-relation-filters button { color: #d2e2f4; border-color: #486d87; }
-[data-theme="dark"] .analogy-relation-filters button small { color: #bfeaff; }
+[data-theme="dark"] .analogy-relation-filters button small { color: #bfeaff; background: #3a586a; }
 [data-theme="dark"] .analogy-relation-filters button[aria-pressed="true"] { color: #ffe2b5; border-color: #d68a1f; }
+[data-theme="dark"] .analogy-relation-filters button[aria-pressed="true"] small { color: #fff; background: #a65d08; }
 @media (max-width: 980px) {
   .analogy-layout { grid-template-columns: 1fr; }
   .analogy-group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }

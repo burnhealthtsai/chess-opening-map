@@ -30,6 +30,12 @@ function contrast(foreground, background) {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
+function mixHex(base, tint, baseWeight) {
+  const baseChannels = base.match(/[\da-f]{2}/gi).map((value) => Number.parseInt(value, 16));
+  const tintChannels = tint.match(/[\da-f]{2}/gi).map((value) => Number.parseInt(value, 16));
+  return `#${baseChannels.map((value, index) => Math.round(value * baseWeight + tintChannels[index] * (1 - baseWeight)).toString(16).padStart(2, "0")).join("")}`;
+}
+
 test("publishes crawlable canonical metadata for the Cloudflare primary site", () => {
   assert.match(index, new RegExp(`<link rel="canonical" href="${canonicalUrl}"`));
   assert.match(index, new RegExp(`<meta property="og:url" content="${canonicalUrl}"`));
@@ -86,6 +92,31 @@ test("analogy comparison labels meet WCAG AA in light and dark themes", () => {
   }
   assert.match(styles, /\[data-theme="dark"\] \.map-summary b/);
   assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-ideas span/);
+});
+
+test("analogy relation filters meet WCAG AA in every theme and state", () => {
+  const lightSurface = "#ffffff";
+  const darkSurface = "#17243a";
+  const lightBadge = mixHex(lightSurface, "#ccecf9", 0.62);
+  const darkBadge = "#3a586a";
+  const lightPressed = mixHex(lightSurface, "#ffe5b8", 0.76);
+  const darkPressed = mixHex(darkSurface, "#ffe5b8", 0.76);
+  const pairs = [
+    ["#45647c", lightSurface, "light button"],
+    ["#275f7c", lightBadge, "light count badge"],
+    ["#754309", lightPressed, "light pressed button"],
+    ["#ffffff", "#a65d08", "light pressed count badge"],
+    ["#d2e2f4", darkSurface, "dark button"],
+    ["#bfeaff", darkBadge, "dark count badge"],
+    ["#ffe2b5", darkPressed, "dark pressed button"],
+    ["#ffffff", "#a65d08", "dark pressed count badge"],
+  ];
+  for (const [foreground, background, label] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${label}: ${foreground} on ${background} must reach 4.5:1`);
+  }
+  assert.match(analogyStyles, /\.analogy-relation-filters button\[aria-pressed="true"\]/);
+  assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-relation-filters button small \{ color: #bfeaff; background: #3a586a; \}/);
+  assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-relation-filters button\[aria-pressed="true"\] small \{ color: #fff; background: #a65d08; \}/);
 });
 
 test("dark puzzle, style and transposition labels meet WCAG AA contrast", () => {
