@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles, conceptStyles, opponentStyles] = await Promise.all([
+const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles, conceptStyles, opponentStyles, openingDetailStyles] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
   readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
@@ -13,6 +13,7 @@ const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles,
   readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8"),
   readFile(new URL("../src/ConceptExplorer.css", import.meta.url), "utf8"),
   readFile(new URL("../src/OpponentExplorer.css", import.meta.url), "utf8"),
+  readFile(new URL("../src/OpeningDetail.css", import.meta.url), "utf8"),
 ]);
 
 const canonicalUrl = "https://chess-opening-map.pages.dev/";
@@ -167,4 +168,35 @@ test("secondary labels remain readable across mixed light and dark surfaces", ()
   assert.match(styles, /\[data-theme="dark"\] \.taxonomy-zone:nth-child\(5\)/);
   assert.match(opponentStyles, /\.player-seats \.white small \{ color: #56677e; \}/);
   assert.match(puzzleStyles, /\.puzzle-last-move small \{[^}]*color: #563786;/);
+});
+
+test("expanded map, opening detail, puzzle answer and blind panels meet WCAG AA", () => {
+  const pairs = [
+    ["#ffffff", "#176486", styles],
+    ["#ffffff", "#a95f00", styles],
+    ["#1f7198", "#edf4fb", styles],
+    ["#82cff1", "#22334c", styles],
+    ["#ffffff", "#21734a", puzzleStyles],
+    ["#d9c1f2", "#17243a", opponentStyles],
+    ["#ffffff", "#176486", openingDetailStyles],
+    ["#ffffff", "#a95f00", openingDetailStyles],
+    ["#ffffff", "#21734a", openingDetailStyles],
+    ["#c4d2e4", "#22334c", openingDetailStyles],
+    ["#82cff1", "#17243a", openingDetailStyles],
+    ["#93dfb5", "#17243a", openingDetailStyles],
+    ["#ffd08a", "#17243a", openingDetailStyles],
+    ["#b5cdf5", "#17243a", openingDetailStyles],
+    ["#d6b8ec", "#17243a", openingDetailStyles],
+    ["#ffca78", "#17243a", openingDetailStyles],
+    ["#8ed8ff", "#17243a", openingDetailStyles],
+  ];
+  for (const [foreground, background, source] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${foreground} on ${background} must reach 4.5:1`);
+    assert.ok(source.includes(foreground) || (foreground === "#ffffff" && source.includes("#fff")), `${foreground} must be present in its dynamic-panel stylesheet`);
+  }
+  assert.match(styles, /\.taxonomy-zone \.family-frame-move > span\.mover-black i,/);
+  assert.match(styles, /\[data-theme="dark"\] \.section-heading button/);
+  assert.match(puzzleStyles, /\.puzzle-preview-actions button\.answer-active \{[^}]*background: #21734a;/);
+  assert.match(opponentStyles, /\[data-theme="dark"\] \.blind-guide-locked \{ color: #d9c1f2; \}/);
+  assert.match(openingDetailStyles, /\[data-theme="dark"\] \.phase-endgame h4 \{ color: #93dfb5; \}/);
 });

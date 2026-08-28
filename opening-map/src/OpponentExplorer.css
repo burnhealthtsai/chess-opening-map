@@ -25,6 +25,7 @@
 [data-theme="dark"] .opponent-levels small,
 [data-theme="dark"] .blind-live-board summary > span { color: #82cff1; }
 [data-theme="dark"] .match-mode-selector i { color: #c4d2e4; }
+[data-theme="dark"] .blind-guide-locked { color: #d9c1f2; }
 [data-theme="dark"] .recognized-opening small { color: #93dfb5; }
 [data-theme="dark"] .recognized-opening.off-book small { color: #ffca78; }
 
