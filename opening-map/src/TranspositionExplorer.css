@@ -20,6 +20,7 @@
 .transposition-routes { display: grid; gap: 8px; margin-top: 18px; }
 .transposition-routes article { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 9px; align-items: center; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
 .transposition-routes article > span { display: grid; width: 31px; height: 31px; place-items: center; color: #fff; border-radius: 50%; background: #176486; font-size: .7rem; font-weight: 900; }
+.route-opening-source { display: block; margin-bottom: 2px; color: #1f7198; font-size: .58rem; font-weight: 850; line-height: 1.35; }
 .transposition-routes b { color: var(--navy); font-size: .73rem; }
 .transposition-routes p { margin: 3px 0 0; overflow-wrap: anywhere; color: #456987; font-family: ui-monospace, monospace; font-size: .65rem; line-height: 1.5; }
 .transposition-members { margin-top: 18px; padding-top: 15px; border-top: 1px dashed var(--line); }
@@ -33,6 +34,7 @@
 [data-theme="dark"] .transposition-group-list button > span { color: #1c668c; }
 [data-theme="dark"] .transposition-group-list button small { color: #c4d2e4; }
 [data-theme="dark"] .transposition-routes article > span { background: #176486; }
+[data-theme="dark"] .route-opening-source { color: #7fd3f5; }
 [data-theme="dark"] .transposition-routes p { color: #b8d6ea; }
 [data-theme="dark"] .transposition-members button span { color: #7fd3f5; }
 [data-theme="dark"] .group-return-button { color: #7fd3f5; border-color: #4b7590; }
