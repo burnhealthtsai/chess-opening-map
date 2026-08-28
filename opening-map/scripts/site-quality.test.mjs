@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const [index, robots, sitemap, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles, conceptStyles, opponentStyles, openingDetailStyles] = await Promise.all([
+const [index, robots, sitemap, headers, styles, analogyStyles, puzzleStyles, styleStyles, transpositionStyles, conceptStyles, opponentStyles, openingDetailStyles] = await Promise.all([
   readFile(new URL("../index.html", import.meta.url), "utf8"),
   readFile(new URL("../public/robots.txt", import.meta.url), "utf8"),
   readFile(new URL("../public/sitemap.xml", import.meta.url), "utf8"),
+  readFile(new URL("../public/_headers", import.meta.url), "utf8"),
   readFile(new URL("../src/styles.css", import.meta.url), "utf8"),
   readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8"),
   readFile(new URL("../src/PuzzleExplorer.css", import.meta.url), "utf8"),
@@ -41,6 +42,12 @@ test("publishes crawlable canonical metadata for the Cloudflare primary site", (
 
 test("preloads the opening catalog before the application bundle runs", () => {
   assert.match(index, /<link rel="preload" href="\.\/opening-map\.json" as="fetch" crossorigin="anonymous" \/>/);
+});
+
+test("fingerprinted and versioned assets use immutable browser caching without freezing live catalogs", () => {
+  assert.match(headers, /\/assets\/\*\n\s+Cache-Control: public, max-age=31536000, immutable/);
+  assert.match(headers, /\/stockfish\/\*\n\s+Cache-Control: public, max-age=31536000, immutable/);
+  assert.doesNotMatch(headers, /opening-(?:map|details)|notion-puzzle|index\.html/);
 });
 
 test("classification labels meet WCAG AA normal-text contrast", () => {

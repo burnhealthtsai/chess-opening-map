@@ -27,6 +27,7 @@ const rasterSets = [
   { id: "neon-punk", folder: "neon-punk", whiteFilter: "hue-rotate(155deg) saturate(.82) brightness(1.38)" },
   { id: "egyptian-monument", folder: "egyptian-monument", whiteFilter: "invert(1) sepia(.22) saturate(.72) brightness(1.08)" },
 ] as const;
+const rasterImages = import.meta.glob("./assets/pieces/**/*.webp", { eager: true, query: "?url", import: "default" }) as Record<string, string>;
 
 function baseRole(role: Role, fill: string, stroke: string) {
   const common = `fill="${fill}" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"`;
@@ -97,9 +98,13 @@ export function pieceThemeCss(theme: string) {
   }
   const raster = rasterSets.find((set) => set.id === theme);
   if (!raster) return "";
-  return roles.flatMap((role) => sides.map((side) =>
-    `[data-piece-style="${raster.id}"] .cg-wrap piece.${side}.${role}{background-image:url("./pieces/${raster.folder}/${role}.png")!important;filter:${side === "white" ? `${raster.whiteFilter} ` : ""}drop-shadow(0 2px 1px rgba(12,25,42,.32))!important}`,
-  )).join("\n");
+  return roles.flatMap((role) => {
+    const image = rasterImages[`./assets/pieces/${raster.folder}/${role}.webp`];
+    if (!image) return [];
+    return sides.map((side) =>
+      `[data-piece-style="${raster.id}"] .cg-wrap piece.${side}.${role}{background-image:url("${image}")!important;filter:${side === "white" ? `${raster.whiteFilter} ` : ""}drop-shadow(0 2px 1px rgba(12,25,42,.32))!important}`,
+    );
+  }).join("\n");
 }
 
 let generatedStyle: HTMLStyleElement | null = null;

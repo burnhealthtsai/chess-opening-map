@@ -8,6 +8,8 @@ const openingDetail = await readFile(new URL("../src/OpeningDetail.tsx", import.
 const opponents = await readFile(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8");
 const puzzles = await readFile(new URL("../src/PuzzleExplorer.tsx", import.meta.url), "utf8");
 const stockfish = await readFile(new URL("../src/useStockfish.ts", import.meta.url), "utf8");
+const copyStockfish = await readFile(new URL("./copy-stockfish.mjs", import.meta.url), "utf8");
+const stockfishPackage = JSON.parse(await readFile(new URL("../node_modules/stockfish/package.json", import.meta.url), "utf8"));
 const puzzleRefresh = await readFile(new URL("./refresh-puzzle-solutions.mjs", import.meta.url), "utf8");
 
 test("the map Mini Live Board defers Stockfish until its panel is expanded", () => {
@@ -16,6 +18,16 @@ test("the map Mini Live Board defers Stockfish until its panel is expanded", () 
   assert.match(board, /const \[analysisRequested, setAnalysisRequested\] = useState\(\(\) => !deferAnalysis\)/);
   assert.match(board, /onExpandedChange=\{setAnalysisRequested\}/);
   assert.match(board, /initiallyCollapsed=\{deferAnalysis\}/);
+});
+
+test("browser Stockfish assets use the installed package version as an immutable URL namespace", () => {
+  const declaredVersion = stockfish.match(/STOCKFISH_ASSET_VERSION = "([^"]+)"/)?.[1];
+  assert.equal(declaredVersion, stockfishPackage.version);
+  assert.match(stockfish, /stockfish\/\$\{STOCKFISH_ASSET_VERSION\}\/\$\{file\}/);
+  assert.match(stockfish, /stockfishAssetUrl\("stockfish-18-lite-single\.js"\)/);
+  assert.match(board, /stockfishAssetUrl\("Copying\.txt"\)/);
+  assert.match(copyStockfish, /resolve\(destinationRoot, packageMetadata\.version\)/);
+  assert.match(copyStockfish, /rm\(destinationRoot, \{ recursive: true, force: true \}\)/);
 });
 
 test("entry-level blind chess does not start Stockfish in the background", () => {

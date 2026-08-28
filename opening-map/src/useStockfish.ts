@@ -17,6 +17,9 @@ const initialAnalysis: StockfishAnalysis = {
   bestMove: null,
 };
 
+export const STOCKFISH_ASSET_VERSION = "18.0.8";
+export const stockfishAssetUrl = (file: string) => `${import.meta.env.BASE_URL}stockfish/${STOCKFISH_ASSET_VERSION}/${file}`;
+
 export function useStockfish(fen: string, enabled: boolean) {
   const [analysis, setAnalysis] = useState<StockfishAnalysis>(initialAnalysis);
   const workerRef = useRef<Worker | null>(null);
@@ -55,7 +58,7 @@ export function useStockfish(fen: string, enabled: boolean) {
 
   useEffect(() => {
     if (!enabled) return;
-    const workerUrl = `${import.meta.env.BASE_URL}stockfish/stockfish-18-lite-single.js`;
+    const workerUrl = stockfishAssetUrl("stockfish-18-lite-single.js");
     let active = true;
     let worker: Worker;
     try {

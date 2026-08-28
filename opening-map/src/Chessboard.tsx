@@ -1,6 +1,6 @@
 import { Chess, type PieceSymbol, type Square } from "chess.js";
 import { createElement, useEffect, useId, useMemo, useRef, useState } from "react";
-import { useStockfish } from "./useStockfish";
+import { stockfishAssetUrl, useStockfish } from "./useStockfish";
 
 const pieceNames: Record<PieceSymbol, string> = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" };
 const pieceLabels: Record<PieceSymbol, string> = { k: "王", q: "后", r: "車", b: "象", n: "馬", p: "兵" };
@@ -521,6 +521,6 @@ function StockfishPanel({ analysis, fen, enabled, initiallyCollapsed = false, on
     {!collapsed && <><div className="eval-bar" aria-label={`白方局面比例 ${Math.round(whiteShare)}%`}><span style={{ width: `${whiteShare}%` }} /></div>
       <p className={`engine-suggestion ${suggestion?.color ?? ""}`}>{suggestion ? <><span className="engine-piece-icon cg-wrap" aria-hidden="true">{createElement("piece", { className: `${suggestion.kind} ${suggestion.color}` })}</span><span>建議下法：<b>{suggestion.colorName}{suggestion.pieceName} {suggestion.san}</b></span></> : "正在計算建議下法"}</p>
       {suggestion && <div className="engine-why"><b>為什麼這樣下？</b><ul>{suggestion.reasons.map((reason) => <li key={reason}>{reason}</li>)}</ul></div>}
-      <small>分析在瀏覽器本機執行。<a href="https://github.com/nmrugg/stockfish.js" target="_blank" rel="noreferrer">Stockfish.js</a> · <a href={`${import.meta.env.BASE_URL}stockfish/Copying.txt`} target="_blank" rel="noreferrer">GPL-3.0</a></small></>}
+      <small>分析在瀏覽器本機執行。<a href="https://github.com/nmrugg/stockfish.js" target="_blank" rel="noreferrer">Stockfish.js</a> · <a href={stockfishAssetUrl("Copying.txt")} target="_blank" rel="noreferrer">GPL-3.0</a></small></>}
   </aside>;
 }
