@@ -38,6 +38,19 @@ test("analogy groups can be filtered by relation while keeping search active", (
   assert.match(styles, /\.analogy-relation-filters button\[aria-pressed="true"\]/);
 });
 
+test("relation filters explain what each comparison category means", () => {
+  assert.match(component, /const analogyRelationDescriptions/);
+  assert.match(component, /reversed: ".*換成另一方使用/);
+  assert.match(component, /structure: ".*兵形.*子力配置/);
+  assert.match(component, /plan: ".*突破.*攻擊計畫/);
+  assert.match(component, /aria-describedby="analogy-relation-description"/);
+  assert.match(component, /id="analogy-relation-description" className="analogy-filter-explanation" aria-live="polite"/);
+  assert.match(component, /\{analogyRelationFilters\.find\(\(option\) => option\.id === relationFilter\)\?\.label\}/);
+  assert.match(component, /\{analogyRelationDescriptions\[relationFilter\]\}/);
+  assert.match(styles, /\.analogy-filter-explanation/);
+  assert.match(styles, /\.analogy-filter-explanation b/);
+});
+
 test("relation counts follow the active search and explain filtered empty results", () => {
   assert.match(component, /const queryMatchedGroups = useMemo/);
   assert.match(component, /queryMatchedGroups\.filter\(\(group\) => group\.relation === option\.id\)/);

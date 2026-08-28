@@ -17,6 +17,8 @@
 .analogy-relation-filters button small { display: grid; min-width: 22px; height: 22px; padding-inline: 5px; place-items: center; color: #275f7c; border-radius: 999px; background: color-mix(in srgb, var(--surface) 62%, #ccecf9); font-size: .55rem; font-weight: 900; }
 .analogy-relation-filters button[aria-pressed="true"] { color: #754309; border-color: #d68a1f; background: color-mix(in srgb, var(--surface) 76%, #ffe5b8); box-shadow: inset 0 0 0 1px #e49a32; }
 .analogy-relation-filters button[aria-pressed="true"] small { color: #fff; background: #a65d08; }
+.analogy-filter-explanation { display: flex; margin: -7px 0 14px; gap: 7px; align-items: baseline; color: var(--muted); font-size: .59rem; line-height: 1.5; }
+.analogy-filter-explanation b { flex: 0 0 auto; color: var(--navy); font-size: .58rem; }
 .analogy-layout { display: grid; grid-template-columns: minmax(230px, .7fr) minmax(0, 1.9fr); gap: 16px; align-items: start; }
 .analogy-directory { min-width: 0; }
 .group-keyboard-hint { margin: 0 0 7px; color: var(--muted); font-size: .58rem; line-height: 1.45; }
@@ -119,6 +121,7 @@
   .analogy-search-row { display: grid; }
   .analogy-search { width: 100%; }
   .analogy-search-status { margin: 0; text-align: left; }
+  .analogy-filter-explanation { display: grid; gap: 2px; }
   .analogy-group-list, .analogy-comparison { grid-template-columns: 1fr; }
   .analogy-arrow { grid-auto-flow: column; gap: 6px; align-items: center; }
   .analogy-arrow small { writing-mode: horizontal-tb; }

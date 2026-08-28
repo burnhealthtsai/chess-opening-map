@@ -16,6 +16,13 @@ const analogyRelationFilters = [
   { id: "plan", label: analogyRelationLabels.plan },
 ] as const;
 
+const analogyRelationDescriptions = {
+  all: "顯示所有比較；每個群組仍會標示自己屬於反色、結構或計畫哪一類。",
+  reversed: "同一套布局思路換成另一方使用；多一手或少一手會改變戰術是否成立。",
+  structure: "兵形或子力配置相近，可以比較弱格、好壞象與常見突破。",
+  plan: "中心突破、側翼攻擊計畫或發展節奏相似，但局面不必長得一樣。",
+} as const;
+
 export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Opening[]; groups: AnalogyGroup[]; onSelect: (id: string) => void }) {
   const [activeGroup, setActiveGroup] = useState(groups[0]?.id ?? null);
   const [query, setQuery] = useState("");
@@ -104,10 +111,11 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
       <label className="analogy-search"><span>查找類似體系 <small>／：跳到搜尋・Esc：先清搜尋，再清分類</small></span><div><i aria-hidden="true">⌕</i><input ref={searchInputRef} type="search" value={query} onChange={(event) => setQuery(event.target.value)} onKeyDown={clearSearchWithEscape} aria-label="搜尋類似比較群組" aria-keyshortcuts="/ Escape" placeholder="搜尋開局、ECO 或比較觀念" />{query && <button type="button" onClick={clearQueryAndFocus} aria-label="清除搜尋">×</button>}</div></label>
       <p aria-live="polite" className="analogy-search-status">{query.trim() || relationFilter !== "all" ? `顯示 ${visibleGroups.length} / ${groups.length} 個群組` : `共 ${groups.length} 個群組，可搜尋中英文名稱、ECO 與觀念`}</p>
     </div>
-    <div className="analogy-relation-filters" role="group" aria-label="依類似關係篩選">{analogyRelationFilters.map((option) => {
+    <div className="analogy-relation-filters" role="group" aria-label="依類似關係篩選" aria-describedby="analogy-relation-description">{analogyRelationFilters.map((option) => {
       const count = option.id === "all" ? queryMatchedGroups.length : queryMatchedGroups.filter((group) => group.relation === option.id).length;
       return <button type="button" key={option.id} aria-label={`${option.label}：${count} 個${query.trim() ? "符合搜尋的" : ""}群組`} aria-pressed={relationFilter === option.id} onClick={() => setRelationFilter(option.id)}><span>{option.label}</span><small>{count}</small></button>;
     })}</div>
+    <p id="analogy-relation-description" className="analogy-filter-explanation" aria-live="polite"><b>{analogyRelationFilters.find((option) => option.id === relationFilter)?.label}</b><span>{analogyRelationDescriptions[relationFilter]}</span></p>
     <div className="analogy-layout">
       <div className="analogy-directory"><p className="group-keyboard-hint">鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端</p><nav ref={groupListRef} className="analogy-group-list" role="tablist" aria-label="黑白開局類似比較群組">{visibleGroups.map((item, index) => <button type="button" role="tab" id={`analogy-tab-${item.id}`} aria-controls="analogy-group-detail" aria-selected={item.id === group?.id} aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End" tabIndex={item.id === group?.id ? 0 : -1} className={item.id === group?.id ? "active" : ""} key={item.id} onClick={(event) => selectGroup(item.id, event.detail > 0)} onKeyDown={(event) => moveGroup(event, index)}><span className={`relation-${item.relation}`}>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav></div>
       {group ? <section ref={detailRef} className="analogy-detail" id="analogy-group-detail" role="tabpanel" aria-labelledby={`analogy-tab-${group.id}`} aria-live="polite"><button type="button" className="group-return-button" onClick={returnToGroups}>↑ 返回群組清單</button>
