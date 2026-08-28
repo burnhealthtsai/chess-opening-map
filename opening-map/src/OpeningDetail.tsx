@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Chessboard } from "./Chessboard";
 import { gamesForOpening, openingMemory, phaseGuides } from "./openingKnowledge";
 import { openingIcon } from "./openingIcon";
@@ -9,7 +9,7 @@ type OpeningDetailProps = {
   opening: DetailedOpening;
   neighbours: Opening[];
   onSelect: (id: string) => void;
-  onCopy: (line: string) => void;
+  onCopy: (line: string) => Promise<boolean>;
   onClose: () => void;
   variationNotes: string[] | null;
   variationNoteError: string | null;
@@ -22,6 +22,8 @@ export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, o
   const [expandedGame, setExpandedGame] = useState<number | null>(null);
   const [practiceLevel, setPracticeLevel] = useState<1 | 2 | 3>(2);
   const [practiceOpen, setPracticeOpen] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "copying" | "success" | "error">("idle");
+  const copyRequestRef = useRef(0);
   const selectedVariationIndex = typeof activeLine === "number" ? activeLine : null;
   const selectedVariation = selectedVariationIndex === null ? null : opening.variations[selectedVariationIndex];
   const line = selectedVariation?.line ?? opening.mainline;
@@ -30,6 +32,17 @@ export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, o
   const famous = gamesForOpening(opening);
   const phases = phaseGuides(opening);
   const players = playersForOpening(opening);
+  useEffect(() => {
+    copyRequestRef.current += 1;
+    setCopyState("idle");
+  }, [line]);
+  async function copyPgn() {
+    const request = copyRequestRef.current + 1;
+    copyRequestRef.current = request;
+    setCopyState("copying");
+    const copied = await onCopy(line).catch(() => false);
+    if (copyRequestRef.current === request) setCopyState(copied ? "success" : "error");
+  }
   return <div className="detail-content"><button className="detail-close" onClick={onClose} aria-label="關閉開局詳情">×</button>
     <div className="detail-title"><div><p className="eyebrow">{opening.eco} · {opening.side}</p><h2>{openingIcon(opening.title_zh, opening.title_en) && <i className="opening-origin-icon" aria-hidden="true">{openingIcon(opening.title_zh, opening.title_en)}</i>}{opening.title_zh}</h2><p>{opening.title_en}</p></div><span className={`category ${opening.category === "趣味" ? "fun" : ""}`}>{opening.category}</span></div>
     <div className="tags">{opening.styles.map((tag) => <span key={tag}>{tag}</span>)}</div>
@@ -39,7 +52,7 @@ export default function OpeningDetail({ opening, neighbours, onSelect, onCopy, o
       <button className={activeLine === "main" ? "active" : ""} onClick={() => setActiveLine("main")}><span>主</span><b>官方辨識棋路</b><small>{opening.eco}</small></button>
       {opening.variations.slice(0, 3).map((variation, index) => <button className={activeLine === index ? "active" : ""} key={`${variation.name}-${index}`} onClick={() => { setActiveLine(index); onRequestVariationNotes(); }}><span>{index + 1}</span><b>{variation.name}</b><small>重點變例</small></button>)}
     </div></section>
-    <section><div className="section-heading"><h3>{lineTitle}</h3><button onClick={() => void onCopy(line)}>複製 PGN</button></div><p className="mainline">{line}</p>{selectedVariation && selectedVariationIndex !== null && (variationNoteError ? <p className="variation-note" role="alert">{variationNoteError} <button className="clear-button" onClick={onRetryVariationNotes}>重新載入</button></p> : variationNotes ? <p className="variation-note">{variationNotes[selectedVariationIndex]}</p> : <p className="variation-note" role="status">正在載入變例解說…</p>)}</section>
+    <section><div className="section-heading"><h3>{lineTitle}</h3><button onClick={() => void copyPgn()} disabled={copyState === "copying"} aria-describedby={copyState === "success" || copyState === "error" ? "copy-feedback" : undefined}>{copyState === "copying" ? "複製中…" : copyState === "success" ? "已複製 ✓" : "複製 PGN"}</button></div>{(copyState === "success" || copyState === "error") && <p id="copy-feedback" className={`copy-feedback ${copyState}`} role="status">{copyState === "success" ? "PGN 已複製到剪貼簿。" : "無法存取剪貼簿，請手動選取下方棋譜。"}</p>}<p className="mainline">{line}</p>{selectedVariation && selectedVariationIndex !== null && (variationNoteError ? <p className="variation-note" role="alert">{variationNoteError} <button className="clear-button" onClick={onRetryVariationNotes}>重新載入</button></p> : variationNotes ? <p className="variation-note">{variationNotes[selectedVariationIndex]}</p> : <p className="variation-note" role="status">正在載入變例解說…</p>)}</section>
     <section><h3>核心構想</h3><p>{opening.ideas}</p></section>
     <section className="core-followups"><div className="section-heading"><div><p className="eyebrow">IMPORTANT CONTINUATIONS</p><h3>重要招法｜接下來怎麼下</h3></div><small>把構想變成下一步</small></div>
       <div className="core-plan-grid">{opening.plans.map((plan, index) => {

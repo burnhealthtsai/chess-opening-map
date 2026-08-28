@@ -295,7 +295,15 @@ export function App() {
     setVariationNoteRetry((value) => value + 1);
   }
   function requestVariationNotes() { setVariationNotesRequested(true); }
-  async function copyLine(line: string) { await navigator.clipboard?.writeText(line); }
+  async function copyLine(line: string) {
+    if (!navigator.clipboard?.writeText) return false;
+    try {
+      await navigator.clipboard.writeText(line);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 
   // Let the atlas be explored without needing to aim at every small opening node.
   useEffect(() => {

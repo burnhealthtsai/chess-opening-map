@@ -23,6 +23,9 @@
 .active-line-heading small, .active-line-heading b { display: block; }
 .active-line-heading small { color: var(--muted); font-size: .68rem; }
 .active-line-heading b { max-width: 52ch; overflow: hidden; font-size: .82rem; text-overflow: ellipsis; white-space: nowrap; }
+.copy-feedback { margin: 8px 0 5px; padding: 8px 10px; color: #216b48; border: 1px solid #8ac8a7; border-radius: 9px; background: #eaf8f0; font-size: .68rem; font-weight: 750; }
+.copy-feedback.error { color: #8a402e; border-color: #e0a08d; background: #fff0eb; }
+[data-theme="dark"] .copy-feedback { color: #bce8cf; background: #183a2b; } [data-theme="dark"] .copy-feedback.error { color: #ffd0c2; background: #4a2823; }
 
 .line-choices > p { margin-bottom: 10px; font-size: .76rem; }
 .line-choices > div { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
