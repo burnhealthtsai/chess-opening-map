@@ -37,3 +37,12 @@ test("analogy groups can be filtered by relation while keeping search active", (
   assert.match(styles, /\.analogy-relation-filters/);
   assert.match(styles, /\.analogy-relation-filters button\[aria-pressed="true"\]/);
 });
+
+test("analogy relation labels keep a text label and a relation-specific visual class", () => {
+  assert.match(component, /className=\{`relation-\$\{item\.relation\}`\}/);
+  assert.match(component, />\{analogyRelationLabels\[item\.relation\]\}<\/span>/);
+  for (const relation of ["reversed", "structure", "plan"]) {
+    assert.match(styles, new RegExp(`\\.analogy-group-list \\.relation-${relation}`));
+    assert.match(styles, new RegExp(`\\.analogy-badge\\.${relation}`));
+  }
+});

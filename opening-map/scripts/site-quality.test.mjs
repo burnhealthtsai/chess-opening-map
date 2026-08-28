@@ -119,6 +119,23 @@ test("analogy relation filters meet WCAG AA in every theme and state", () => {
   assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-relation-filters button\[aria-pressed="true"\] small \{ color: #fff; background: #a65d08; \}/);
 });
 
+test("analogy relation labels meet WCAG AA without relying on color alone", () => {
+  const pairs = [
+    ["#216c94", "#e4f5fc", "light reversed"],
+    ["#247a36", "#eaf7ec", "light structure"],
+    ["#7d218f", "#f8ebfa", "light plan"],
+    ["#9ed8ff", "#183048", "dark reversed"],
+    ["#9fe2b2", "#193225", "dark structure"],
+    ["#e3b7ef", "#33223d", "dark plan"],
+  ];
+  for (const [foreground, background, label] of pairs) {
+    assert.ok(contrast(foreground, background) >= 4.5, `${label}: ${foreground} on ${background} must reach 4.5:1`);
+    assert.ok(analogyStyles.includes(foreground) && analogyStyles.includes(background), `${label} colors must be present in analogy styles`);
+  }
+  assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-badge\.structure/);
+  assert.match(analogyStyles, /\[data-theme="dark"\] \.analogy-group-list \.relation-plan/);
+});
+
 test("dark puzzle, style and transposition labels meet WCAG AA contrast", () => {
   const pairs = [
     ["#d8b9ef", "#17243a", puzzleStyles],

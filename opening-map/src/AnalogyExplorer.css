@@ -21,7 +21,10 @@
 .group-return-button { display: none; }
 .analogy-group-list { display: grid; gap: 8px; }
 .analogy-group-list button { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 8px; padding: 12px; text-align: left; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-.analogy-group-list button > span { grid-row: 1 / 3; align-self: start; padding: 4px 6px; color: #8a5211; border-radius: 7px; background: #fff0d6; font-size: .58rem; font-weight: 900; }
+.analogy-group-list button > span { grid-row: 1 / 3; align-self: start; padding: 4px 6px; border-radius: 7px; font-size: .58rem; font-weight: 900; }
+.analogy-group-list .relation-reversed { color: #216c94; background: #e4f5fc; }
+.analogy-group-list .relation-structure { color: #247a36; background: #eaf7ec; }
+.analogy-group-list .relation-plan { color: #7d218f; background: #f8ebfa; }
 .analogy-group-list button b, .analogy-group-list button small { min-width: 0; overflow-wrap: anywhere; white-space: normal; }
 .analogy-group-list button b { color: var(--navy); font-size: .76rem; line-height: 1.35; }
 .analogy-group-list button small { color: var(--muted); font-size: .62rem; }
@@ -34,8 +37,10 @@
 .analogy-detail { padding: clamp(15px, 2.4vw, 24px); border: 1px solid #e7c58b; border-radius: 17px; background: color-mix(in srgb, var(--surface) 94%, #fff4df); box-shadow: 0 10px 26px rgba(119,78,20,.08); }
 .analogy-detail > header h3 { margin: 9px 0 7px; color: var(--navy); font-size: 1.2rem; }
 .analogy-detail > header p { max-width: 76ch; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.6; }
-.analogy-badge { display: inline-flex; padding: 5px 8px; color: #764511; border: 1px solid #efc780; border-radius: 999px; background: #fff0d6; font-size: .62rem; font-weight: 900; }
+.analogy-badge { display: inline-flex; padding: 5px 8px; border: 1px solid; border-radius: 999px; font-size: .62rem; font-weight: 900; }
 .analogy-badge.reversed { color: #216c94; border-color: #9fd2e8; background: #e4f5fc; }
+.analogy-badge.structure { color: #247a36; border-color: #a7d8b0; background: #eaf7ec; }
+.analogy-badge.plan { color: #7d218f; border-color: #d7afe0; background: #f8ebfa; }
 .analogy-ideas { margin-top: 16px; }
 .analogy-ideas h4, .analogy-difference b { margin: 0; color: var(--navy); font-size: .72rem; }
 .analogy-ideas > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
@@ -89,6 +94,12 @@
 [data-theme="dark"] .analogy-opening-card > em { color: #ffc36a; }
 [data-theme="dark"] .analogy-arrow { color: #ffca78; }
 [data-theme="dark"] .analogy-difference p { color: #c4d2e4; }
+[data-theme="dark"] .analogy-group-list .relation-reversed, [data-theme="dark"] .analogy-badge.reversed { color: #9ed8ff; background: #183048; }
+[data-theme="dark"] .analogy-group-list .relation-structure, [data-theme="dark"] .analogy-badge.structure { color: #9fe2b2; background: #193225; }
+[data-theme="dark"] .analogy-group-list .relation-plan, [data-theme="dark"] .analogy-badge.plan { color: #e3b7ef; background: #33223d; }
+[data-theme="dark"] .analogy-badge.reversed { border-color: #486d87; }
+[data-theme="dark"] .analogy-badge.structure { border-color: #3f6d4f; }
+[data-theme="dark"] .analogy-badge.plan { border-color: #6c4a78; }
 [data-theme="dark"] .analogy-search input { border-color: #486d87; }
 [data-theme="dark"] .analogy-search i, [data-theme="dark"] .analogy-search button { color: #7fd3f5; }
 [data-theme="dark"] .analogy-relation-filters button { color: #d2e2f4; border-color: #486d87; }
