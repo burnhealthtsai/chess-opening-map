@@ -25,3 +25,15 @@ test("analogy search reports results and keeps an accessible empty state", () =>
   assert.match(styles, /\.analogy-search/);
   assert.match(styles, /\.analogy-search-empty/);
 });
+
+test("analogy groups can be filtered by relation while keeping search active", () => {
+  assert.match(component, /const analogyRelationFilters/);
+  assert.match(component, /useState<"all" \| AnalogyGroup\["relation"\]>/);
+  assert.match(component, /aria-label="依類似關係篩選"/);
+  assert.match(component, /aria-pressed=\{relationFilter === option\.id\}/);
+  assert.match(component, /group\.relation !== relationFilter/);
+  assert.match(component, /visibleGroups\.length/);
+  assert.match(component, /setRelationFilter\("all"\)/);
+  assert.match(styles, /\.analogy-relation-filters/);
+  assert.match(styles, /\.analogy-relation-filters button\[aria-pressed="true"\]/);
+});

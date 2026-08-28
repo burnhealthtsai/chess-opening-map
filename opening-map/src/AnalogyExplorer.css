@@ -10,6 +10,11 @@
 .analogy-search button { position: absolute; top: 50%; right: 5px; display: grid; width: 30px; height: 30px; padding: 0; place-items: center; color: #276a8d; border: 0; border-radius: 8px; background: transparent; font-size: 1rem; font-weight: 900; transform: translateY(-50%); }
 .analogy-search button:hover { background: color-mix(in srgb, var(--surface) 70%, #cbeafa); }
 .analogy-search-status { margin: 0 0 5px; color: var(--muted); font-size: .61rem; line-height: 1.45; text-align: right; }
+.analogy-relation-filters { display: flex; flex-wrap: wrap; gap: 7px; margin: -5px 0 14px; }
+.analogy-relation-filters button { display: inline-flex; min-height: 36px; padding: 6px 8px 6px 11px; gap: 8px; align-items: center; color: #45647c; border: 1px solid #b8cbd8; border-radius: 999px; background: var(--surface); font-size: .62rem; font-weight: 800; }
+.analogy-relation-filters button small { display: grid; min-width: 22px; height: 22px; padding-inline: 5px; place-items: center; color: #275f7c; border-radius: 999px; background: color-mix(in srgb, var(--surface) 62%, #ccecf9); font-size: .55rem; font-weight: 900; }
+.analogy-relation-filters button[aria-pressed="true"] { color: #754309; border-color: #d68a1f; background: color-mix(in srgb, var(--surface) 76%, #ffe5b8); box-shadow: inset 0 0 0 1px #e49a32; }
+.analogy-relation-filters button[aria-pressed="true"] small { color: #fff; background: #a65d08; }
 .analogy-layout { display: grid; grid-template-columns: minmax(230px, .7fr) minmax(0, 1.9fr); gap: 16px; align-items: start; }
 .analogy-directory { min-width: 0; }
 .group-keyboard-hint { margin: 0 0 7px; color: var(--muted); font-size: .58rem; line-height: 1.45; }
@@ -86,6 +91,9 @@
 [data-theme="dark"] .analogy-difference p { color: #c4d2e4; }
 [data-theme="dark"] .analogy-search input { border-color: #486d87; }
 [data-theme="dark"] .analogy-search i, [data-theme="dark"] .analogy-search button { color: #7fd3f5; }
+[data-theme="dark"] .analogy-relation-filters button { color: #d2e2f4; border-color: #486d87; }
+[data-theme="dark"] .analogy-relation-filters button small { color: #bfeaff; }
+[data-theme="dark"] .analogy-relation-filters button[aria-pressed="true"] { color: #ffe2b5; border-color: #d68a1f; }
 @media (max-width: 980px) {
   .analogy-layout { grid-template-columns: 1fr; }
   .analogy-group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
