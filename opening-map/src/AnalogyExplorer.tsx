@@ -34,7 +34,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
     const example = group.examples[side];
     const opening = nodes.find((node) => node.id === example.openingId);
     if (!opening) return null;
-    return <article className={side} key={side}><header><span>{side === "black" ? "♚" : "♔"}</span><div><small>{side === "black" ? "黑方形成棋路" : "白方形成棋路"}</small><b>{example.label}</b></div></header><OpeningPositionPreview opening={opening} line={example.line} label={example.label} /><code>{example.line}</code></article>;
+    return <FormationExample side={side} example={example} opening={opening} key={`${group.id}-${side}`} />;
   };
   return <div className="analogy-explorer">
     <div className="directory-heading with-summary"><div><p className="eyebrow">OPENING ANALOGY LAB</p><h2>黑方防禦 × 白方進攻類似比較</h2><p>把可以共用兵形判斷、出子配置或進攻計畫的開局放在一起。這裡比較的是「可移植的思考方式」，不是精確轉置，也不代表招法能逐手照搬。</p></div><aside className="map-summary"><span><b>{groups.length}</b><small>比較群組</small></span><i /><span><b>{groups.reduce((sum, item) => sum + item.blackIds.length + item.whiteIds.length, 0)}</b><small>開局對照</small></span></aside></div>
@@ -55,18 +55,42 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   </div>;
 }
 
-function OpeningPositionPreview({ opening, line = opening.mainline, label = "主線走完後" }: { opening: Opening; line?: string; label?: string }) {
+function FormationExample({ side, example, opening }: {
+  side: "black" | "white";
+  example: AnalogyGroup["examples"]["black"];
+  opening: Opening;
+}) {
+  const moves = useMemo(() => lineMoves(example.line), [example.line]);
+  const [step, setStep] = useState(moves.length);
+  const positionLabel = step === moves.length ? `${example.label}形成局面` : step === 0 ? "起始局面" : `第 ${step} 手後`;
+  return <article className={side}>
+    <header><span aria-hidden="true">{side === "black" ? "♚" : "♔"}</span><div><small>{side === "black" ? "黑方形成棋路" : "白方形成棋路"}</small><b>{example.label}</b></div></header>
+    <OpeningPositionPreview opening={opening} line={example.line} step={step} label={positionLabel} />
+    <div className="analogy-replay-controls" aria-label={`${example.label}棋路播放控制`}>
+      <button type="button" disabled={step === 0} aria-label="回到起始局面" onClick={() => setStep(0)}>⏮</button>
+      <button type="button" disabled={step === 0} aria-label="上一手" onClick={() => setStep((current) => Math.max(0, current - 1))}>←</button>
+      <output aria-live="polite" aria-atomic="true">{step} / {moves.length} 手</output>
+      <button type="button" disabled={step === moves.length} aria-label="下一手" onClick={() => setStep((current) => Math.min(moves.length, current + 1))}>→</button>
+      <button type="button" disabled={step === moves.length} aria-label="走到形成局面" onClick={() => setStep(moves.length)}>⏭</button>
+    </div>
+    <ol className="analogy-move-timeline" aria-label={`${example.label}完整棋路`}>{moves.map((move, index) => <li key={`${move}-${index}`}><button type="button" className={index + 1 === step ? "current" : index < step ? "played" : ""} aria-label={`走到第 ${index + 1} 手 ${move}`} aria-current={index + 1 === step ? "step" : undefined} onClick={() => setStep(index + 1)}>{moveLabel(index, move)}</button></li>)}</ol>
+  </article>;
+}
+
+function OpeningPositionPreview({ opening, line = opening.mainline, step, label = "主線走完後" }: { opening: Opening; line?: string; step?: number; label?: string }) {
   const position = useMemo(() => {
     const game = new Chess();
-    for (const san of lineMoves(line)) {
+    const moves = lineMoves(line);
+    for (const san of moves.slice(0, step ?? moves.length)) {
       try { game.move(san); } catch { break; }
     }
     const squares = game.board().flatMap((row) => row);
     return opening.side === "黑方" ? squares.reverse() : squares;
-  }, [line, opening.side]);
+  }, [line, opening.side, step]);
   const pieceNames = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" } as const;
   return <span className="opening-position-preview" aria-label={`${opening.title_zh}${label}局面`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>{label}</i></span>;
 }
 
 function lineMoves(line: string) { return line.split(/\s+/).filter((token) => !/^\d+\.(\.\.)?$/.test(token) && !/^(1-0|0-1|1\/2-1\/2|\*)$/.test(token)); }
+function moveLabel(index: number, move: string) { return `${Math.floor(index / 2) + 1}${index % 2 ? "…" : "."}${move}`; }
 function Empty() { return <div className="empty">沒有符合目前條件的開局。</div>; }

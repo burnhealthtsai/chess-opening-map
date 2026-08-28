@@ -132,6 +132,14 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(analogies, /export default function AnalogyExplorer/);
   assert.match(analogies, /className="analogy-examples"/);
   assert.match(analogies, /line=\{example\.line\}/);
+  assert.match(analogies, /function FormationExample/);
+  assert.match(analogies, /useState\(moves\.length\)/);
+  assert.match(analogies, /aria-label="回到起始局面"/);
+  assert.match(analogies, /aria-label="上一手"/);
+  assert.match(analogies, /aria-label="下一手"/);
+  assert.match(analogies, /aria-label="走到形成局面"/);
+  assert.match(analogies, /aria-current=\{index \+ 1 === step \? "step"/);
+  assert.match(analogies, /moves\.slice\(0, step \?\? moves\.length\)/);
   assert.match(analogies, /非精確轉置/);
   assert.match(analogies, /role="tablist"/);
   assert.match(analogies, /aria-selected=\{item\.id === group\.id\}/);
@@ -163,6 +171,7 @@ test("analogy comparison keeps full group and opening names readable on narrow s
   assert.match(analogyCss, /\.analogy-group-list button b, \.analogy-group-list button small \{[^}]*overflow-wrap: anywhere;[^}]*white-space: normal;/);
   assert.match(analogyCss, /\.analogy-opening-card > b, \.analogy-opening-card > small \{[^}]*overflow-wrap: anywhere;[^}]*white-space: normal;/);
   assert.match(analogyCss, /@media \(max-width: 480px\) \{\s*\.analogy-side > div \{ grid-template-columns: 1fr; \}/);
+  assert.match(analogyCss, /\.analogy-examples article \{ grid-template-columns: 1fr; \}/);
 });
 
 test("the puzzle browser CSS follows its lazy JavaScript chunk", () => {
