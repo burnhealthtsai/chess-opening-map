@@ -311,6 +311,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "latvian-kings-gambit-reversed",
+    title: "拉脫維亞棄兵 ↔ 王翼棄兵",
+    relation: "reversed",
+    summary: "拉脫維亞棄兵 1.e4 e5 2.Nf3 f5 是黑方版的反色王翼棄兵：兩邊都提早用 f 兵挑戰 e 兵，換取開放 f 線、快速出子與攻王機會。",
+    blackIds: ["b-latvian-gambit"],
+    whiteIds: ["w-kings-gambit"],
+    sharedIdeas: ["用 f 兵立即挑戰對手 e 兵", "打開 f 線並快速集中子力攻王", "接受王翼兵形與對角線被削弱的代價"],
+    difference: "拉脫維亞由黑方使用，少一個先手，而且白馬已在 Nf3 發展並直接攻擊 e5；黑方的 …f5 因此比白方 2.f4 更容易遭到立即戰術反擊。可借用主動權與開線觀念，不能把王翼棄兵棋路逐手反色。",
+    examples: {
+      black: { openingId: "b-latvian-gambit", label: "拉脫維亞尖銳反擊", line: "1. e4 e5 2. Nf3 f5 3. Nxe5 Qf6 4. d4 d6 5. Nc4 fxe4" },
+      white: { openingId: "w-kings-gambit", label: "王翼棄兵開線出子", line: "1. e4 e5 2. f4 exf4 3. Nf3 g5 4. h4 g4 5. Ne5 Nf6" },
+    },
+  },
+  {
     id: "queenside-fianchetto-reversed",
     title: "歐文／英國式防禦 ↔ 尼姆佐－拉森攻擊",
     relation: "structure",
