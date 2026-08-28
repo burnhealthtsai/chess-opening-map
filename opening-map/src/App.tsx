@@ -297,21 +297,21 @@ export function App() {
   return <main>
     <header className="hero">
       <div><p className="eyebrow">CHESS OPENING ATLAS</p><h1>西洋棋開局地圖</h1><p>先看大方向，再逐步走進每個開局家族。</p></div>
-      <div className="hero-actions"><label><span>棋子風格</span><select value={pieceStyle} onChange={(event) => setPieceStyle(event.target.value as typeof pieceStyle)}>{pieceStyles.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label><label><span>棋盤風格</span><select value={boardStyle} onChange={(event) => setBoardStyle(event.target.value as typeof boardStyle)}>{boardStyles.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label><button className="theme-button" onClick={() => setDark((value) => !value)}>{dark ? "☀ 淺色" : "☾ 深色"}</button></div>
+      <div className="hero-actions"><label><span>棋子風格</span><select value={pieceStyle} onChange={(event) => setPieceStyle(event.target.value as typeof pieceStyle)}>{pieceStyles.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label><label><span>棋盤風格</span><select value={boardStyle} onChange={(event) => setBoardStyle(event.target.value as typeof boardStyle)}>{boardStyles.map(([value, label]) => <option value={value} key={value}>{label}</option>)}</select></label><button className="theme-button" aria-pressed={dark} onClick={() => setDark((value) => !value)}>{dark ? "☀ 淺色" : "☾ 深色"}</button></div>
     </header>
 
     <nav className="lens-tabs" aria-label="探索方式">
-      <button className={lens === "family" ? "active" : ""} onClick={() => switchLens("family")}><span>♞</span><b>棋路地圖</b><small>依照首步與回應逐層探索</small></button>
-      <button className={lens === "concept" ? "active" : ""} onClick={() => switchLens("concept")}><span>◎</span><b>中心思想</b><small>開局、中局與各類殘局下法</small></button>
-      <button className={lens === "opponent" ? "active" : ""} onClick={() => switchLens("opponent")}><span>♚</span><b>對手練習</b><small>選擇不同等級直接實戰</small></button>
-      <button className={lens === "puzzles" ? "active" : ""} onClick={() => switchLens("puzzles")}><span>◆</span><b>謎題訓練</b><small>從自己的失誤建立複習題</small></button>
-      <button className={lens === "style" ? "active" : ""} onClick={() => switchLens("style")}><span>✦</span><b>學習風格</b><small>從局面、戰術與計畫找到開局</small></button>
-      <button className={lens === "transpositions" ? "active" : ""} onClick={() => switchLens("transpositions")}><span>⇄</span><b>體系轉換</b><small>比較不同走序如何進入同一局面</small></button>
-      <button className={lens === "analogies" ? "active" : ""} onClick={() => switchLens("analogies")}><span>≈</span><b>類似比較</b><small>黑方防禦對照白方進攻體系</small></button>
+      <button className={lens === "family" ? "active" : ""} aria-pressed={lens === "family"} onClick={() => switchLens("family")}><span>♞</span><b>棋路地圖</b><small>依照首步與回應逐層探索</small></button>
+      <button className={lens === "concept" ? "active" : ""} aria-pressed={lens === "concept"} onClick={() => switchLens("concept")}><span>◎</span><b>中心思想</b><small>開局、中局與各類殘局下法</small></button>
+      <button className={lens === "opponent" ? "active" : ""} aria-pressed={lens === "opponent"} onClick={() => switchLens("opponent")}><span>♚</span><b>對手練習</b><small>選擇不同等級直接實戰</small></button>
+      <button className={lens === "puzzles" ? "active" : ""} aria-pressed={lens === "puzzles"} onClick={() => switchLens("puzzles")}><span>◆</span><b>謎題訓練</b><small>從自己的失誤建立複習題</small></button>
+      <button className={lens === "style" ? "active" : ""} aria-pressed={lens === "style"} onClick={() => switchLens("style")}><span>✦</span><b>學習風格</b><small>從局面、戰術與計畫找到開局</small></button>
+      <button className={lens === "transpositions" ? "active" : ""} aria-pressed={lens === "transpositions"} onClick={() => switchLens("transpositions")}><span>⇄</span><b>體系轉換</b><small>比較不同走序如何進入同一局面</small></button>
+      <button className={lens === "analogies" ? "active" : ""} aria-pressed={lens === "analogies"} onClick={() => switchLens("analogies")}><span>≈</span><b>類似比較</b><small>黑方防禦對照白方進攻體系</small></button>
     </nav>
 
     <section className="compact-toolbar" aria-label="搜尋與篩選">
-      <label className="search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜尋開局、中英文或 ECO" /></label>
+      <label className="search"><span aria-hidden="true">⌕</span><input aria-label="搜尋開局、中英文或 ECO" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="搜尋開局、中英文或 ECO" /></label>
       {(lens === "style" || query) && <Filter label="陣營" value={styleSide} values={[all, "白方", "黑方"]} onChange={setStyleSide} />}
       <Filter label="類別" value={category} values={[all, "主流", "趣味"]} onChange={setCategory} />
       {(query || category !== all || styleSide !== all) && <button className="clear-button" onClick={() => { setQuery(""); setCategory(all); setStyleSide(all); }}>清除</button>}
