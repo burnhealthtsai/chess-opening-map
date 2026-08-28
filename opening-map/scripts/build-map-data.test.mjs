@@ -890,14 +890,25 @@ test("every remaining flank first move and e4 sideline has concrete teaching", (
 });
 
 test("transposition routes reach the exact same normalized FEN", () => {
+  const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
+  const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   assert.equal(data.schema_version, 10);
   assert.ok(data.transpositionGroups.length >= 6);
+  assert.equal(new Set(data.transpositionGroups.map((group) => group.title)).size, data.transpositionGroups.length);
+  assert.equal(new Set(data.transpositionGroups.map((group) => group.summary)).size, data.transpositionGroups.length);
   for (const group of data.transpositionGroups) {
     assert.equal(group.relation, "exact");
     assert.equal(group.memberIds.length, new Set(group.memberIds).size);
     assert.ok(group.memberIds.length >= 2);
     assert.ok(new Set(group.routes.map((route) => route.line)).size >= 2);
+    assert.equal(new Set(group.routes.map((route) => route.label)).size, group.routes.length);
+    assert.ok(group.routes.every((route) => group.memberIds.includes(route.openingId)), `${group.id}: 合流路徑不屬於群組成員`);
+    assert.ok(group.memberIds.every((id) => group.routes.some((route) => route.openingId === id)), `${group.id}: 成員缺少自己的形成路徑`);
+    if (group.source === "lichess-epd") {
+      assert.notEqual(group.title, "官方棋路合流群");
+      assert.ok(group.memberIds.every((id) => group.title.includes(openingById.get(id)?.title_zh ?? "\0")), `${group.id}: 自動群組標題未列出完整成員`);
+    }
     for (const route of group.routes) {
       const game = new Chess();
       for (const move of sanMoves(route.line)) game.move(move);

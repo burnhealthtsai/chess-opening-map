@@ -135,6 +135,7 @@ const curatedTranspositions = [
       ["列蒂走法", "1. Nf3 d5 2. c4 e6 3. g3 Nf6 4. Bg2 Be7 5. d4 O-O", "w-reti-opening"],
       ["加泰隆走法", "1. d4 Nf6 2. c4 e6 3. g3 d5 4. Bg2 Be7 5. Nf3 O-O", "w-catalan-opening"],
       ["英式走法", "1. c4 e6 2. Nf3 d5 3. g3 Nf6 4. Bg2 Be7 5. d4 O-O", "w-english-opening"],
+      ["后翼棄兵順序", "1. d4 d5 2. c4 e6 3. Nf3 Nf6 4. g3 Be7 5. Bg2 O-O", "b-queens-gambit-declined"],
     ],
   },
   {
@@ -145,6 +146,7 @@ const curatedTranspositions = [
     routes: [
       ["斯拉夫順序", "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. Nc3 e6", "b-slav-defense"],
       ["印度順序", "1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Nc3 c6", "b-semi-slav-defense"],
+      ["梅蘭進入順序", "1. d4 d5 2. c4 c6 3. Nc3 Nf6 4. Nf3 e6", "b-semi-slav-defense-meran-variation"],
     ],
   },
   {
@@ -155,6 +157,7 @@ const curatedTranspositions = [
     routes: [
       ["后兵順序", "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. Nf3", "b-kings-indian-defense"],
       ["先出王馬", "1. d4 Nf6 2. Nf3 g6 3. c4 Bg7 4. Nc3", "b-neo-grunfeld-defense"],
+      ["格林菲爾德入口", "1. d4 Nf6 2. c4 g6 3. Nf3 Bg7 4. Nc3", "b-grunfeld-defense"],
       ["英式順序", "1. c4 Nf6 2. d4 g6 3. Nc3 Bg7 4. Nf3", "w-english-opening"],
     ],
   },
@@ -185,6 +188,7 @@ const curatedTranspositions = [
     memberIds: ["w-english-opening", "b-benoni-defense", "b-benoni-defense-modern"],
     routes: [
       ["英式順序", "1. c4 Nf6 2. d4 c5 3. d5 e6", "w-english-opening"],
+      ["先走…e6轉入", "1. d4 e6 2. c4 c5 3. d5 Nf6", "b-benoni-defense"],
       ["別諾尼順序", "1. d4 Nf6 2. c4 c5 3. d5 e6", "b-benoni-defense-modern"],
     ],
   },
@@ -201,10 +205,10 @@ function buildCuratedTranspositions(openingIds) {
   });
 }
 
-function buildAutomaticTranspositions(openingIds, variations) {
+function buildAutomaticTranspositions(openingById, variations) {
   const positions = new Map();
   for (const variation of variations) {
-    if (!openingIds.has(variation.opening_id)) continue;
+    if (!openingById.has(variation.opening_id)) continue;
     const chess = new Chess();
     const moves = sanMoves(variation.line);
     for (let index = 0; index < moves.length; index += 1) {
@@ -239,23 +243,27 @@ function buildAutomaticTranspositions(openingIds, variations) {
   return [...deepestByMembers.values()]
     .sort((a, b) => b.memberIds.length - a.memberIds.length || b.routes.length - a.routes.length || b.depth - a.depth)
     .slice(0, 12)
-    .map((candidate, index) => ({
-      id: `official-transposition-${index + 1}`,
-      title: "官方棋路合流群",
-      summary: "不同官方開局棋路抵達完全相同的局面；可比較走子順序如何隱藏或延後開局選擇。",
-      relation: "exact",
-      targetFen: candidate.targetFen,
-      memberIds: candidate.memberIds,
-      routes: candidate.routes.map(({ depth: _depth, ...route }) => route),
-      source: "lichess-epd",
-    }));
+    .map((candidate, index) => {
+      const memberTitles = candidate.memberIds.map((id) => normalizedChineseTitle(openingById.get(id)));
+      return {
+        id: `official-transposition-${index + 1}`,
+        title: memberTitles.join("・"),
+        summary: `${memberTitles.join("、")}的不同官方棋路抵達完全相同的局面；可比較走子順序如何隱藏或延後開局選擇。`,
+        relation: "exact",
+        targetFen: candidate.targetFen,
+        memberIds: candidate.memberIds,
+        routes: candidate.routes.map(({ depth: _depth, ...route }) => route),
+        source: "lichess-epd",
+      };
+    });
 }
 
 export function buildTranspositionGroups(catalog, variationCatalog = { variations: [] }) {
-  const openingIds = new Set(catalog.openings.map((opening) => opening.id));
+  const openingById = new Map(catalog.openings.map((opening) => [opening.id, opening]));
+  const openingIds = new Set(openingById.keys());
   return [
     ...buildCuratedTranspositions(openingIds),
-    ...buildAutomaticTranspositions(openingIds, variationCatalog.variations ?? []),
+    ...buildAutomaticTranspositions(openingById, variationCatalog.variations ?? []),
   ];
 }
 
