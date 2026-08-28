@@ -909,7 +909,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 6);
+  assert.ok(data.analogyGroups.length >= 9);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -920,6 +920,22 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.ok(sicilianEnglish.whiteIds.includes("w-english-opening"));
   assert.ok(sicilianEnglish.whiteIds.every((id) => openingById.get(id)?.title_zh.startsWith("英格蘭開局")));
   assert.ok(!map.nodes.some((opening) => opening.title_zh.includes("英國式開局")));
+
+  const benoniReti = data.analogyGroups.find((group) => group.id === "benoni-reti-reversed");
+  assert.equal(benoniReti?.relation, "reversed");
+  assert.ok(benoniReti?.blackIds.includes("b-benoni-defense-modern"));
+  assert.ok(benoniReti?.whiteIds.includes("w-reti-opening"));
+  assert.match(benoniReti?.difference ?? "", /先手|速度/);
+
+  const philidorKia = data.analogyGroups.find((group) => group.id === "philidor-kia-reversed");
+  assert.equal(philidorKia?.relation, "reversed");
+  assert.deepEqual(philidorKia?.blackIds, ["b-philidor-defense"]);
+  assert.ok(philidorKia?.whiteIds.includes("w-kings-indian-attack-with-e6"));
+
+  const qgdColle = data.analogyGroups.find((group) => group.id === "qgd-colle-structure");
+  assert.equal(qgdColle?.relation, "structure");
+  assert.ok(qgdColle?.blackIds.includes("b-queens-gambit-declined-orthodox-defense"));
+  assert.deepEqual(qgdColle?.whiteIds, ["w-colle-system"]);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));
@@ -932,4 +948,6 @@ test("analogy groups compare black defenses with white opening plans without cal
     assert.ok(group.blackIds.every((id) => openingById.get(id)?.side === "黑方"));
     assert.ok(group.whiteIds.every((id) => openingById.get(id)?.side === "白方"));
   }
+  assert.equal(new Set(data.analogyGroups.map(({ id }) => id)).size, data.analogyGroups.length);
+  assert.equal(new Set(data.analogyGroups.map(({ summary }) => summary)).size, data.analogyGroups.length);
 });

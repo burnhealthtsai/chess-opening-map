@@ -320,6 +320,36 @@ const curatedAnalogies = [
     sharedIdeas: ["象釘馬後施壓中心", "以象對交換結構弱點", "根據對手驅象方式改變中心計畫"],
     difference: "尼姆佐印度的 Bb4 釘住 Nc3 與白王，特龍普夫斯基／托雷的 Bg5 針對 Nf6；戰術目標相似，但攻擊的中心格不同。",
   },
+  {
+    id: "benoni-reti-reversed",
+    title: "別諾尼防禦 ↔ 列蒂開局",
+    relation: "reversed",
+    summary: "列蒂的 1.Nf3 d5 2.c4 先用 c 兵側攻黑方 d 兵；若黑方以 …d4 推進保留空間，就會呈現反色別諾尼式的中心兵鏈與側翼反擊。",
+    blackIds: ["b-benoni-defense", "b-benoni-defense-modern"],
+    whiteIds: ["w-reti-opening"],
+    sharedIdeas: ["c 兵從側翼挑戰 d 兵中心", "王翼象翼施壓長斜線", "不急著佔滿中心，先逼對手暴露兵鏈目標"],
+    difference: "別諾尼由黑方少一個先手承擔空間壓力，常需 …e6、…b5 或 …f5 擊破白方中心；列蒂白方多一個先手，且仍可依黑方回應轉入英格蘭或后翼棄兵。",
+  },
+  {
+    id: "philidor-kia-reversed",
+    title: "菲利多爾防禦 ↔ 王翼印度攻擊",
+    relation: "reversed",
+    summary: "菲利多爾的 …e5、…d6、…Nf6 兵子核心，反色後對應王翼印度攻擊的 e4、d3、Nf3，兩者都先穩固王兵中心再準備 f 兵突破。",
+    blackIds: ["b-philidor-defense"],
+    whiteIds: ["w-kings-indian-attack", "w-kings-indian-attack-with-e6"],
+    sharedIdeas: ["e、d 兵前後相連的穩固中心", "馬經 d2／d7 轉往進攻格", "以 f4／…f5 打開王翼與 e 線"],
+    difference: "王翼印度攻擊通常把王象象翼到 g2，菲利多爾則多以 …Be7 發展；象的斜線不同，所以馬的轉進路徑與 f 兵突破時機不能照搬。",
+  },
+  {
+    id: "qgd-colle-structure",
+    title: "后翼棄兵拒絕 ↔ 科勒體系",
+    relation: "structure",
+    summary: "后翼棄兵拒絕以 …d5、…e6 支撐中心，科勒則用 d4、e3 搭建對應的白方兵鏈；共通課題是先完成出子，再以解放性兵突破活化壞象。",
+    blackIds: ["b-queens-gambit-declined", "b-queens-gambit-declined-orthodox-defense"],
+    whiteIds: ["w-colle-system"],
+    sharedIdeas: ["d、e 兵鏈帶來穩固中心", "馬放 f6／f3，王象經 e7／d3 發展", "準備 …c5／…e5 或 e4 解放兵鏈後方的象"],
+    difference: "后翼棄兵局面中白兵已在 c4 施壓 d5，黑方要先解決中心張力；科勒通常保留 c2 兵並集中準備 e4，兩邊的主要突破線並不相同。",
+  },
 ];
 
 export function buildAnalogyGroups(catalog) {
