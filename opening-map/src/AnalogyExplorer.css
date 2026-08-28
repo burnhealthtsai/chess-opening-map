@@ -1,5 +1,15 @@
 /* Black-defense and White-system strategic analogies. */
 .analogy-explorer .directory-heading > div > p:last-child { max-width: 76ch; color: var(--muted); line-height: 1.6; }
+.analogy-search-row { display: flex; gap: 12px; align-items: end; justify-content: space-between; margin: 0 0 14px; padding: 11px 13px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); }
+.analogy-search { display: grid; width: min(100%, 440px); gap: 5px; color: var(--navy); font-size: .62rem; font-weight: 850; }
+.analogy-search > div { position: relative; }
+.analogy-search i { position: absolute; top: 50%; left: 11px; color: #357493; font-size: 1rem; font-style: normal; transform: translateY(-53%); pointer-events: none; }
+.analogy-search input { width: 100%; min-height: 40px; padding: 8px 38px 8px 34px; color: var(--navy); border: 1px solid #a9c8d8; border-radius: 10px; outline: none; background: var(--surface-2); font: inherit; font-weight: 700; }
+.analogy-search input::placeholder { color: var(--muted); font-weight: 600; }
+.analogy-search input:focus { border-color: #1676a2; box-shadow: 0 0 0 3px color-mix(in srgb, #319bc8 23%, transparent); }
+.analogy-search button { position: absolute; top: 50%; right: 5px; display: grid; width: 30px; height: 30px; padding: 0; place-items: center; color: #276a8d; border: 0; border-radius: 8px; background: transparent; font-size: 1rem; font-weight: 900; transform: translateY(-50%); }
+.analogy-search button:hover { background: color-mix(in srgb, var(--surface) 70%, #cbeafa); }
+.analogy-search-status { margin: 0 0 5px; color: var(--muted); font-size: .61rem; line-height: 1.45; text-align: right; }
 .analogy-layout { display: grid; grid-template-columns: minmax(230px, .7fr) minmax(0, 1.9fr); gap: 16px; align-items: start; }
 .analogy-directory { min-width: 0; }
 .group-keyboard-hint { margin: 0 0 7px; color: var(--muted); font-size: .58rem; line-height: 1.45; }
@@ -11,6 +21,11 @@
 .analogy-group-list button b { color: var(--navy); font-size: .76rem; line-height: 1.35; }
 .analogy-group-list button small { color: var(--muted); font-size: .62rem; }
 .analogy-group-list button.active { border-color: #d68a1f; background: color-mix(in srgb, var(--surface) 82%, #fff0d6); box-shadow: inset 0 0 0 2px #e49a32; }
+.analogy-search-empty { display: grid; min-height: 280px; padding: 28px; place-items: center; align-content: center; text-align: center; border: 1px dashed #c7a66c; border-radius: 17px; background: color-mix(in srgb, var(--surface) 94%, #fff4df); }
+.analogy-search-empty > span { color: #b36f16; font-size: 2.2rem; }
+.analogy-search-empty b { margin-top: 8px; color: var(--navy); font-size: .9rem; overflow-wrap: anywhere; }
+.analogy-search-empty p { max-width: 48ch; margin: 7px 0 13px; color: var(--muted); font-size: .67rem; line-height: 1.55; }
+.analogy-search-empty button { min-height: 38px; padding: 7px 13px; color: #754309; border: 1px solid #d9ad68; border-radius: 9px; background: var(--surface); font-size: .66rem; font-weight: 850; }
 .analogy-detail { padding: clamp(15px, 2.4vw, 24px); border: 1px solid #e7c58b; border-radius: 17px; background: color-mix(in srgb, var(--surface) 94%, #fff4df); box-shadow: 0 10px 26px rgba(119,78,20,.08); }
 .analogy-detail > header h3 { margin: 9px 0 7px; color: var(--navy); font-size: 1.2rem; }
 .analogy-detail > header p { max-width: 76ch; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.6; }
@@ -69,6 +84,8 @@
 [data-theme="dark"] .analogy-opening-card > em { color: #ffc36a; }
 [data-theme="dark"] .analogy-arrow { color: #ffca78; }
 [data-theme="dark"] .analogy-difference p { color: #c4d2e4; }
+[data-theme="dark"] .analogy-search input { border-color: #486d87; }
+[data-theme="dark"] .analogy-search i, [data-theme="dark"] .analogy-search button { color: #7fd3f5; }
 @media (max-width: 980px) {
   .analogy-layout { grid-template-columns: 1fr; }
   .analogy-group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -77,6 +94,9 @@
   .group-return-button { display: inline-flex; min-height: 36px; margin-bottom: 12px; padding: 7px 10px; align-items: center; color: #85500b; border: 1px solid #dfbd83; border-radius: 9px; background: var(--surface); font-size: .66rem; font-weight: 850; }
 }
 @media (max-width: 680px) {
+  .analogy-search-row { display: grid; }
+  .analogy-search { width: 100%; }
+  .analogy-search-status { margin: 0; text-align: left; }
   .analogy-group-list, .analogy-comparison { grid-template-columns: 1fr; }
   .analogy-arrow { grid-auto-flow: column; gap: 6px; align-items: center; }
   .analogy-arrow small { writing-mode: horizontal-tb; }
