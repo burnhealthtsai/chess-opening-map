@@ -30,6 +30,12 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   const openingCard = (opening: Opening) => <button type="button" className="analogy-opening-card" key={opening.id} onClick={() => onSelect(opening.id)}>
     <span>{opening.eco}</span><b>{opening.title_zh}</b><small>{opening.title_en}</small><OpeningPositionPreview opening={opening} /><em>開啟主頁 →</em>
   </button>;
+  const exampleCard = (side: "black" | "white") => {
+    const example = group.examples[side];
+    const opening = nodes.find((node) => node.id === example.openingId);
+    if (!opening) return null;
+    return <article className={side} key={side}><header><span>{side === "black" ? "♚" : "♔"}</span><div><small>{side === "black" ? "黑方形成棋路" : "白方形成棋路"}</small><b>{example.label}</b></div></header><OpeningPositionPreview opening={opening} line={example.line} label={example.label} /><code>{example.line}</code></article>;
+  };
   return <div className="analogy-explorer">
     <div className="directory-heading with-summary"><div><p className="eyebrow">OPENING ANALOGY LAB</p><h2>黑方防禦 × 白方進攻類似比較</h2><p>把可以共用兵形判斷、出子配置或進攻計畫的開局放在一起。這裡比較的是「可移植的思考方式」，不是精確轉置，也不代表招法能逐手照搬。</p></div><aside className="map-summary"><span><b>{groups.length}</b><small>比較群組</small></span><i /><span><b>{groups.reduce((sum, item) => sum + item.blackIds.length + item.whiteIds.length, 0)}</b><small>開局對照</small></span></aside></div>
     <div className="analogy-layout">
@@ -37,6 +43,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
       <section className="analogy-detail" id="analogy-group-detail" role="tabpanel" aria-labelledby={`analogy-tab-${group.id}`} aria-live="polite">
         <header><span className={`analogy-badge ${group.relation}`}>≈ {analogyRelationLabels[group.relation]}・非精確轉置</span><h3>{group.title}</h3><p>{group.summary}</p></header>
         <div className="analogy-ideas"><h4>可以互相借用的觀念</h4><div>{group.sharedIdeas.map((idea) => <span key={idea}>{idea}</span>)}</div></div>
+        <section className="analogy-examples"><h4>形成對照的示範棋路</h4><p>兩邊各走到能看出共同結構或計畫的位置；棋路合法，但終局面不是精確轉置。</p><div>{exampleCard("black")}{exampleCard("white")}</div></section>
         <div className="analogy-comparison">
           <section className="analogy-side black"><header><span>♚</span><div><small>BLACK DEFENSE</small><h4>黑方防禦</h4></div></header><div>{blackOpenings.map(openingCard)}</div></section>
           <div className="analogy-arrow" aria-hidden="true"><b>≈</b><small>觀念映射</small></div>
@@ -48,17 +55,17 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   </div>;
 }
 
-function OpeningPositionPreview({ opening }: { opening: Opening }) {
+function OpeningPositionPreview({ opening, line = opening.mainline, label = "主線走完後" }: { opening: Opening; line?: string; label?: string }) {
   const position = useMemo(() => {
     const game = new Chess();
-    for (const san of lineMoves(opening.mainline)) {
+    for (const san of lineMoves(line)) {
       try { game.move(san); } catch { break; }
     }
     const squares = game.board().flatMap((row) => row);
     return opening.side === "黑方" ? squares.reverse() : squares;
-  }, [opening]);
+  }, [line, opening.side]);
   const pieceNames = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" } as const;
-  return <span className="opening-position-preview" aria-label={`${opening.title_zh}主線走完後局面`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>主線走完後</i></span>;
+  return <span className="opening-position-preview" aria-label={`${opening.title_zh}${label}局面`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>{label}</i></span>;
 }
 
 function lineMoves(line: string) { return line.split(/\s+/).filter((token) => !/^\d+\.(\.\.)?$/.test(token) && !/^(1-0|0-1|1\/2-1\/2|\*)$/.test(token)); }

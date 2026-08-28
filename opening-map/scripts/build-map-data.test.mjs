@@ -920,22 +920,32 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.ok(sicilianEnglish.whiteIds.includes("w-english-opening"));
   assert.ok(sicilianEnglish.whiteIds.every((id) => openingById.get(id)?.title_zh.startsWith("英格蘭開局")));
   assert.ok(!map.nodes.some((opening) => opening.title_zh.includes("英國式開局")));
+  assert.match(sicilianEnglish.examples.white.line, /1\. c4 e5/);
 
   const benoniReti = data.analogyGroups.find((group) => group.id === "benoni-reti-reversed");
   assert.equal(benoniReti?.relation, "reversed");
   assert.ok(benoniReti?.blackIds.includes("b-benoni-defense-modern"));
   assert.ok(benoniReti?.whiteIds.includes("w-reti-opening"));
   assert.match(benoniReti?.difference ?? "", /先手|速度/);
+  assert.match(benoniReti?.examples.white.line ?? "", /2\. c4 d4/);
 
   const philidorKia = data.analogyGroups.find((group) => group.id === "philidor-kia-reversed");
   assert.equal(philidorKia?.relation, "reversed");
   assert.deepEqual(philidorKia?.blackIds, ["b-philidor-defense"]);
   assert.ok(philidorKia?.whiteIds.includes("w-kings-indian-attack-with-e6"));
+  assert.match(philidorKia?.examples.white.line ?? "", /Bg2/);
+  assert.match(philidorKia?.examples.white.line ?? "", /d3/);
+  assert.match(philidorKia?.examples.white.line ?? "", /e4/);
 
   const qgdColle = data.analogyGroups.find((group) => group.id === "qgd-colle-structure");
   assert.equal(qgdColle?.relation, "structure");
   assert.ok(qgdColle?.blackIds.includes("b-queens-gambit-declined-orthodox-defense"));
   assert.deepEqual(qgdColle?.whiteIds, ["w-colle-system"]);
+
+  const caroSlav = data.analogyGroups.find((group) => group.id === "caro-slav-london-colle");
+  assert.match(caroSlav?.summary ?? "", /半斯拉夫.*科勒.*后象受限.*解放中心/);
+  assert.ok(caroSlav?.sharedIdeas.some((idea) => /兵鏈封閉前安排后象.*解放性突破/.test(idea)));
+  assert.doesNotMatch(caroSlav?.sharedIdeas.join(" ") ?? "", /避免壞象被鎖/);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));
@@ -947,6 +957,14 @@ test("analogy groups compare black defenses with white opening plans without cal
     assert.equal(group.whiteIds.length, new Set(group.whiteIds).size);
     assert.ok(group.blackIds.every((id) => openingById.get(id)?.side === "黑方"));
     assert.ok(group.whiteIds.every((id) => openingById.get(id)?.side === "白方"));
+    for (const [side, example, members] of [["黑方", group.examples.black, group.blackIds], ["白方", group.examples.white, group.whiteIds]]) {
+      assert.ok(members.includes(example.openingId), `${group.id}: ${side}示範不屬於群組`);
+      assert.ok(example.label.length >= 4, `${group.id}: ${side}示範缺少標籤`);
+      const game = new Chess();
+      const moves = sanMoves(example.line);
+      assert.ok(moves.length >= 4, `${group.id}: ${side}示範過短`);
+      for (const move of moves) assert.doesNotThrow(() => game.move(move), `${group.id}: ${side}示範含非法棋步 ${move}`);
+    }
   }
   assert.equal(new Set(data.analogyGroups.map(({ id }) => id)).size, data.analogyGroups.length);
   assert.equal(new Set(data.analogyGroups.map(({ summary }) => summary)).size, data.analogyGroups.length);

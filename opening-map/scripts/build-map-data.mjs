@@ -269,6 +269,10 @@ const curatedAnalogies = [
     whiteIds: ["w-english-opening", "w-english-opening-four-knights-system"],
     sharedIdeas: ["c 兵從側翼挑戰中心", "不對稱兵形與兩翼競爭", "保留 d 兵，等待 d4／…d5 突破"],
     difference: "英格蘭開局由白方先走，多一個先手，但對手的配置也不同；可移植兵形判斷與突破時機，不能逐手照抄西西里主線。",
+    examples: {
+      black: { openingId: "b-sicilian-defense", label: "西西里中心交換", line: "1. e4 c5 2. Nf3 Nc6 3. d4 cxd4 4. Nxd4" },
+      white: { openingId: "w-english-opening", label: "反色西西里兵形", line: "1. c4 e5 2. Nc3 Nf6 3. g3 d5 4. cxd5 Nxd5" },
+    },
   },
   {
     id: "kings-indian-defense-attack",
@@ -279,6 +283,10 @@ const curatedAnalogies = [
     whiteIds: ["w-kings-indian-attack", "w-kings-indian-attack-with-e6"],
     sharedIdeas: ["王翼象翼與安全易位", "先讓對手建立中心再反擊", "以 e、f 兵推進製造王翼攻勢"],
     difference: "同一套子力配置換色後，攻擊速度與中心責任會改變；白方多一手，通常先穩定完成 e4、d3 再準備 e5。",
+    examples: {
+      black: { openingId: "b-kings-indian-defense", label: "王翼印度配置", line: "1. d4 Nf6 2. c4 g6 3. Nc3 Bg7 4. e4 d6 5. Nf3 O-O" },
+      white: { openingId: "w-kings-indian-attack-with-e6", label: "反色王翼印度配置", line: "1. Nf3 d5 2. g3 Nf6 3. Bg2 e6 4. O-O Be7 5. d3 O-O 6. Nbd2 c5 7. e4" },
+    },
   },
   {
     id: "dutch-bird-reversed",
@@ -289,6 +297,10 @@ const curatedAnalogies = [
     whiteIds: ["w-bird-opening"],
     sharedIdeas: ["f 兵控制關鍵中心格", "Nf3、g3、Bg2 的列寧格勒式配置", "王翼攻擊與 e 兵突破"],
     difference: "f 兵提前移動會削弱王翼與 e3／e6 格；白方的額外先手不會自動消除這項風險。",
+    examples: {
+      black: { openingId: "b-dutch-defense-leningrad-variation", label: "列寧格勒荷蘭配置", line: "1. d4 f5 2. g3 Nf6 3. Bg2 g6 4. Nf3 Bg7 5. O-O O-O" },
+      white: { openingId: "w-bird-opening", label: "伯德象翼配置", line: "1. f4 d5 2. Nf3 Nf6 3. g3 g6 4. Bg2 Bg7 5. O-O O-O" },
+    },
   },
   {
     id: "queenside-fianchetto-reversed",
@@ -299,16 +311,24 @@ const curatedAnalogies = [
     whiteIds: ["w-nimzo-larsen-attack", "w-basque-opening"],
     sharedIdeas: ["后翼象翼控制長斜線", "延後決定中央兵形", "以 c 兵或 e 兵攻擊對手中心"],
     difference: "這是發展配置與長斜線計畫相似，不是相同兵形；中心兵放在 e4／d4 後，象的目標與突破方向會不同。",
+    examples: {
+      black: { openingId: "b-owen-defense", label: "黑方后翼象翼", line: "1. e4 b6 2. d4 Bb7 3. Bd3 e6 4. Nf3 Nf6" },
+      white: { openingId: "w-nimzo-larsen-attack", label: "白方后翼象翼", line: "1. b3 e5 2. Bb2 Nc6 3. e3 Nf6 4. Nf3" },
+    },
   },
   {
     id: "caro-slav-london-colle",
     title: "Caro–Slav 家族 ↔ 倫敦／科勒體系",
     relation: "structure",
-    summary: "Caro-Kann、斯拉夫與倫敦／科勒都偏好可靠兵鏈、自然出子，再選擇 …c5／c4 或 …e5／e4 的中心突破。",
+    summary: "Caro-Kann、斯拉夫與倫敦常先把后象走到兵鏈外；半斯拉夫與科勒則可能暫時接受后象受限，再靠 …c5、…e5 或 e4 解放中心。",
     blackIds: ["b-caro-kann-defense", "b-slav-defense", "b-semi-slav-defense"],
     whiteIds: ["w-london-system", "w-colle-system", "w-reti-opening-anglo-slav-variation"],
-    sharedIdeas: ["先建立穩固中央支點", "避免壞象被鎖在兵鏈內", "完成發展後才進行中心突破"],
+    sharedIdeas: ["先建立穩固中央支點", "在兵鏈封閉前安排后象，或準備解放性突破", "完成發展後才進行 …c5、…e5 或 e4"],
     difference: "這一組比較的是兵鏈管理與出子次序；Caro-Kann 面對 e4、Slav 面對 d4，而倫敦／科勒由白方主動搭建體系。",
+    examples: {
+      black: { openingId: "b-slav-defense", label: "斯拉夫先出后象", line: "1. d4 d5 2. c4 c6 3. Nf3 Nf6 4. e3 Bf5" },
+      white: { openingId: "w-london-system", label: "倫敦先出后象", line: "1. d4 d5 2. Nf3 Nf6 3. Bf4 e6 4. e3 c5 5. c3" },
+    },
   },
   {
     id: "nimzo-trompowsky-pin",
@@ -319,6 +339,10 @@ const curatedAnalogies = [
     whiteIds: ["w-trompowsky-attack", "w-torre-attack", "w-richter-veresov-attack"],
     sharedIdeas: ["象釘馬後施壓中心", "以象對交換結構弱點", "根據對手驅象方式改變中心計畫"],
     difference: "尼姆佐印度的 Bb4 釘住 Nc3 與白王，特龍普夫斯基／托雷的 Bg5 針對 Nf6；戰術目標相似，但攻擊的中心格不同。",
+    examples: {
+      black: { openingId: "b-nimzo-indian-defense", label: "黑象釘住后翼馬", line: "1. d4 Nf6 2. c4 e6 3. Nc3 Bb4 4. e3 O-O" },
+      white: { openingId: "w-trompowsky-attack", label: "白象釘住王翼馬", line: "1. d4 Nf6 2. Bg5 e6 3. Nd2 d5 4. e3" },
+    },
   },
   {
     id: "benoni-reti-reversed",
@@ -329,6 +353,10 @@ const curatedAnalogies = [
     whiteIds: ["w-reti-opening"],
     sharedIdeas: ["c 兵從側翼挑戰 d 兵中心", "王翼象翼施壓長斜線", "不急著佔滿中心，先逼對手暴露兵鏈目標"],
     difference: "別諾尼由黑方少一個先手承擔空間壓力，常需 …e6、…b5 或 …f5 擊破白方中心；列蒂白方多一個先手，且仍可依黑方回應轉入英格蘭或后翼棄兵。",
+    examples: {
+      black: { openingId: "b-benoni-defense-modern", label: "現代別諾尼兵鏈", line: "1. d4 Nf6 2. c4 c5 3. d5 e6 4. Nc3 exd5 5. cxd5 d6" },
+      white: { openingId: "w-reti-opening", label: "列蒂反色別諾尼", line: "1. Nf3 d5 2. c4 d4 3. b4 Nf6" },
+    },
   },
   {
     id: "philidor-kia-reversed",
@@ -339,6 +367,10 @@ const curatedAnalogies = [
     whiteIds: ["w-kings-indian-attack", "w-kings-indian-attack-with-e6"],
     sharedIdeas: ["e、d 兵前後相連的穩固中心", "馬經 d2／d7 轉往進攻格", "以 f4／…f5 打開王翼與 e 線"],
     difference: "王翼印度攻擊通常把王象象翼到 g2，菲利多爾則多以 …Be7 發展；象的斜線不同，所以馬的轉進路徑與 f 兵突破時機不能照搬。",
+    examples: {
+      black: { openingId: "b-philidor-defense", label: "菲利多爾穩固中心", line: "1. e4 e5 2. Nf3 d6 3. d4 Nd7 4. Bc4 Be7 5. O-O Ngf6" },
+      white: { openingId: "w-kings-indian-attack-with-e6", label: "王翼印度攻擊中心", line: "1. Nf3 d5 2. g3 Nf6 3. Bg2 e6 4. O-O Be7 5. d3 O-O 6. Nbd2 c5 7. e4" },
+    },
   },
   {
     id: "qgd-colle-structure",
@@ -349,6 +381,10 @@ const curatedAnalogies = [
     whiteIds: ["w-colle-system"],
     sharedIdeas: ["d、e 兵鏈帶來穩固中心", "馬放 f6／f3，王象經 e7／d3 發展", "準備 …c5／…e5 或 e4 解放兵鏈後方的象"],
     difference: "后翼棄兵局面中白兵已在 c4 施壓 d5，黑方要先解決中心張力；科勒通常保留 c2 兵並集中準備 e4，兩邊的主要突破線並不相同。",
+    examples: {
+      black: { openingId: "b-queens-gambit-declined", label: "后翼棄兵拒絕兵鏈", line: "1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Nf3 Be7 5. Bg5 O-O 6. e3" },
+      white: { openingId: "w-colle-system", label: "科勒 d4–e3 兵鏈", line: "1. d4 d5 2. Nf3 Nf6 3. e3 e6 4. Bd3 c5 5. O-O Nc6 6. Nbd2" },
+    },
   },
 ];
 
@@ -359,6 +395,13 @@ export function buildAnalogyGroups(catalog) {
     if (missingIds.length) throw new Error(`${group.id}: missing analogy members ${missingIds.join(", ")}`);
     if (group.blackIds.some((id) => openingById.get(id).side !== "黑方")) throw new Error(`${group.id}: black member has wrong side`);
     if (group.whiteIds.some((id) => openingById.get(id).side !== "白方")) throw new Error(`${group.id}: white member has wrong side`);
+    for (const [side, example, memberIds] of [["black", group.examples.black, group.blackIds], ["white", group.examples.white, group.whiteIds]]) {
+      if (!memberIds.includes(example.openingId)) throw new Error(`${group.id}: ${side} example is not a group member`);
+      const game = new Chess();
+      for (const move of sanMoves(example.line)) {
+        try { game.move(move); } catch { throw new Error(`${group.id}: illegal ${side} example move ${move}`); }
+      }
+    }
     return group;
   });
 }

@@ -130,6 +130,8 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(transpositions, /export default function TranspositionExplorer/);
   assert.match(transpositions, /精確同局面/);
   assert.match(analogies, /export default function AnalogyExplorer/);
+  assert.match(analogies, /className="analogy-examples"/);
+  assert.match(analogies, /line=\{example\.line\}/);
   assert.match(analogies, /非精確轉置/);
   assert.match(analogies, /role="tablist"/);
   assert.match(analogies, /aria-selected=\{item\.id === group\.id\}/);

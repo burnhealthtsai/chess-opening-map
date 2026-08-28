@@ -26,6 +26,10 @@ export type AnalogyGroup = {
   whiteIds: string[];
   sharedIdeas: string[];
   difference: string;
+  examples: {
+    black: { openingId: string; label: string; line: string };
+    white: { openingId: string; label: string; line: string };
+  };
 };
 
 export type Opening = {

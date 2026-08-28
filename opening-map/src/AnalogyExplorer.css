@@ -17,6 +17,19 @@
 .analogy-ideas h4, .analogy-difference b { margin: 0; color: var(--navy); font-size: .72rem; }
 .analogy-ideas > div { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .analogy-ideas span { padding: 6px 9px; color: #345f78; border-radius: 999px; background: color-mix(in srgb, var(--surface) 74%, #dff3fb); font-size: .64rem; font-weight: 750; }
+.analogy-examples { margin-top: 16px; padding: 13px; border: 1px solid #b8d9e8; border-radius: 14px; background: color-mix(in srgb, var(--surface) 92%, #e6f6fc); }
+.analogy-examples > h4 { margin: 0; color: var(--navy); font-size: .75rem; }
+.analogy-examples > p { margin: 4px 0 10px; color: var(--muted); font-size: .64rem; line-height: 1.5; }
+.analogy-examples > div { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.analogy-examples article { display: grid; grid-template-columns: minmax(100px, 132px) minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 7px 11px; padding: 10px; border: 1px solid var(--line); border-radius: 11px; background: var(--surface); }
+.analogy-examples article > header { display: flex; grid-column: 2; gap: 7px; align-items: center; }
+.analogy-examples article > header > span { display: grid; width: 28px; height: 28px; flex: 0 0 auto; place-items: center; color: #fff; border-radius: 8px; background: #172b3f; }
+.analogy-examples article.white > header > span { color: #17385e; border: 1px solid #b9d5e5; background: #eef9ff; }
+.analogy-examples article header small, .analogy-examples article header b { display: block; }
+.analogy-examples article header small { color: var(--muted); font-size: .53rem; }
+.analogy-examples article header b { margin-top: 1px; color: var(--navy); font-size: .66rem; }
+.analogy-examples .opening-position-preview { grid-row: 1 / 3; width: 100%; }
+.analogy-examples code { align-self: start; overflow-wrap: anywhere; color: #4d6178; font-family: ui-monospace, monospace; font-size: .58rem; line-height: 1.5; }
 .analogy-comparison { display: grid; grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr); gap: 12px; align-items: stretch; margin-top: 18px; }
 .analogy-side { min-width: 0; padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
 .analogy-side > header { display: flex; gap: 9px; align-items: center; margin-bottom: 10px; }
@@ -46,5 +59,5 @@
   .analogy-arrow { grid-auto-flow: column; gap: 6px; align-items: center; }
   .analogy-arrow small { writing-mode: horizontal-tb; }
   .analogy-side > div { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .analogy-examples > div { grid-template-columns: 1fr; }
 }
-
