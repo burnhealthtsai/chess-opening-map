@@ -1,5 +1,6 @@
 import { Chess } from "chess.js";
-import { createElement, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { createElement, useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { readAnalogyHash, writeAnalogyHash } from "./analogyNavigation";
 import type { AnalogyGroup, Opening } from "./types";
 import "./AnalogyExplorer.css";
 
@@ -24,7 +25,10 @@ const analogyRelationDescriptions = {
 } as const;
 
 export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Opening[]; groups: AnalogyGroup[]; onSelect: (id: string) => void }) {
-  const [activeGroup, setActiveGroup] = useState(groups[0]?.id ?? null);
+  const [activeGroup, setActiveGroup] = useState(() => {
+    const requested = readAnalogyHash(window.location.hash);
+    return groups.some((group) => group.id === requested) ? requested : groups[0]?.id ?? null;
+  });
   const [query, setQuery] = useState("");
   const [relationFilter, setRelationFilter] = useState<"all" | AnalogyGroup["relation"]>("all");
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -43,8 +47,23 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   }, [groups, openingById, query]);
   const visibleGroups = useMemo(() => relationFilter === "all" ? queryMatchedGroups : queryMatchedGroups.filter((group) => group.relation === relationFilter), [queryMatchedGroups, relationFilter]);
   const group = visibleGroups.find((item) => item.id === activeGroup) ?? visibleGroups[0] ?? null;
-  function selectGroup(id: string, revealDetail = false) {
+  useEffect(() => {
+    function syncGroupFromLocation() {
+      const requested = readAnalogyHash(window.location.hash);
+      if (!requested || !groups.some((item) => item.id === requested)) return;
+      setQuery("");
+      setRelationFilter("all");
+      setActiveGroup(requested);
+    }
+    window.addEventListener("popstate", syncGroupFromLocation);
+    return () => window.removeEventListener("popstate", syncGroupFromLocation);
+  }, [groups]);
+  useEffect(() => {
+    if (group) writeAnalogyHash(group.id, "replace");
+  }, [group]);
+  function selectGroup(id: string, revealDetail = false, historyMode: "push" | "replace" = "replace") {
     setActiveGroup(id);
+    writeAnalogyHash(id, historyMode);
     if (revealDetail && window.matchMedia("(max-width: 980px)").matches) {
       requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" }));
     }
@@ -92,7 +111,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
     event.preventDefault();
     event.stopPropagation();
     const target = key === "Home" ? 0 : key === "End" ? visibleGroups.length - 1 : (index + (previous ? -1 : 1) + visibleGroups.length) % visibleGroups.length;
-    selectGroup(visibleGroups[target].id);
+    selectGroup(visibleGroups[target].id, false, "replace");
     requestAnimationFrame(() => groupListRef.current?.querySelectorAll<HTMLButtonElement>("button")[target]?.focus());
   }
   const blackOpenings = group ? group.blackIds.map((id) => openingById.get(id)).filter((node): node is Opening => Boolean(node)) : [];
@@ -119,7 +138,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
     })}</div>
     <p id="analogy-relation-description" className="analogy-filter-explanation" aria-live="polite"><b>{analogyRelationFilters.find((option) => option.id === relationFilter)?.label}</b><span>{analogyRelationDescriptions[relationFilter]}</span></p>
     <div className="analogy-layout">
-      <div className="analogy-directory"><p className="group-keyboard-hint">鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端</p><nav ref={groupListRef} className="analogy-group-list" role="tablist" aria-label="黑白開局類似比較群組">{visibleGroups.map((item, index) => <button type="button" role="tab" id={`analogy-tab-${item.id}`} aria-controls="analogy-group-detail" aria-selected={item.id === group?.id} aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End" tabIndex={item.id === group?.id ? 0 : -1} className={item.id === group?.id ? "active" : ""} key={item.id} onClick={(event) => selectGroup(item.id, event.detail > 0)} onKeyDown={(event) => moveGroup(event, index)}><span className={`relation-${item.relation}`}>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav></div>
+      <div className="analogy-directory"><p className="group-keyboard-hint">鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端</p><nav ref={groupListRef} className="analogy-group-list" role="tablist" aria-label="黑白開局類似比較群組">{visibleGroups.map((item, index) => <button type="button" role="tab" id={`analogy-tab-${item.id}`} aria-controls="analogy-group-detail" aria-selected={item.id === group?.id} aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End" tabIndex={item.id === group?.id ? 0 : -1} className={item.id === group?.id ? "active" : ""} key={item.id} onClick={(event) => selectGroup(item.id, event.detail > 0, "push")} onKeyDown={(event) => moveGroup(event, index)}><span className={`relation-${item.relation}`}>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav></div>
       {group ? <section ref={detailRef} className="analogy-detail" id="analogy-group-detail" role="tabpanel" aria-labelledby={`analogy-tab-${group.id}`} aria-live="polite"><button type="button" className="group-return-button" onClick={returnToGroups}>↑ 返回群組清單</button>
         <header><span className={`analogy-badge ${group.relation}`}>≈ {analogyRelationLabels[group.relation]}・非精確轉置</span><h3>{group.title}</h3><p>{group.summary}</p></header>
         <div className="analogy-ideas"><h4>可以互相借用的觀念</h4><div>{group.sharedIdeas.map((idea) => <span key={idea}>{idea}</span>)}</div></div>

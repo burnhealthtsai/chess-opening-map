@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { ClassificationOverview, FamilyOpeningTree } from "./ClassificationMap";
 import { isOpeningMapData, readOpeningMapSnapshot, writeOpeningMapSnapshot } from "./catalogSnapshot";
 import { openingIcon } from "./openingIcon";
+import { clearAnalogyHash, readAnalogyHash } from "./analogyNavigation";
 import { readStoredBoolean, readStoredChoice, writeStoredPreference } from "./preferences";
 import { shouldStartLiveBoardMinimized } from "./responsive";
 import type { DetailedOpening, Opening, OpeningDetailsData, OpeningExplorerData, OpeningMapData, OpeningVariationNotesData, RelationMode } from "./types";
@@ -65,6 +66,9 @@ function loadOpeningVariationNotes(revision: string) {
 }
 
 type Lens = "family" | "concept" | "opponent" | "puzzles" | "style" | "transpositions" | "analogies";
+function initialLensFromLocation(): Lens {
+  return readAnalogyHash(window.location.hash) ? "analogies" : "family";
+}
 const all = "全部";
 const pieceStyles = [
   ["original", "原版棋子"],
@@ -84,7 +88,7 @@ export function App() {
   const [data, setData] = useState<OpeningMapData | null>(() => readOpeningMapSnapshot(openingSchemaVersion));
   const [mapError, setMapError] = useState<string | null>(null);
   const [mapRetry, setMapRetry] = useState(0);
-  const [lens, setLens] = useState<Lens>("family");
+  const [lens, setLens] = useState<Lens>(initialLensFromLocation);
   const [query, setQuery] = useState("");
   const [searchVisibleCount, setSearchVisibleCount] = useState(searchPageSize);
   const [category, setCategory] = useState(all);
@@ -196,6 +200,17 @@ export function App() {
     return () => { active = false; };
   }, [data, variationNoteRetry, variationNotes, variationNotesRequested]);
 
+  useEffect(() => {
+    function revealLinkedAnalogy() {
+      if (!readAnalogyHash(window.location.hash)) return;
+      setLens("analogies");
+      setSelectedId(null);
+      setQuery("");
+    }
+    window.addEventListener("popstate", revealLinkedAnalogy);
+    return () => window.removeEventListener("popstate", revealLinkedAnalogy);
+  }, []);
+
   const selected = data?.nodes.find((node) => node.id === selectedId) ?? null;
   const openingIsModal = Boolean(selected && (query.trim() || isOwenOpening(selected)));
   const detailedSelected = useMemo<DetailedOpening | null>(() => {
@@ -259,6 +274,7 @@ export function App() {
   }, [detailError, detailedSelected, openingIsModal, selectedId]);
 
   function switchLens(next: Lens) {
+    if (next !== "analogies") clearAnalogyHash();
     setLens(next); setSelectedId(null); setQuery(""); setSearchVisibleCount(searchPageSize);
     if (data && ["transpositions", "analogies"].includes(next)) void loadOpeningExplorerData(data.catalog_revision).catch(() => undefined);
     if (next !== "style") setSelectedStyle(null);

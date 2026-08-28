@@ -7,6 +7,8 @@ const [component, styles] = await Promise.all([
   readFile(new URL("../src/AnalogyExplorer.css", import.meta.url), "utf8"),
 ]);
 
+const app = await readFile(new URL("../src/App.tsx", import.meta.url), "utf8");
+
 test("analogy groups can be searched by opening metadata and shared ideas", () => {
   assert.match(component, /aria-label="搜尋類似比較群組"/);
   assert.match(component, /placeholder="搜尋開局、ECO 或比較觀念"/);
@@ -110,4 +112,16 @@ test("analogy relation labels keep a text label and a relation-specific visual c
     assert.match(styles, new RegExp(`\\.analogy-group-list \\.relation-${relation}`));
     assert.match(styles, new RegExp(`\\.analogy-badge\\.${relation}`));
   }
+});
+
+test("analogy groups support shareable URL hashes and browser history navigation", () => {
+  assert.match(component, /readAnalogyHash\(window\.location\.hash\)/);
+  assert.match(component, /writeAnalogyHash\(id, historyMode\)/);
+  assert.match(component, /window\.addEventListener\("popstate", syncGroupFromLocation\)/);
+  assert.match(component, /window\.removeEventListener\("popstate", syncGroupFromLocation\)/);
+  assert.match(component, /selectGroup\(item\.id, event\.detail > 0, "push"\)/);
+  assert.match(component, /selectGroup\(visibleGroups\[target\]\.id, false, "replace"\)/);
+  assert.match(app, /initialLensFromLocation/);
+  assert.match(app, /readAnalogyHash\(window\.location\.hash\) \? "analogies" : "family"/);
+  assert.match(app, /clearAnalogyHash\(\)/);
 });
