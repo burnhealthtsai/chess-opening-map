@@ -5,6 +5,8 @@ import test from "node:test";
 const app = await readFile(new URL("../src/App.tsx", import.meta.url), "utf8");
 const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
 const transpositions = await readFile(new URL("../src/TranspositionExplorer.tsx", import.meta.url), "utf8");
+const transpositionStyles = await readFile(new URL("../src/TranspositionExplorer.css", import.meta.url), "utf8");
+const analogies = await readFile(new URL("../src/AnalogyExplorer.tsx", import.meta.url), "utf8");
 
 test("Tab switches cards without trapping keyboard focus in the tab list", () => {
   assert.match(app, /target\?\.closest\("\.lens-tabs button"\)/);
@@ -56,4 +58,18 @@ test("transposition groups support roving WASD and arrow-key navigation", () => 
   assert.match(transpositions, /event\.stopPropagation\(\)/);
   assert.match(transpositions, /querySelectorAll<HTMLButtonElement>\("button"\)\[target\]\?\.focus\(\)/);
   assert.match(transpositions, /role="tabpanel"/);
+});
+
+test("group navigation is discoverable and reveals pointer-selected details on stacked layouts", () => {
+  for (const explorer of [transpositions, analogies]) {
+    assert.match(explorer, /鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端/);
+    assert.match(explorer, /aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End"/);
+    assert.match(explorer, /event\.detail > 0/);
+    assert.match(explorer, /scrollIntoView\(\{ behavior: "smooth", block: "start" \}\)/);
+  }
+});
+
+test("long transposition group names remain fully readable", () => {
+  assert.match(transpositionStyles, /\.transposition-group-list button b, \.transposition-group-list button small \{[^}]*overflow-wrap: anywhere;[^}]*white-space: normal;/);
+  assert.doesNotMatch(transpositionStyles, /\.transposition-group-list button b, \.transposition-group-list button small \{[^}]*text-overflow: ellipsis/);
 });
