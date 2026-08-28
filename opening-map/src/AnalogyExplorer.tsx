@@ -141,7 +141,8 @@ function OpeningPositionPreview({ opening, line = opening.mainline, step, label 
     return opening.side === "黑方" ? squares.reverse() : squares;
   }, [line, opening.side, step]);
   const pieceNames = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" } as const;
-  return <span className="opening-position-preview" aria-label={`${opening.title_zh}${label}局面`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>{label}</i></span>;
+  const positionDescription = label.endsWith("局面") ? label : `${label}局面`;
+  return <span className="opening-position-preview" aria-label={`${opening.title_zh}：${positionDescription}`}><span className="preview-board cg-wrap" aria-hidden="true">{position.map((piece, index) => <span className={(Math.floor(index / 8) + index % 8) % 2 ? "dark" : "light"} key={index}>{piece && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}` })}</span>)}</span><i>{label}</i></span>;
 }
 
 function lineMoves(line: string) { return line.split(/\s+/).filter((token) => !/^\d+\.(\.\.)?$/.test(token) && !/^(1-0|0-1|1\/2-1\/2|\*)$/.test(token)); }
