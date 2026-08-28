@@ -71,6 +71,15 @@ test("slash focuses analogy search without hijacking form input", () => {
   assert.match(component, /／：跳到搜尋・Esc：先清搜尋，再清分類/);
 });
 
+test("clearing a query or empty result restores focus to search", () => {
+  assert.match(component, /function focusSearchAfterUpdate\(\)/);
+  assert.match(component, /requestAnimationFrame\(\(\) => searchInputRef\.current\?\.focus\(\{ preventScroll: true \}\)\)/);
+  assert.match(component, /function clearQueryAndFocus\(\) \{[\s\S]*setQuery\(""\);[\s\S]*focusSearchAfterUpdate\(\)/);
+  assert.match(component, /function clearFiltersAndFocus\(\) \{[\s\S]*setQuery\(""\);[\s\S]*setRelationFilter\("all"\);[\s\S]*focusSearchAfterUpdate\(\)/);
+  assert.match(component, /onClick=\{clearQueryAndFocus\} aria-label="清除搜尋"/);
+  assert.match(component, /onClick=\{clearFiltersAndFocus\}>清除篩選/);
+});
+
 test("analogy relation labels keep a text label and a relation-specific visual class", () => {
   assert.match(component, /className=\{`relation-\$\{item\.relation\}`\}/);
   assert.match(component, />\{analogyRelationLabels\[item\.relation\]\}<\/span>/);
