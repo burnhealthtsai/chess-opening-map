@@ -429,6 +429,44 @@ test("major asymmetric king-pawn defenses keep distinct strategies and family li
   assert.match(byId.get("b-scandinavian-defense-portuguese-gambit").ideas, /2\.exd5.*…Nf6.*…Bg4/);
 });
 
+test("French and Caro-Kann branches teach their actual pawn structures", () => {
+  const ids = [
+    "w-french-defense-advance-variation",
+    "w-french-defense-tarrasch-variation",
+    "w-french-defense-exchange-variation",
+    "w-french-defense-winawer-variation",
+    "w-french-defense-classical-variation",
+    "w-caro-kann-defense-advance-variation",
+    "w-caro-kann-defense-panov-attack",
+    "w-caro-kann-defense-maroczy-variation",
+    "w-caro-kann-defense-classical-variation",
+    "b-french-defense",
+    "b-french-defense-rubinstein-variation",
+    "b-caro-kann-defense",
+    "b-caro-kann-defense-tartakower-variation",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-french-defense-advance-variation").ideas, /3\.e5.*d4.*…c5/);
+  assert.match(byId.get("w-french-defense-tarrasch-variation").ideas, /3\.Nd2.*…Bb4.*c1 象/);
+  assert.match(byId.get("w-french-defense-exchange-variation").ideas, /3\.exd5 exd5.*對稱/);
+  assert.match(byId.get("w-french-defense-winawer-variation").ideas, /3\.Nc3 Bb4.*Bxc3\+.*雙兵/);
+  assert.match(byId.get("w-french-defense-classical-variation").ideas, /3\.Nc3 Nf6 4\.Bg5.*e5/);
+  assert.match(byId.get("w-caro-kann-defense-advance-variation").ideas, /3\.e5.*…Bf5.*…c5/);
+  assert.match(byId.get("w-caro-kann-defense-panov-attack").ideas, /3\.exd5 cxd5 4\.c4.*孤立 d4兵/);
+  assert.match(byId.get("w-caro-kann-defense-maroczy-variation").ideas, /3\.f3.*e4.*g1 馬/);
+  assert.match(byId.get("w-caro-kann-defense-classical-variation").ideas, /…dxe4.*…Bf5.*h4–h5/);
+  assert.match(byId.get("b-french-defense").ideas, /1…e6、2…d5.*…c5.*c8 象/);
+  assert.match(byId.get("b-french-defense-rubinstein-variation").ideas, /3…dxe4.*Nxe4.*兵鏈/);
+  assert.match(byId.get("b-caro-kann-defense").ideas, /…dxe4.*…Bf5.*…c5/);
+  assert.match(byId.get("b-caro-kann-defense-tartakower-variation").ideas, /5\.Nxf6\+ exf6.*疊兵.*e 線/);
+});
+
 test("named open king-pawn systems keep structure-specific teaching", () => {
   const ids = [
     "w-scotch-game-scotch-gambit",
