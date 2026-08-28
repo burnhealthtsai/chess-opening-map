@@ -19,4 +19,17 @@ test("blind chess keeps its deliberate memory aids opt-in", () => {
   assert.match(board, /blind && <button className=\{`manual-toggle/);
   assert.match(board, /setBlindInventory\(\(value\) => !value\)/);
   assert.match(board, /blindInventory \? "結束盤點" : "盤點位置"/);
+  assert.match(board, /const pieceLabels: Record<PieceSymbol, string> = \{ k: "王", q: "后", r: "車", b: "象", n: "馬", p: "兵" \}/);
+  assert.match(board, /pieceLabels\[piece\.type\]/);
+});
+
+test("blind chess does not leak the position through square accessibility or visual states", () => {
+  assert.match(board, /const changed = Boolean\(!blind && piece/);
+  assert.match(board, /const selectedMarker = !blind && selected/);
+  assert.match(board, /const targetMarker = !blind && target/);
+  assert.match(board, /const canDrag = Boolean\(!blind && interactive/);
+  assert.match(board, /const blindMoveMarker = blind && lastOpponentMove/);
+  assert.match(board, /const squareLabel = blind/);
+  assert.match(board, /aria-label=\{squareLabel\}/);
+  assert.match(board, /className="blind-note" aria-live="polite" aria-atomic="true"/);
 });

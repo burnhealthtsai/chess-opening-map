@@ -3,6 +3,7 @@ import { createElement, useEffect, useId, useMemo, useRef, useState } from "reac
 import { useStockfish } from "./useStockfish";
 
 const pieceNames: Record<PieceSymbol, string> = { k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn" };
+const pieceLabels: Record<PieceSymbol, string> = { k: "王", q: "后", r: "車", b: "象", n: "馬", p: "兵" };
 const files = ["a", "b", "c", "d", "e", "f", "g", "h"];
 const initialGame = new Chess();
 const initialPieces = new Map(initialGame.board().flatMap((row, rowIndex) => row.map((piece, colIndex) => [`${files[colIndex]}${8 - rowIndex}`, piece] as const)));
@@ -336,7 +337,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
     if (arrows.length) setArrows([]);
     if (blind && blindInventory) {
       const piece = displayGame.get(square);
-      setBlindNote(piece ? `${square}：${piece.color === "w" ? "白方" : "黑方"}${pieceNames[piece.type]}` : `${square}：空格`);
+      setBlindNote(piece ? `${square}：${piece.color === "w" ? "白方" : "黑方"}${pieceLabels[piece.type]}` : `${square}：空格`);
       return;
     }
     const userTurn = playerColor === "white" ? "w" : "b";
@@ -408,12 +409,20 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
           const selected = selectedSquare === square;
           const target = legalTargets.has(square);
           const initialPiece = initialPieces.get(square);
-          const changed = Boolean(piece && (!initialPiece || initialPiece.type !== piece.type || initialPiece.color !== piece.color));
+          const changed = Boolean(!blind && piece && (!initialPiece || initialPiece.type !== piece.type || initialPiece.color !== piece.color));
+          const selectedMarker = !blind && selected;
+          const targetMarker = !blind && target;
           const userTurn = playerColor === "white" ? "w" : "b";
-          const canDrag = Boolean(interactive && (!opponentLevel || displayGame.turn() === userTurn) && piece && piece.color === displayGame.turn());
+          const canDrag = Boolean(!blind && interactive && (!opponentLevel || displayGame.turn() === userTurn) && piece && piece.color === displayGame.turn());
           const suggested = suggestedFrom === square ? "engine-suggest-from" : suggestedTo === square ? "engine-suggest-to" : "";
-          const blindLastMove = blind && lastOpponentMove && (lastOpponentMove.from === square || lastOpponentMove.to === square) ? "blind-last-move" : "";
-          return <button type="button" className={`square ${dark ? "dark" : "light"} ${selected ? "selected-square" : ""} ${target ? "legal-target" : ""} ${changed ? "changed-piece" : ""} ${suggested} ${blindLastMove} ${autoPlay && playback.lastTo === square ? "arrived" : ""}`}
+          const blindMoveMarker = blind && lastOpponentMove
+            ? lastOpponentMove.from === square ? "對手上一手起點" : lastOpponentMove.to === square ? "對手上一手終點" : null
+            : null;
+          const blindLastMove = blindMoveMarker ? "blind-last-move" : "";
+          const squareLabel = blind
+            ? `${square}${blindMoveMarker ? ` ${blindMoveMarker}` : ""}`
+            : `${square}${piece ? ` ${piece.color === "w" ? "白" : "黑"}${piece.type}` : " 空格"}`;
+          return <button type="button" className={`square ${dark ? "dark" : "light"} ${selectedMarker ? "selected-square" : ""} ${targetMarker ? "legal-target" : ""} ${changed ? "changed-piece" : ""} ${suggested} ${blindLastMove} ${autoPlay && playback.lastTo === square ? "arrived" : ""}`}
             key={square} onClick={() => movePiece(square)} disabled={!interactive} draggable={canDrag}
             onContextMenu={(event) => event.preventDefault()}
             onPointerDown={(event) => { if (event.button === 2) { event.preventDefault(); arrowStart.current = square; } }}
@@ -421,7 +430,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
             onDragStart={(event) => { if (!canDrag || !piece) return; event.dataTransfer.effectAllowed = "move"; event.dataTransfer.setData("text/plain", square); setPieceDragImage(event, piece); setSelectedSquare(square); }}
             onDragOver={(event) => { if (interactive) event.preventDefault(); }}
             onDrop={(event) => { event.preventDefault(); const from = event.dataTransfer.getData("text/plain") as Square; if (from) movePiece(square, from); }}
-            aria-label={`${square}${piece ? ` ${piece.color === "w" ? "白" : "黑"}${piece.type}` : " 空格"}`}>
+            aria-label={squareLabel}>
             {piece && !blind && createElement("piece", { className: `${pieceNames[piece.type]} ${piece.color === "w" ? "white" : "black"}`, "aria-hidden": true })}
           </button>;
         })}
@@ -451,7 +460,7 @@ export function Chessboard({ line, initialFen, initialStep = 0, interactive = fa
       ? <><b className="manual-label">自由走棋</b><MoveTokens moves={manualMoves} startPly={initialTurnPly + safeStep} /></>
       : <MoveTokens moves={moves.slice(0, safeStep)} startPly={initialTurnPly} />}</div>}
     {interactive && <p className="arrow-help">右鍵拖曳：攻擊箭頭 · Shift＋右鍵拖曳：對手反擊</p>}
-    {blind && <p className="blind-note">盲棋模式：只標示對手最後一步的起點與終點。{blindNote}</p>}
+    {blind && <p className="blind-note" aria-live="polite" aria-atomic="true">盲棋模式：只標示對手最後一步的起點與終點。{blindNote}</p>}
     {analysis && <StockfishPanel analysis={preferredMoveApplies ? { ...engine, bestMove: preferredBestMove } : engine} fen={displayFen} enabled={engineEnabled} initiallyCollapsed={deferAnalysis} onExpand={() => setAnalysisRequested(true)} />}
   </section>;
 }
