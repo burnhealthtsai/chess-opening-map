@@ -453,6 +453,38 @@ test("open-game gateways and gambit responses explain their actual positions", (
   assert.match(byId.get("b-kings-gambit-declined").ideas, /Falkbeer.*Charousek.*2…d5/);
 });
 
+test("queen-pawn systems explain their distinct setups and named branches", () => {
+  const ids = [
+    "w-london-system-with-bd3",
+    "w-london-system-with-be2",
+    "w-marienbad-system",
+    "w-queens-pawn-game",
+    "w-queens-pawn-mengarini-attack",
+    "w-rapport-jobava-system-with-e6",
+    "w-rubinstein-opening",
+    "w-yusupov-rubinstein-system",
+    "w-blackmar-diemer-gambit-accepted",
+    "w-blackmar-diemer-gambit-declined",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-london-system-with-bd3").ideas, /Bd3.*h7.*e4/);
+  assert.match(byId.get("w-london-system-with-be2").ideas, /h3.*Be2.*…c5/);
+  assert.match(byId.get("w-marienbad-system").ideas, /g3.*Bg2.*…b6.*…c5/);
+  assert.match(byId.get("w-queens-pawn-game").ideas, /1\.d4 d5 2\.e3.*c1 象/);
+  assert.match(byId.get("w-queens-pawn-mengarini-attack").ideas, /3\.Qc2.*e4/);
+  assert.match(byId.get("w-rapport-jobava-system-with-e6").ideas, /Nc3.*Bf4.*…e6.*e4/);
+  assert.match(byId.get("w-rubinstein-opening").ideas, /Bd3.*b3.*Bb2/);
+  assert.match(byId.get("w-yusupov-rubinstein-system").ideas, /Nf3.*e3.*c4|Nf3.*e3.*b3/);
+  assert.match(byId.get("w-blackmar-diemer-gambit-accepted").ideas, /4\.f3 exf3.*Nxf3/);
+  assert.match(byId.get("w-blackmar-diemer-gambit-declined").ideas, /Weinsbach.*Pfrang.*4…e6/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
