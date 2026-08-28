@@ -40,6 +40,11 @@
 .analogy-search-empty p { max-width: 48ch; margin: 7px 0 13px; color: var(--muted); font-size: .67rem; line-height: 1.55; }
 .analogy-search-empty button { min-height: 38px; padding: 7px 13px; color: #754309; border: 1px solid #d9ad68; border-radius: 9px; background: var(--surface); font-size: .66rem; font-weight: 850; }
 .analogy-detail { padding: clamp(15px, 2.4vw, 24px); border: 1px solid #e7c58b; border-radius: 17px; background: color-mix(in srgb, var(--surface) 94%, #fff4df); box-shadow: 0 10px 26px rgba(119,78,20,.08); }
+.analogy-detail-tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.analogy-copy-link { display: inline-flex; min-height: 34px; padding: 6px 10px; gap: 6px; align-items: center; color: #285f7b; border: 1px solid #a9c8d8; border-radius: 9px; background: var(--surface); font-size: .61rem; font-weight: 850; }
+.analogy-copy-link:hover { color: #754309; border-color: #d99a42; background: color-mix(in srgb, var(--surface) 78%, #ffe8bf); }
+.analogy-copy-link:focus-visible { outline: 3px solid color-mix(in srgb, #319bc8 35%, transparent); outline-offset: 2px; }
+.analogy-copy-status { display: block; min-height: 1.2em; margin-top: 4px; color: #32677f; font-size: .57rem; font-weight: 750; text-align: right; }
 .analogy-detail > header h3 { margin: 9px 0 7px; color: var(--navy); font-size: 1.2rem; }
 .analogy-detail > header p { max-width: 76ch; margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.6; }
 .analogy-badge { display: inline-flex; padding: 5px 8px; border: 1px solid; border-radius: 999px; font-size: .62rem; font-weight: 900; }
@@ -107,6 +112,8 @@
 [data-theme="dark"] .analogy-badge.plan { border-color: #6c4a78; }
 [data-theme="dark"] .analogy-search input { border-color: #486d87; }
 [data-theme="dark"] .analogy-search i, [data-theme="dark"] .analogy-search button { color: #7fd3f5; }
+[data-theme="dark"] .analogy-copy-link { color: #c6eaff; border-color: #486d87; }
+[data-theme="dark"] .analogy-copy-status { color: #adddf3; }
 [data-theme="dark"] .analogy-relation-filters button { color: #d2e2f4; border-color: #486d87; }
 [data-theme="dark"] .analogy-relation-filters button small { color: #bfeaff; background: #3a586a; }
 [data-theme="dark"] .analogy-relation-filters button[aria-pressed="true"] { color: #ffe2b5; border-color: #d68a1f; }

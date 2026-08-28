@@ -125,3 +125,17 @@ test("analogy groups support shareable URL hashes and browser history navigation
   assert.match(app, /readAnalogyHash\(window\.location\.hash\) \? "analogies" : "family"/);
   assert.match(app, /clearAnalogyHash\(\)/);
 });
+
+test("the active analogy group exposes clipboard success and failure feedback", () => {
+  assert.match(component, /useState<"idle" \| "copied" \| "error">\("idle"\)/);
+  assert.match(component, /async function copyGroupLink\(\)/);
+  assert.match(component, /await navigator\.clipboard\.writeText\(window\.location\.href\)/);
+  assert.match(component, /setCopyState\("copied"\)/);
+  assert.match(component, /setCopyState\("error"\)/);
+  assert.match(component, /aria-label=\{`複製「\$\{group\.title\}」比較連結`\}/);
+  assert.match(component, /className="analogy-copy-status" role="status" aria-live="polite"/);
+  assert.match(component, /連結已複製/);
+  assert.match(component, /無法複製，請使用瀏覽器網址列/);
+  assert.match(styles, /\.analogy-detail-tools/);
+  assert.match(styles, /\.analogy-copy-link/);
+});
