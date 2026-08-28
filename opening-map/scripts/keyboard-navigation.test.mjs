@@ -65,7 +65,11 @@ test("group navigation is discoverable and reveals pointer-selected details on s
     assert.match(explorer, /鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端/);
     assert.match(explorer, /aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End"/);
     assert.match(explorer, /event\.detail > 0/);
-    assert.match(explorer, /scrollIntoView\(\{ behavior: "smooth", block: "start" \}\)/);
+    assert.match(explorer, /scrollIntoView\(\{ behavior: preferredScrollBehavior\(\), block: "start" \}\)/);
+    assert.match(explorer, /prefers-reduced-motion: reduce/);
+    assert.match(explorer, /\? "auto" : "smooth"/);
+    assert.match(explorer, />↑ 返回群組清單<\/button>/);
+    assert.match(explorer, /active\?\.focus\(\{ preventScroll: true \}\)/);
   }
 });
 

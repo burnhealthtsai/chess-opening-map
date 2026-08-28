@@ -18,8 +18,13 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   function selectGroup(id: string, revealDetail = false) {
     setActiveGroup(id);
     if (revealDetail && window.matchMedia("(max-width: 980px)").matches) {
-      requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+      requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" }));
     }
+  }
+  function returnToGroups() {
+    const active = groupListRef.current?.querySelector<HTMLButtonElement>("[aria-selected='true']");
+    active?.focus({ preventScroll: true });
+    active?.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" });
   }
   function moveGroup(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
@@ -47,7 +52,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
     <div className="directory-heading with-summary"><div><p className="eyebrow">OPENING ANALOGY LAB</p><h2>黑方防禦 × 白方進攻類似比較</h2><p>把可以共用兵形判斷、出子配置或進攻計畫的開局放在一起。這裡比較的是「可移植的思考方式」，不是精確轉置，也不代表招法能逐手照搬。</p></div><aside className="map-summary"><span><b>{groups.length}</b><small>比較群組</small></span><i /><span><b>{groups.reduce((sum, item) => sum + item.blackIds.length + item.whiteIds.length, 0)}</b><small>開局對照</small></span></aside></div>
     <div className="analogy-layout">
       <div className="analogy-directory"><p className="group-keyboard-hint">鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端</p><nav ref={groupListRef} className="analogy-group-list" role="tablist" aria-label="黑白開局類似比較群組">{groups.map((item, index) => <button type="button" role="tab" id={`analogy-tab-${item.id}`} aria-controls="analogy-group-detail" aria-selected={item.id === group.id} aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End" tabIndex={item.id === group.id ? 0 : -1} className={item.id === group.id ? "active" : ""} key={item.id} onClick={(event) => selectGroup(item.id, event.detail > 0)} onKeyDown={(event) => moveGroup(event, index)}><span>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav></div>
-      <section ref={detailRef} className="analogy-detail" id="analogy-group-detail" role="tabpanel" aria-labelledby={`analogy-tab-${group.id}`} aria-live="polite">
+      <section ref={detailRef} className="analogy-detail" id="analogy-group-detail" role="tabpanel" aria-labelledby={`analogy-tab-${group.id}`} aria-live="polite"><button type="button" className="group-return-button" onClick={returnToGroups}>↑ 返回群組清單</button>
         <header><span className={`analogy-badge ${group.relation}`}>≈ {analogyRelationLabels[group.relation]}・非精確轉置</span><h3>{group.title}</h3><p>{group.summary}</p></header>
         <div className="analogy-ideas"><h4>可以互相借用的觀念</h4><div>{group.sharedIdeas.map((idea) => <span key={idea}>{idea}</span>)}</div></div>
         <section className="analogy-examples"><h4>形成對照的示範棋路</h4><p>兩邊各走到能看出共同結構或計畫的位置；棋路合法，但終局面不是精確轉置。</p><div>{exampleCard("black")}{exampleCard("white")}</div></section>
@@ -108,3 +113,4 @@ function OpeningPositionPreview({ opening, line = opening.mainline, step, label 
 function lineMoves(line: string) { return line.split(/\s+/).filter((token) => !/^\d+\.(\.\.)?$/.test(token) && !/^(1-0|0-1|1\/2-1\/2|\*)$/.test(token)); }
 function moveLabel(index: number, move: string) { return `${Math.floor(index / 2) + 1}${index % 2 ? "…" : "."}${move}`; }
 function Empty() { return <div className="empty">沒有符合目前條件的開局。</div>; }
+function preferredScrollBehavior(): ScrollBehavior { return window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"; }

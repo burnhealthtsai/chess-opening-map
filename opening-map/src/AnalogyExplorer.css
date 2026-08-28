@@ -3,6 +3,7 @@
 .analogy-layout { display: grid; grid-template-columns: minmax(230px, .7fr) minmax(0, 1.9fr); gap: 16px; align-items: start; }
 .analogy-directory { min-width: 0; }
 .group-keyboard-hint { margin: 0 0 7px; color: var(--muted); font-size: .58rem; line-height: 1.45; }
+.group-return-button { display: none; }
 .analogy-group-list { display: grid; gap: 8px; }
 .analogy-group-list button { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 8px; padding: 12px; text-align: left; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
 .analogy-group-list button > span { grid-row: 1 / 3; align-self: start; padding: 4px 6px; color: #8a5211; border-radius: 7px; background: #fff0d6; font-size: .58rem; font-weight: 900; }
@@ -71,7 +72,9 @@
 @media (max-width: 980px) {
   .analogy-layout { grid-template-columns: 1fr; }
   .analogy-group-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .analogy-group-list button { scroll-margin-top: 12px; }
   .analogy-detail { scroll-margin-top: 12px; }
+  .group-return-button { display: inline-flex; min-height: 36px; margin-bottom: 12px; padding: 7px 10px; align-items: center; color: #85500b; border: 1px solid #dfbd83; border-radius: 9px; background: var(--surface); font-size: .66rem; font-weight: 850; }
 }
 @media (max-width: 680px) {
   .analogy-group-list, .analogy-comparison { grid-template-columns: 1fr; }
