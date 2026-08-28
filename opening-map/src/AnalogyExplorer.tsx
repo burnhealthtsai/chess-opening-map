@@ -23,15 +23,15 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
   const groupListRef = useRef<HTMLElement>(null);
   const detailRef = useRef<HTMLElement>(null);
   const openingById = useMemo(() => new Map(nodes.map((opening) => [opening.id, opening])), [nodes]);
-  const visibleGroups = useMemo(() => {
+  const queryMatchedGroups = useMemo(() => {
     const tokens = normalizeSearch(query).split(/\s+/).filter(Boolean);
     return groups.filter((group) => {
-      if (relationFilter !== "all" && group.relation !== relationFilter) return false;
       if (!tokens.length) return true;
       const searchText = normalizeSearch(analogySearchText(group, openingById));
       return tokens.every((token) => searchText.includes(token));
     });
-  }, [groups, openingById, query, relationFilter]);
+  }, [groups, openingById, query]);
+  const visibleGroups = useMemo(() => relationFilter === "all" ? queryMatchedGroups : queryMatchedGroups.filter((group) => group.relation === relationFilter), [queryMatchedGroups, relationFilter]);
   const group = visibleGroups.find((item) => item.id === activeGroup) ?? visibleGroups[0] ?? null;
   function selectGroup(id: string, revealDetail = false) {
     setActiveGroup(id);
@@ -73,7 +73,10 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
       <label className="analogy-search"><span>查找類似體系</span><div><i aria-hidden="true">⌕</i><input type="search" value={query} onChange={(event) => setQuery(event.target.value)} aria-label="搜尋類似比較群組" placeholder="搜尋開局、ECO 或比較觀念" />{query && <button type="button" onClick={() => setQuery("")} aria-label="清除搜尋">×</button>}</div></label>
       <p aria-live="polite" className="analogy-search-status">{query.trim() || relationFilter !== "all" ? `顯示 ${visibleGroups.length} / ${groups.length} 個群組` : `共 ${groups.length} 個群組，可搜尋中英文名稱、ECO 與觀念`}</p>
     </div>
-    <div className="analogy-relation-filters" role="group" aria-label="依類似關係篩選">{analogyRelationFilters.map((option) => <button type="button" key={option.id} aria-pressed={relationFilter === option.id} onClick={() => setRelationFilter(option.id)}><span>{option.label}</span><small>{groups.filter((group) => option.id === "all" || group.relation === option.id).length}</small></button>)}</div>
+    <div className="analogy-relation-filters" role="group" aria-label="依類似關係篩選">{analogyRelationFilters.map((option) => {
+      const count = option.id === "all" ? queryMatchedGroups.length : queryMatchedGroups.filter((group) => group.relation === option.id).length;
+      return <button type="button" key={option.id} aria-label={`${option.label}：${count} 個${query.trim() ? "符合搜尋的" : ""}群組`} aria-pressed={relationFilter === option.id} onClick={() => setRelationFilter(option.id)}><span>{option.label}</span><small>{count}</small></button>;
+    })}</div>
     <div className="analogy-layout">
       <div className="analogy-directory"><p className="group-keyboard-hint">鍵盤：W／A／↑／← 上一組・S／D／↓／→ 下一組・Home／End 跳到兩端</p><nav ref={groupListRef} className="analogy-group-list" role="tablist" aria-label="黑白開局類似比較群組">{visibleGroups.map((item, index) => <button type="button" role="tab" id={`analogy-tab-${item.id}`} aria-controls="analogy-group-detail" aria-selected={item.id === group?.id} aria-keyshortcuts="ArrowUp ArrowLeft W A ArrowDown ArrowRight S D Home End" tabIndex={item.id === group?.id ? 0 : -1} className={item.id === group?.id ? "active" : ""} key={item.id} onClick={(event) => selectGroup(item.id, event.detail > 0)} onKeyDown={(event) => moveGroup(event, index)}><span className={`relation-${item.relation}`}>{analogyRelationLabels[item.relation]}</span><b>{item.title}</b><small>{item.blackIds.length} 個黑方・{item.whiteIds.length} 個白方</small></button>)}</nav></div>
       {group ? <section ref={detailRef} className="analogy-detail" id="analogy-group-detail" role="tabpanel" aria-labelledby={`analogy-tab-${group.id}`} aria-live="polite"><button type="button" className="group-return-button" onClick={returnToGroups}>↑ 返回群組清單</button>
@@ -86,7 +89,7 @@ export default function AnalogyExplorer({ nodes, groups, onSelect }: { nodes: Op
           <section className="analogy-side white"><header><span>♔</span><div><small>WHITE SYSTEM</small><h4>白方進攻／體系</h4></div></header><div>{whiteOpenings.map(openingCard)}</div></section>
         </div>
         <aside className="analogy-difference"><b>不能直接照抄的地方</b><p>{group.difference}</p></aside>
-      </section> : <section className="analogy-search-empty" role="status"><span aria-hidden="true">⌕</span><b>{query.trim() ? <>找不到符合「{query.trim()}」的類似比較群組</> : "目前沒有符合此分類的群組"}</b><p>可改搜開局中文名、英文名、ECO 編號，或「象翼」、「中心」、「兵鏈」等觀念。</p><button type="button" onClick={() => { setQuery(""); setRelationFilter("all"); }}>清除篩選</button></section>}
+      </section> : <section className="analogy-search-empty" role="status"><span aria-hidden="true">⌕</span><b>{query.trim() && queryMatchedGroups.length === 0 ? <>找不到符合「{query.trim()}」的類似比較群組</> : query.trim() && relationFilter !== "all" ? <>「{query.trim()}」在「{analogyRelationLabels[relationFilter]}」分類沒有符合群組</> : "目前沒有符合此分類的群組"}</b><p>可改搜開局中文名、英文名、ECO 編號，或「象翼」、「中心」、「兵鏈」等觀念。</p><button type="button" onClick={() => { setQuery(""); setRelationFilter("all"); }}>清除篩選</button></section>}
     </div>
   </div>;
 }

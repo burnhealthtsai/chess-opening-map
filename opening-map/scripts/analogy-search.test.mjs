@@ -31,11 +31,20 @@ test("analogy groups can be filtered by relation while keeping search active", (
   assert.match(component, /useState<"all" \| AnalogyGroup\["relation"\]>/);
   assert.match(component, /aria-label="依類似關係篩選"/);
   assert.match(component, /aria-pressed=\{relationFilter === option\.id\}/);
-  assert.match(component, /group\.relation !== relationFilter/);
+  assert.match(component, /group\.relation === relationFilter/);
   assert.match(component, /visibleGroups\.length/);
   assert.match(component, /setRelationFilter\("all"\)/);
   assert.match(styles, /\.analogy-relation-filters/);
   assert.match(styles, /\.analogy-relation-filters button\[aria-pressed="true"\]/);
+});
+
+test("relation counts follow the active search and explain filtered empty results", () => {
+  assert.match(component, /const queryMatchedGroups = useMemo/);
+  assert.match(component, /queryMatchedGroups\.filter\(\(group\) => group\.relation === option\.id\)/);
+  assert.match(component, /aria-label=\{`\$\{option\.label\}：\$\{count\} 個\$\{query\.trim\(\) \? "符合搜尋的" : ""\}群組`\}/);
+  assert.match(component, />\{count\}<\/small>/);
+  assert.match(component, /queryMatchedGroups\.length === 0/);
+  assert.match(component, /在「\{analogyRelationLabels\[relationFilter\]\}」分類沒有符合群組/);
 });
 
 test("analogy relation labels keep a text label and a relation-specific visual class", () => {
