@@ -6,6 +6,7 @@ const app = readFileSync(new URL("../src/App.tsx", import.meta.url), "utf8");
 const puzzles = readFileSync(new URL("../src/PuzzleExplorer.tsx", import.meta.url), "utf8");
 const opponents = readFileSync(new URL("../src/OpponentExplorer.tsx", import.meta.url), "utf8");
 const styles = readFileSync(new URL("../src/styles.css", import.meta.url), "utf8");
+const classification = readFileSync(new URL("../src/ClassificationMap.tsx", import.meta.url), "utf8");
 
 test("global search has an explicit name, full pointer target and visible focus ring", () => {
   assert.match(app, /<span aria-hidden="true">⌕<\/span><input aria-label="搜尋開局、中英文或 ECO"/);
@@ -15,6 +16,8 @@ test("global search has an explicit name, full pointer target and visible focus 
 
 test("toggle and selection controls expose their state without relying on color", () => {
   assert.equal([...app.matchAll(/aria-pressed=\{lens ===/g)].length, 7);
+  assert.equal([...app.matchAll(/aria-current=\{lens ===/g)].length, 7);
+  assert.equal([...app.matchAll(/<span aria-hidden="true">[♞◎♚◆✦⇄≈]<\/span>/g)].length, 7);
   assert.match(app, /className="theme-button" aria-pressed=\{dark\}/);
   assert.match(puzzles, /aria-pressed=\{group === item\}/);
   assert.match(puzzles, /aria-pressed=\{selectedSummary\?\.id === puzzle\.id\}/);
@@ -26,6 +29,21 @@ test("toggle and selection controls expose their state without relying on color"
   assert.match(opponents, /aria-pressed=\{playerColor === "black"\}/);
   assert.match(opponents, /aria-pressed=\{level === item\.value\}/);
   assert.match(opponents, /aria-pressed=\{blindStockfish\}/);
+});
+
+test("conditional taxonomy panels expose only references that exist", () => {
+  assert.match(classification, /aria-controls=\{expanded \? `subgroup-\$\{side\}-\$\{zone\.move\}-\$\{subgroup\.id\}` : undefined\}/);
+  assert.doesNotMatch(classification, /aria-controls=\{`subgroup-\$\{side\}-\$\{zone\.move\}-\$\{subgroup\.id\}`\}/);
+  assert.match(classification, /<span aria-hidden="true">★<\/span>/);
+});
+
+test("autoplay pause control meets normal-text contrast", () => {
+  const channel = (value) => { const normalized = value / 255; return normalized <= 0.04045 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4; };
+  const luminance = (hex) => { const values = hex.match(/[0-9a-f]{2}/gi).map((value) => channel(Number.parseInt(value, 16))); return 0.2126 * values[0] + 0.7152 * values[1] + 0.0722 * values[2]; };
+  const foreground = luminance("ffffff");
+  const background = luminance("a95f00");
+  assert.ok((foreground + 0.05) / (background + 0.05) >= 4.5);
+  assert.match(styles, /\.board-controls button\.pause-toggle \{ color: #fff; background: #a95f00;/);
 });
 
 test("puzzle result changes, pagination and detail loading have assistive semantics", () => {

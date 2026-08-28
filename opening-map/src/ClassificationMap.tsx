@@ -60,7 +60,7 @@ export function ClassificationOverview({ data, side, category, activeMove, onMov
   return <div className="classification-atlas" role="region" tabIndex={0} aria-label={`${side}開局樹狀分類圖`} aria-describedby={scrollHintId}>
     <p className="taxonomy-scroll-hint" id={scrollHintId}><span aria-hidden="true">↔</span>左右滑動或使用方向鍵查看更多開局</p>
     <aside className={`engine-map-guide ${recommendedMove ? "ready" : ""}`} aria-live="polite">
-      <span>★</span><div><b>Stockfish 最佳棋步</b><small>{recommendedMove ? `目前推薦：${recommendedMove}，對應圓圈會金色閃爍` : "點選棋步後，可在 Live Board 查看局面與分析"}</small></div>
+      <span aria-hidden="true">★</span><div><b>Stockfish 最佳棋步</b><small>{recommendedMove ? `目前推薦：${recommendedMove}，對應圓圈會金色閃爍` : "點選棋步後，可在 Live Board 查看局面與分析"}</small></div>
     </aside>
     <div className="taxonomy-zones">{zones.map((zone, index) => {
       const collapsed = collapsedMoves.has(zone.move);
@@ -83,7 +83,7 @@ export function ClassificationOverview({ data, side, category, activeMove, onMov
         const mover = zone.move === "其他" ? "white" : "black";
         const san = subgroup.replySans[0];
         const engineBest = mover === "black" && recommendedPly === 1 && Boolean(recommendedMove && subgroup.replySans.some((reply) => sameMove(reply, recommendedMove)));
-        return <button className={`subgroup-branch ${expanded ? "expanded" : ""} ${engineBest ? "engine-best" : ""}`} key={key} onClick={() => { onMove(zone.move); onSubgroup(zone.move, subgroup.sourceId, subgroup.replySans); setExpandedSubgroup(expanded ? null : key); }} aria-expanded={expanded} aria-controls={`subgroup-${side}-${zone.move}-${subgroup.id}`}>
+        return <button className={`subgroup-branch ${expanded ? "expanded" : ""} ${engineBest ? "engine-best" : ""}`} key={key} onClick={() => { onMove(zone.move); onSubgroup(zone.move, subgroup.sourceId, subgroup.replySans); setExpandedSubgroup(expanded ? null : key); }} aria-expanded={expanded} aria-controls={expanded ? `subgroup-${side}-${zone.move}-${subgroup.id}` : undefined}>
           <div className={`subgroup-symbol mover-${mover}`}><span><MovePieceIcon san={san} color={mover} /><i className={subgroup.replySans.length > 1 ? "multiple-moves" : ""}>{subgroup.replySans.map((reply) => <span className={engineBest && recommendedMove && sameMove(reply, recommendedMove) ? "engine-best-move" : ""} key={reply}>{reply}</span>)}</i></span></div><b>{subgroupRoleName(subgroup.id, subgroup.label, mover)}</b><small>{subgroup.families.length} 個家族 · {subgroup.count} 個分支</small>
         </button>;
       })}</div>

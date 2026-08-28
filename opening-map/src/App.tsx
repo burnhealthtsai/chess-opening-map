@@ -373,13 +373,13 @@ export function App() {
     </header>
 
     <nav className="lens-tabs" aria-label="探索方式">
-      <button className={lens === "family" ? "active" : ""} aria-pressed={lens === "family"} onClick={() => switchLens("family")}><span>♞</span><b>棋路地圖</b><small>依照首步與回應逐層探索</small></button>
-      <button className={lens === "concept" ? "active" : ""} aria-pressed={lens === "concept"} onClick={() => switchLens("concept")}><span>◎</span><b>中心思想</b><small>開局、中局與各類殘局下法</small></button>
-      <button className={lens === "opponent" ? "active" : ""} aria-pressed={lens === "opponent"} onClick={() => switchLens("opponent")}><span>♚</span><b>對手練習</b><small>選擇不同等級直接實戰</small></button>
-      <button className={lens === "puzzles" ? "active" : ""} aria-pressed={lens === "puzzles"} onClick={() => switchLens("puzzles")}><span>◆</span><b>謎題訓練</b><small>從自己的失誤建立複習題</small></button>
-      <button className={lens === "style" ? "active" : ""} aria-pressed={lens === "style"} onClick={() => switchLens("style")}><span>✦</span><b>學習風格</b><small>從局面、戰術與計畫找到開局</small></button>
-      <button className={lens === "transpositions" ? "active" : ""} aria-pressed={lens === "transpositions"} onClick={() => switchLens("transpositions")}><span>⇄</span><b>體系轉換</b><small>比較不同走序如何進入同一局面</small></button>
-      <button className={lens === "analogies" ? "active" : ""} aria-pressed={lens === "analogies"} onClick={() => switchLens("analogies")}><span>≈</span><b>類似比較</b><small>黑方防禦對照白方進攻體系</small></button>
+      <button className={lens === "family" ? "active" : ""} aria-pressed={lens === "family"} aria-current={lens === "family" ? "page" : undefined} onClick={() => switchLens("family")}><span aria-hidden="true">♞</span><b>棋路地圖</b><small>依照首步與回應逐層探索</small></button>
+      <button className={lens === "concept" ? "active" : ""} aria-pressed={lens === "concept"} aria-current={lens === "concept" ? "page" : undefined} onClick={() => switchLens("concept")}><span aria-hidden="true">◎</span><b>中心思想</b><small>開局、中局與各類殘局下法</small></button>
+      <button className={lens === "opponent" ? "active" : ""} aria-pressed={lens === "opponent"} aria-current={lens === "opponent" ? "page" : undefined} onClick={() => switchLens("opponent")}><span aria-hidden="true">♚</span><b>對手練習</b><small>選擇不同等級直接實戰</small></button>
+      <button className={lens === "puzzles" ? "active" : ""} aria-pressed={lens === "puzzles"} aria-current={lens === "puzzles" ? "page" : undefined} onClick={() => switchLens("puzzles")}><span aria-hidden="true">◆</span><b>謎題訓練</b><small>從自己的失誤建立複習題</small></button>
+      <button className={lens === "style" ? "active" : ""} aria-pressed={lens === "style"} aria-current={lens === "style" ? "page" : undefined} onClick={() => switchLens("style")}><span aria-hidden="true">✦</span><b>學習風格</b><small>從局面、戰術與計畫找到開局</small></button>
+      <button className={lens === "transpositions" ? "active" : ""} aria-pressed={lens === "transpositions"} aria-current={lens === "transpositions" ? "page" : undefined} onClick={() => switchLens("transpositions")}><span aria-hidden="true">⇄</span><b>體系轉換</b><small>比較不同走序如何進入同一局面</small></button>
+      <button className={lens === "analogies" ? "active" : ""} aria-pressed={lens === "analogies"} aria-current={lens === "analogies" ? "page" : undefined} onClick={() => switchLens("analogies")}><span aria-hidden="true">≈</span><b>類似比較</b><small>黑方防禦對照白方進攻體系</small></button>
     </nav>
 
     <section className="compact-toolbar" aria-label="搜尋與篩選">

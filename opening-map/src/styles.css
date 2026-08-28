@@ -302,7 +302,7 @@ main { max-width: 1500px; min-height: 100vh; margin: 0 auto; padding: 28px clamp
 .deeper-group-frame.depth-0.minor { grid-column: span 2; }
 .deeper-group-frame.depth-0.minor[data-move="f4"], .deeper-group-frame.depth-0.minor[data-move="Nc3"] { grid-column: span 3; }
 .deeper-group-frame.depth-0 > .deeper-results > .deeper-branch-level > .deeper-branch-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
-.board-controls button.pause-toggle { color: #fff; background: #e29419; font-size: .72rem; font-weight: 900; }
+.board-controls button.pause-toggle { color: #fff; background: #a95f00; font-size: .72rem; font-weight: 900; }
 .family-opening-groups { justify-content: center; justify-items: stretch; gap: 42px 16px; }
 .inline-family-openings { position: relative; width: 100%; margin: 30px auto 0; padding-top: 43px; }
 .family-frame-move { position: absolute; z-index: 3; top: 0; left: 50%; margin: 0; padding: 0; border: 0; border-radius: 50%; background: transparent; transform: translate(-50%, -50%); transition: transform .18s ease; }
