@@ -417,6 +417,42 @@ test("named open king-pawn systems keep structure-specific teaching", () => {
   assert.match(byId.get("b-ruy-lopez-marshall-attack").ideas, /8…d5.*e4 兵/);
 });
 
+test("open-game gateways and gambit responses explain their actual positions", () => {
+  const ids = [
+    "w-dresden-opening",
+    "w-irish-gambit",
+    "w-kings-knight-opening",
+    "w-kings-pawn-game",
+    "w-kings-pawn-opening",
+    "w-latvian-gambit-accepted",
+    "b-center-game-accepted",
+    "b-danish-gambit-accepted",
+    "b-danish-gambit-declined",
+    "b-gunderam-defense",
+    "b-kings-gambit-accepted",
+    "b-kings-gambit-declined",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-dresden-opening").ideas, /3\.c4.*Goblin.*4\.Nxe5/);
+  assert.match(byId.get("w-irish-gambit").ideas, /3\.Nxe5.*…Nxe5.*d4/);
+  assert.match(byId.get("w-kings-knight-opening").ideas, /2\.Nf3.*e5/);
+  assert.match(byId.get("w-kings-pawn-game").ideas, /1\.e4 e5.*開放王兵/);
+  assert.match(byId.get("w-kings-pawn-opening").ideas, /2\.b3.*Bb2/);
+  assert.match(byId.get("w-latvian-gambit-accepted").ideas, /2…f5.*3\.exf5/);
+  assert.match(byId.get("b-center-game-accepted").ideas, /2\.d4 exd4.*Qxd4/);
+  assert.match(byId.get("b-danish-gambit-accepted").ideas, /3…dxc3.*雙兵/);
+  assert.match(byId.get("b-danish-gambit-declined").ideas, /Sörensen.*3…d5/);
+  assert.match(byId.get("b-gunderam-defense").ideas, /2…Qe7.*f8 象/);
+  assert.match(byId.get("b-kings-gambit-accepted").ideas, /2…exf4.*…g5/);
+  assert.match(byId.get("b-kings-gambit-declined").ideas, /Falkbeer.*Charousek.*2…d5/);
+});
+
 test("transposition routes reach the exact same normalized FEN", () => {
   const data = buildExplorerData(catalog, variationCatalog);
   assert.equal(data.schema_version, 10);
