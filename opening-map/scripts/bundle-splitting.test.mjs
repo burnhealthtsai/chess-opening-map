@@ -93,13 +93,17 @@ test("the large puzzle browser loads only when its tab is opened", () => {
   assert.doesNotMatch(app, /fetch\("\.\/notion-puzzles\.json"\)/);
   assert.match(puzzles, /export default function PuzzleExplorer/);
   assert.match(puzzles, /fetch\("\.\/notion-puzzles\.json", \{ cache: "no-cache" \}\)/);
+  assert.match(puzzles, /catalog\.initialSummaryPath/);
+  assert.match(puzzles, /catalog\.searchPath/);
+  assert.match(puzzles, /loadAllPuzzleSummaries/);
+  assert.match(puzzles, /正在載入完整搜尋索引/);
   assert.match(puzzles, /catalog\.detailBase/);
   assert.match(puzzles, /chunk-\$\{String\(chunk\)\.padStart\(3, "0"\)\}\.json/);
   assert.match(puzzles, /正在載入棋盤與解答/);
   assert.match(puzzles, /重新載入題目/);
   assert.match(puzzles, /setDetailRetry\(\(value\) => value \+ 1\)/);
   assert.match(puzzles, /useDeferredValue\(puzzleQuery\.trim\(\)\.toLowerCase\(\)\)/);
-  assert.match(puzzles, /searchData\.groupCounts/);
+  assert.match(puzzles, /catalog\.groupCounts/);
   assert.match(puzzles, /selectedSummary = filtered\.find/);
   assert.doesNotMatch(puzzles, /catalog\.puzzles\.filter\(\(puzzle\) => inPuzzleGroup/);
   assert.match(puzzles, /previousFen && selected\.previousMove/);

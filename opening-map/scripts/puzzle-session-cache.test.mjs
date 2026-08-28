@@ -9,9 +9,21 @@ test("puzzle index and detail chunks are deduplicated for the browser session", 
   assert.match(puzzles, /let catalogRequest: Promise<NotionPuzzleCatalog> \| null = null/);
   assert.match(puzzles, /if \(cachedCatalog\) return Promise\.resolve\(cachedCatalog\)/);
   assert.match(puzzles, /if \(catalogRequest\) return catalogRequest/);
+  assert.match(puzzles, /const summaryChunkRequests = new Map<string, Promise<PuzzleSummary\[\]>>\(\)/);
+  assert.match(puzzles, /loadPuzzleSummaryChunk\(metadata\)/);
+  assert.match(puzzles, /summaryChunkRequests\.delete\(key\)/);
   assert.match(puzzles, /const detailChunkRequests = new Map<string, Promise<PuzzleDetailChunk>>\(\)/);
   assert.match(puzzles, /if \(existing\) return existing/);
   assert.match(puzzles, /detailChunkRequests\.delete\(key\)/);
+});
+
+test("the first puzzle page loads before the complete search index", () => {
+  assert.match(puzzles, /const needsFullCatalog = Boolean/);
+  assert.match(puzzles, /page > loadedPageCount/);
+  assert.match(puzzles, /loadAllPuzzleSummaries\(catalog\)/);
+  assert.match(puzzles, /complete: metadata\.count <= metadata\.chunkSize/);
+  assert.match(puzzles, /完整搜尋索引載入失敗/);
+  assert.match(puzzles, /setFullIndexRetry\(\(value\) => value \+ 1\)/);
 });
 
 test("puzzle view state survives tab changes while analysis remains opt-in", () => {

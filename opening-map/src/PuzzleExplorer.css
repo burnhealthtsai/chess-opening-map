@@ -23,6 +23,10 @@
 .puzzle-feedback.correct { color: #207348; border: 1px solid #91cfad; background: #eaf8f0; }.puzzle-feedback.correct > span { background: #2d9962; }
 .puzzle-feedback.wrong { color: #9b3d32; border: 1px solid #e2aaa2; background: #fff0ee; }.puzzle-feedback.wrong > span { background: #c65345; }
 .puzzle-browser { display: grid; grid-template-columns: 154px minmax(0, 1fr); gap: 14px; margin-top: 16px; align-items: start; }
+.puzzle-index-state { display: grid; min-height: 260px; place-content: center; justify-items: center; gap: 10px; padding: 24px; color: var(--muted); border: 1px solid var(--line); border-radius: 16px; background: var(--surface-2); text-align: center; }
+.puzzle-index-state .loading-inline { padding: 0; }
+.puzzle-index-state small { font-size: .62rem; }
+.puzzle-index-state > button { padding: 9px 12px; color: #fff; border: 0; border-radius: 9px; background: #74409d; font: inherit; font-size: .65rem; font-weight: 850; }
 .puzzle-detail-state { display: grid; align-content: start; min-height: 220px; gap: 10px; }.puzzle-detail-state .loading-inline { margin: 0; }.puzzle-detail-state > button { justify-self: start; padding: 8px 11px; color: #fff; border: 0; border-radius: 9px; background: #74409d; font: inherit; font-size: .65rem; font-weight: 850; cursor: pointer; }
 .puzzle-browser .notion-puzzle-layout { margin-top: 0; }
 .puzzle-big-groups { position: sticky; top: 10px; display: grid; gap: 7px; padding: 13px; border: 1px solid #cfb5e3; border-radius: 16px; background: color-mix(in srgb, var(--surface) 93%, #ead8f8); }
