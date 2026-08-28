@@ -229,6 +229,50 @@ test("major Indian defenses keep opening-specific teaching instead of one shared
   assert.match(byId.get("b-grunfeld-defense").ideas, /早期…d5/);
 });
 
+test("Indian branches and queen-pawn counterplay systems keep position-specific teaching", () => {
+  const ids = [
+    "b-benko-gambit",
+    "b-dutch-defense",
+    "b-indian-defense-budapest-gambit",
+    "b-blumenfeld-countergambit",
+    "b-kings-indian-defense-orthodox-variation",
+    "b-nimzo-indian-defense-rubinstein-system",
+    "b-dutch-defense-leningrad-variation",
+    "b-benko-gambit-accepted",
+    "b-benko-gambit-declined",
+    "b-blumenfeld-countergambit-accepted",
+    "b-east-indian-defense",
+    "b-neo-grunfeld-defense",
+    "b-pseudo-queens-indian-defense",
+    "b-queens-indian-accelerated",
+    "b-queens-indian-defense-with-e3",
+    "b-queens-indian-defense-with-e3-bb4-line",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("b-benko-gambit").ideas, /3…b5.*…a6.*a、b 線/);
+  assert.match(byId.get("b-dutch-defense").ideas, /1…f5.*e4/);
+  assert.match(byId.get("b-indian-defense-budapest-gambit").ideas, /2…e5.*…Ng4/);
+  assert.match(byId.get("b-blumenfeld-countergambit").ideas, /…c5.*4…b5.*e6、d5/);
+  assert.match(byId.get("b-kings-indian-defense-orthodox-variation").ideas, /Be2.*…e5.*…f5/);
+  assert.match(byId.get("b-nimzo-indian-defense-rubinstein-system").ideas, /4\.e3.*…c5.*Bxc3/);
+  assert.match(byId.get("b-dutch-defense-leningrad-variation").ideas, /…f5.*…g6、…Bg7.*…e5/);
+  assert.match(byId.get("b-benko-gambit-accepted").ideas, /cxb5.*bxa6.*a、b 線/);
+  assert.match(byId.get("b-benko-gambit-declined").ideas, /4\.Nf3.*b5 兵.*…bxc4|4\.Nf3.*b5 兵.*…b4/);
+  assert.match(byId.get("b-blumenfeld-countergambit-accepted").ideas, /5\.dxe6 fxe6 6\.cxb5 d5.*e6、d5/);
+  assert.match(byId.get("b-east-indian-defense").ideas, /2\.Nf3 g6.*尚未.*c4/);
+  assert.match(byId.get("b-neo-grunfeld-defense").ideas, /白方王翼象翼.*…d5.*…c5/);
+  assert.match(byId.get("b-pseudo-queens-indian-defense").ideas, /2\.Nf3 b6.*…Bb7.*e4/);
+  assert.match(byId.get("b-queens-indian-accelerated").ideas, /2…b6.*尚未走…e6.*e4/);
+  assert.match(byId.get("b-queens-indian-defense-with-e3").ideas, /e3、Bd3.*b3、Bb2.*…b6、…Bb7/);
+  assert.match(byId.get("b-queens-indian-defense-with-e3-bb4-line").ideas, /3…Bb4\+.*Nbd2.*…b6、…Bb7/);
+});
+
 test("major white systems keep opening-specific plans and the Colle uses its standard formation", () => {
   const ids = [
     "w-center-game",
