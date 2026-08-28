@@ -381,6 +381,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "elephant-center-danish-central-gambit",
+    title: "大象棄兵 ↔ 中心開局／丹麥棄兵",
+    relation: "plan",
+    summary: "大象棄兵的 …d5 與中心開局／丹麥棄兵的 d4，都在王兵對稱後立刻用 d 兵打開中心，把中央兵張力轉成發展節奏與攻王開線。",
+    blackIds: ["b-elephant-gambit"],
+    whiteIds: ["w-center-game", "w-danish-gambit"],
+    sharedIdeas: ["王兵對稱後立即用 d 兵挑戰中心", "接受交換後用快速發展與開線補償中央兵", "趁對方尚未易位，讓象與車沿開放線加入攻勢"],
+    difference: "中心開局與丹麥棄兵由白方利用先手走 d4，丹麥還能以 c3 再棄兵打開雙象；大象棄兵則在白馬已到 f3 後才走 …d5，黑方少一個先手、攻擊慢一拍，e5 與 d5 同時受壓時更難證明材料補償。",
+    examples: {
+      black: { openingId: "b-elephant-gambit", label: "大象棄兵驅馬開線", line: "1. e4 e5 2. Nf3 d5 3. exd5 e4 4. Qe2 Nf6" },
+      white: { openingId: "w-danish-gambit", label: "丹麥棄兵雙兵開線", line: "1. e4 e5 2. d4 exd4 3. c3 dxc3 4. Nxc3 Nc6 5. Nf3" },
+    },
+  },
+  {
     id: "budapest-blackmar-diemer-gambit-plan",
     title: "布達佩斯棄兵 ↔ 布萊克馬－迪默棄兵",
     relation: "plan",

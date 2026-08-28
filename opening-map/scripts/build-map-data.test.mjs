@@ -920,7 +920,7 @@ test("transposition routes reach the exact same normalized FEN", () => {
 test("analogy groups compare black defenses with white opening plans without calling them transpositions", () => {
   const map = buildMapData(catalog, variationCatalog);
   const data = buildExplorerData(catalog, variationCatalog);
-  assert.ok(data.analogyGroups.length >= 15);
+  assert.ok(data.analogyGroups.length >= 16);
   const openingById = new Map(map.nodes.map((opening) => [opening.id, opening]));
   const sicilianEnglish = data.analogyGroups.find((group) => group.id === "sicilian-english-reversed");
   assert.ok(sicilianEnglish);
@@ -1001,6 +1001,18 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(earlyQueenTempo?.summary ?? "", /d 兵.*后.*馬.*節奏/);
   assert.match(earlyQueenTempo?.difference ?? "", /黑方.*白方.*先手|白方.*黑方.*先手/);
 
+  const elephantCentralGambits = data.analogyGroups.find((group) => group.id === "elephant-center-danish-central-gambit");
+  assert.equal(elephantCentralGambits?.title, "大象棄兵 ↔ 中心開局／丹麥棄兵");
+  assert.equal(elephantCentralGambits?.relation, "plan");
+  assert.deepEqual(elephantCentralGambits?.blackIds, ["b-elephant-gambit"]);
+  assert.deepEqual(elephantCentralGambits?.whiteIds, ["w-center-game", "w-danish-gambit"]);
+  assert.match(elephantCentralGambits?.examples.black.line ?? "", /2\. Nf3 d5 3\. exd5 e4/);
+  assert.match(elephantCentralGambits?.examples.white.line ?? "", /2\. d4 exd4 3\. c3 dxc3/);
+  assert.match(elephantCentralGambits?.summary ?? "", /d 兵.*打開中心|打開中心.*d 兵/);
+  assert.match(elephantCentralGambits?.sharedIdeas.join(" ") ?? "", /發展.*開線|開線.*發展/);
+  assert.match(elephantCentralGambits?.difference ?? "", /少一個先手|慢一拍/);
+  assert.match(elephantCentralGambits?.difference ?? "", /c3/);
+
   const budapestBdg = data.analogyGroups.find((group) => group.id === "budapest-blackmar-diemer-gambit-plan");
   assert.equal(budapestBdg?.title, "布達佩斯棄兵 ↔ 布萊克馬－迪默棄兵");
   assert.equal(budapestBdg?.relation, "plan");
@@ -1036,7 +1048,7 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(polishReversed?.difference ?? "", /e4.*Bxb5|Bxb5.*e4/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 8, structure: 3, plan: 4 },
+    { reversed: 8, structure: 3, plan: 5 },
   );
 
   for (const group of data.analogyGroups) {
