@@ -453,6 +453,33 @@ test("open-game gateways and gambit responses explain their actual positions", (
   assert.match(byId.get("b-kings-gambit-declined").ideas, /Falkbeer.*Charousek.*2…d5/);
 });
 
+test("standalone gambits explain their own compensation and concrete risks", () => {
+  const ids = [
+    "w-kings-gambit",
+    "w-danish-gambit",
+    "w-blackmar-diemer-gambit",
+    "b-latvian-gambit",
+    "b-elephant-gambit",
+    "b-englund-gambit",
+    "b-duras-gambit",
+  ];
+  const openings = ids.map((id) => catalog.openings.find((opening) => opening.id === id));
+  assert.ok(openings.every(Boolean));
+  assert.equal(new Set(openings.map((opening) => opening.ideas)).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.plans.join("|"))).size, ids.length);
+  assert.equal(new Set(openings.map((opening) => opening.mistakes.join("|"))).size, ids.length);
+  assert.ok(openings.every((opening) => !opening.ideas.includes("屬於非主流或趣味體系")));
+
+  const byId = new Map(openings.map((opening) => [opening.id, opening]));
+  assert.match(byId.get("w-kings-gambit").ideas, /2\.f4.*e5.*f 線|2\.f4.*f 線.*e5/);
+  assert.match(byId.get("w-danish-gambit").ideas, /3\.c3.*dxc3.*Bc4.*Bxb2/);
+  assert.match(byId.get("w-blackmar-diemer-gambit").ideas, /4\.f3.*exf3.*Nxf3/);
+  assert.match(byId.get("b-latvian-gambit").ideas, /2…f5.*e4.*f3 馬/);
+  assert.match(byId.get("b-elephant-gambit").ideas, /2…d5.*3\.exd5.*…e4/);
+  assert.match(byId.get("b-englund-gambit").ideas, /2\.dxe5.*…Nc6.*…Qe7/);
+  assert.match(byId.get("b-duras-gambit").ideas, /1…f5.*2\.exf5.*王翼/);
+});
+
 test("queen-pawn systems explain their distinct setups and named branches", () => {
   const ids = [
     "w-london-system-with-bd3",
