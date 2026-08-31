@@ -1003,6 +1003,20 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(semiSlavColle?.summary ?? "", /c6.*d5.*e6.*c3.*d4.*e3/);
   assert.match(semiSlavColle?.difference ?? "", /c4.*e4/);
 
+  const tarraschPanov = data.analogyGroups.find((group) => group.id === "tarrasch-panov-iqp-reversed");
+  assert.equal(tarraschPanov?.title, "塔拉什防禦 ↔ 帕諾夫攻擊");
+  assert.equal(tarraschPanov?.relation, "reversed");
+  assert.deepEqual(tarraschPanov?.blackIds, ["b-tarrasch-defense"]);
+  assert.deepEqual(tarraschPanov?.whiteIds, ["w-caro-kann-defense-panov-attack"]);
+  assert.match(tarraschPanov?.summary ?? "", /孤立后兵.*d5.*d4|d5.*d4.*孤立后兵/);
+  assert.match(tarraschPanov?.sharedIdeas.join(" ") ?? "", /d4.*d5|d5.*d4/);
+  assert.match(tarraschPanov?.sharedIdeas.join(" ") ?? "", /開放.*c.*e 線|c.*e 線.*開放/);
+  assert.match(tarraschPanov?.difference ?? "", /黑方.*少一個先手|少一個先手.*黑方/);
+  assert.match(tarraschPanov?.examples.black.line ?? "", /3\. Nc3 c5 4\. cxd5 exd5/);
+  assert.match(tarraschPanov?.examples.black.line ?? "", /cxd4 10\. Nxd4/);
+  assert.match(tarraschPanov?.examples.white.line ?? "", /3\. exd5 cxd5 4\. c4/);
+  assert.match(tarraschPanov?.examples.white.line ?? "", /7\. cxd5 exd5/);
+
   const earlyQueenTempo = data.analogyGroups.find((group) => group.id === "scandinavian-center-game-queen-tempo");
   assert.equal(earlyQueenTempo?.title, "斯堪地那維亞防禦 ↔ 中心開局");
   assert.equal(earlyQueenTempo?.relation, "plan");
@@ -1072,9 +1086,9 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(polishReversed?.difference ?? "", /e4.*Bxb5|Bxb5.*e4/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 9, structure: 3, plan: 6 },
+    { reversed: 10, structure: 3, plan: 6 },
   );
-  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 54);
+  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 56);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));

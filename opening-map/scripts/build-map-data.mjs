@@ -381,6 +381,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "tarrasch-panov-iqp-reversed",
+    title: "塔拉什防禦 ↔ 帕諾夫攻擊",
+    relation: "reversed",
+    summary: "塔拉什防禦讓黑方留下 d5 孤立后兵，帕諾夫攻擊則由白方主動承擔 d4 孤立后兵；兵形反色後，兩邊都用開放 c、e 線與子力活動補償長期兵形弱點。",
+    blackIds: ["b-tarrasch-defense"],
+    whiteIds: ["w-caro-kann-defense-panov-attack"],
+    sharedIdeas: ["用 d4–d5／…d5–d4 突破改變局面", "沿開放 c、e 線集中車與后", "馬佔據 e5／e4，象瞄準王翼來製造主動權"],
+    difference: "塔拉什黑方少一個先手，必須在白方封鎖 d5 前完成發展或推進 …d4；帕諾夫白方有額外節奏發起進攻，但若交換過多進入殘局，d4 兵會轉成固定弱點。可共用孤立后兵的攻守判斷，不能照搬具體招法。",
+    examples: {
+      black: { openingId: "b-tarrasch-defense", label: "塔拉什黑方 d5 孤兵", line: "1. d4 d5 2. c4 e6 3. Nc3 c5 4. cxd5 exd5 5. Nf3 Nc6 6. g3 Nf6 7. Bg2 Be7 8. O-O O-O 9. Bg5 cxd4 10. Nxd4" },
+      white: { openingId: "w-caro-kann-defense-panov-attack", label: "帕諾夫白方 d4 孤兵", line: "1. e4 c6 2. d4 d5 3. exd5 cxd5 4. c4 Nc6 5. Nc3 Nf6 6. Nf3 e6 7. cxd5 exd5 8. Bb5 Bd6 9. Bg5 O-O 10. O-O" },
+    },
+  },
+  {
     id: "scandinavian-center-game-queen-tempo",
     title: "斯堪地那維亞防禦 ↔ 中心開局",
     relation: "plan",
