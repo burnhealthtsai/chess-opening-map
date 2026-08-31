@@ -69,7 +69,7 @@
 .analogy-examples .opening-position-preview { grid-row: 1 / 2; width: 100%; }
 .analogy-replay-controls { display: grid; grid-column: 1 / -1; grid-template-columns: 28px 28px minmax(60px, 1fr) 28px 28px; gap: 4px; align-items: center; }
 .analogy-replay-controls button { display: grid; width: 28px; height: 28px; padding: 0; place-items: center; color: #1f658d; border: 1px solid #a9cfe2; border-radius: 7px; background: color-mix(in srgb, var(--surface) 82%, #dff3fb); font-size: .67rem; font-weight: 900; }
-.analogy-replay-controls button[aria-disabled="true"] { cursor: default; opacity: .36; }
+.analogy-replay-controls button:disabled { cursor: default; opacity: .36; }
 .analogy-replay-controls output { color: var(--muted); font-family: ui-monospace, monospace; font-size: .56rem; font-weight: 800; text-align: center; white-space: nowrap; }
 .analogy-replay-hint { grid-column: 1 / -1; color: var(--muted); font-size: .51rem; line-height: 1.35; }
 .analogy-move-timeline { display: flex; grid-column: 1 / -1; flex-wrap: wrap; gap: 4px; margin: 0; padding: 0; list-style: none; }

@@ -209,11 +209,11 @@ function FormationExample({ side, example, opening }: {
     <header><span aria-hidden="true">{side === "black" ? "♚" : "♔"}</span><div><small>{side === "black" ? "黑方形成棋路" : "白方形成棋路"}</small><b>{example.label}</b></div></header>
     <OpeningPositionPreview opening={opening} line={example.line} step={step} label={positionLabel} />
     <div className="analogy-replay-controls" aria-label={`${example.label}棋路播放控制`} aria-keyshortcuts="ArrowLeft ArrowRight Home End">
-      <button type="button" aria-disabled={step === 0} aria-label="回到起始局面" title="回到起始局面（Home）" onClick={() => setStep(0)}>⏮</button>
-      <button type="button" aria-disabled={step === 0} aria-label="上一手" title="上一手（←）" onClick={() => setStep((current) => Math.max(0, current - 1))}>←</button>
+      <button type="button" disabled={step === 0} aria-label="回到起始局面" title="回到起始局面（Home）" onClick={() => setStep(0)}>⏮</button>
+      <button type="button" disabled={step === 0} aria-label="上一手" title="上一手（←）" onClick={() => setStep((current) => Math.max(0, current - 1))}>←</button>
       <output aria-live="polite" aria-atomic="true">{step} / {moves.length} 手</output>
-      <button type="button" aria-disabled={step === moves.length} aria-label="下一手" title="下一手（→）" onClick={() => setStep((current) => Math.min(moves.length, current + 1))}>→</button>
-      <button type="button" aria-disabled={step === moves.length} aria-label="走到形成局面" title="走到形成局面（End）" onClick={() => setStep(moves.length)}>⏭</button>
+      <button type="button" disabled={step === moves.length} aria-label="下一手" title="下一手（→）" onClick={() => setStep((current) => Math.min(moves.length, current + 1))}>→</button>
+      <button type="button" disabled={step === moves.length} aria-label="走到形成局面" title="走到形成局面（End）" onClick={() => setStep(moves.length)}>⏭</button>
     </div>
     <small className="analogy-replay-hint">鍵盤：← → 逐手・Home／End 跳到兩端</small>
     <ol className="analogy-move-timeline" aria-label={`${example.label}完整棋路`}>{moves.map((move, index) => <li key={`${move}-${index}`}><button type="button" className={index + 1 === step ? "current" : index < step ? "played" : ""} aria-label={`走到第 ${index + 1} 手 ${move}`} title={`走到第 ${index + 1} 手 ${move}`} aria-current={index + 1 === step ? "step" : undefined} onClick={() => setStep(index + 1)}>{moveLabel(index, move)}</button></li>)}</ol>

@@ -147,9 +147,10 @@ test("secondary opening explorers load only when their tabs are opened", () => {
   assert.match(analogies, /aria-label="下一手"/);
   assert.match(analogies, /aria-label="走到形成局面"/);
   assert.match(analogies, /aria-keyshortcuts="ArrowLeft ArrowRight Home End"/);
-  assert.match(analogies, /aria-disabled=\{step === 0\}/);
-  assert.match(analogies, /aria-disabled=\{step === moves\.length\}/);
-  assert.doesNotMatch(analogies, /<button[^>]*\sdisabled=/);
+  assert.match(analogies, /disabled=\{step === 0\}/);
+  assert.match(analogies, /disabled=\{step === moves\.length\}/);
+  assert.doesNotMatch(analogies, /aria-disabled=/);
+  assert.match(analogyCss, /\.analogy-replay-controls button:disabled/);
   assert.match(analogies, /\["ArrowLeft", "ArrowRight", "Home", "End"\]/);
   assert.match(analogies, /event\.key === "Home" \? 0 : event\.key === "End" \? moves\.length/);
   assert.match(analogies, /鍵盤：← → 逐手・Home／End 跳到兩端/);
