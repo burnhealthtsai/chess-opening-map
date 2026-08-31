@@ -451,6 +451,20 @@ const curatedAnalogies = [
     },
   },
   {
+    id: "albin-bdg-reversed-variation",
+    title: "阿爾賓反棄兵 ↔ BDG 反色阿爾賓變例",
+    relation: "reversed",
+    summary: "阿爾賓反棄兵以 …e5 讓白方吃兵，再以 …d4 建立中央楔形；BDG 的具名 3…c5 4.d5 反色阿爾賓變例則讓白方用 d5 楔形與額外先手壓縮黑方。",
+    blackIds: ["b-queens-gambit-declined-albin-countergambit"],
+    whiteIds: ["w-blackmar-diemer-gambit"],
+    sharedIdeas: ["以 e 兵棄兵引開對手的中央兵", "用 d4／d5 受保護通路兵楔形限制對方子力", "趁對手王尚未安全時快速出子並製造戰術"],
+    difference: "這個反色對應只限 BDG 的 3…c5 4.d5 具名變例，不是整個 BDG；白方已多了 Nc3 和先手，而阿爾賓黑方還必須應對白方 c4 兵的空間。可共用中央楔形與發展補償的判斷，不能照搬戰術。",
+    examples: {
+      black: { openingId: "b-queens-gambit-declined-albin-countergambit", label: "阿爾賓黑方 d4 楔形", line: "1. d4 d5 2. c4 e5 3. dxe5 d4 4. Nf3 Nc6 5. a3 Be6 6. Nbd2 Qe7 7. b4 O-O-O 8. Bb2" },
+      white: { openingId: "w-blackmar-diemer-gambit", label: "BDG 白方 d5 反色楔形", line: "1. d4 d5 2. e4 dxe4 3. Nc3 c5 4. d5 Nf6 5. Bg5 e6 6. Bb5+ Nbd7" },
+    },
+  },
+  {
     id: "benko-polish-queenside-plan",
     title: "班科棄兵 ↔ 波蘭開局",
     relation: "plan",

@@ -1062,6 +1062,19 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(englundBdg?.difference ?? "", /黑方.*少一個先手|少一個先手.*黑方/);
   assert.match(englundBdg?.difference ?? "", /f3/);
 
+  const albinBdg = data.analogyGroups.find((group) => group.id === "albin-bdg-reversed-variation");
+  assert.equal(albinBdg?.title, "阿爾賓反棄兵 ↔ BDG 反色阿爾賓變例");
+  assert.equal(albinBdg?.relation, "reversed");
+  assert.deepEqual(albinBdg?.blackIds, ["b-queens-gambit-declined-albin-countergambit"]);
+  assert.deepEqual(albinBdg?.whiteIds, ["w-blackmar-diemer-gambit"]);
+  assert.match(albinBdg?.summary ?? "", /d4.*d5|d5.*d4/);
+  assert.match(albinBdg?.summary ?? "", /3…c5.*4\.d5|4\.d5.*3…c5/);
+  assert.match(albinBdg?.sharedIdeas.join(" ") ?? "", /e 兵.*棄|(?:棄.*e 兵)/);
+  assert.match(albinBdg?.difference ?? "", /只限|(?:不是.*整個 BDG)/);
+  assert.match(albinBdg?.difference ?? "", /Nc3/);
+  assert.match(albinBdg?.examples.black.line ?? "", /2\. c4 e5 3\. dxe5 d4/);
+  assert.match(albinBdg?.examples.white.line ?? "", /2\. e4 dxe4 3\. Nc3 c5 4\. d5/);
+
   const benkoPolish = data.analogyGroups.find((group) => group.id === "benko-polish-queenside-plan");
   assert.equal(benkoPolish?.title, "班科棄兵 ↔ 波蘭開局");
   assert.equal(benkoPolish?.relation, "plan");
@@ -1086,9 +1099,9 @@ test("analogy groups compare black defenses with white opening plans without cal
   assert.match(polishReversed?.difference ?? "", /e4.*Bxb5|Bxb5.*e4/);
   assert.deepEqual(
     Object.fromEntries(["reversed", "structure", "plan"].map((relation) => [relation, data.analogyGroups.filter((group) => group.relation === relation).length])),
-    { reversed: 10, structure: 3, plan: 6 },
+    { reversed: 11, structure: 3, plan: 6 },
   );
-  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 56);
+  assert.ok(new Set(data.analogyGroups.flatMap((group) => [...group.blackIds, ...group.whiteIds])).size >= 57);
 
   for (const group of data.analogyGroups) {
     assert.ok(["reversed", "structure", "plan"].includes(group.relation));
