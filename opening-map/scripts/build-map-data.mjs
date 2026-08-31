@@ -12,9 +12,36 @@ const detailsDestination = resolve(root, "public", "opening-details.json");
 const explorersDestination = resolve(root, "public", "opening-explorers.json");
 const variationNotesDestination = resolve(root, "public", "opening-variation-notes.json");
 const schemaVersion = 10;
+const emptyVariationCatalog = Object.freeze({ variations: Object.freeze([]) });
+const catalogRevisionCache = new WeakMap();
 
-export function buildCatalogRevision(catalog, variationCatalog = { variations: [] }) {
-  return createHash("sha256").update(JSON.stringify([catalog, variationCatalog])).digest("hex");
+export function buildCatalogRevisionContent(catalog, variationCatalog = emptyVariationCatalog) {
+  const revisionPlaceholder = "generated-content";
+  const map = buildMapData(catalog, variationCatalog, revisionPlaceholder);
+  const details = buildOpeningDetails(catalog, revisionPlaceholder);
+  const explorers = buildExplorerData(catalog, variationCatalog, revisionPlaceholder);
+  const variationNotes = buildVariationNotes(catalog, revisionPlaceholder);
+  return {
+    schema_version: schemaVersion,
+    map: { nodes: map.nodes, navigation: map.navigation },
+    details: { edges: details.edges, openings: details.openings },
+    explorers: { transpositionGroups: explorers.transpositionGroups, analogyGroups: explorers.analogyGroups },
+    variationNotes: { notes: variationNotes.notes },
+  };
+}
+
+export function buildCatalogRevision(catalog, variationCatalog = emptyVariationCatalog, generatedContent = null) {
+  if (generatedContent) return createHash("sha256").update(JSON.stringify(generatedContent)).digest("hex");
+  let revisionsByVariation = catalogRevisionCache.get(catalog);
+  if (!revisionsByVariation) {
+    revisionsByVariation = new WeakMap();
+    catalogRevisionCache.set(catalog, revisionsByVariation);
+  }
+  const cached = revisionsByVariation.get(variationCatalog);
+  if (cached) return cached;
+  const revision = createHash("sha256").update(JSON.stringify(buildCatalogRevisionContent(catalog, variationCatalog))).digest("hex");
+  revisionsByVariation.set(variationCatalog, revision);
+  return revision;
 }
 
 export function sanMoves(line) {
@@ -258,7 +285,7 @@ function buildAutomaticTranspositions(openingById, variations) {
     });
 }
 
-export function buildTranspositionGroups(catalog, variationCatalog = { variations: [] }) {
+export function buildTranspositionGroups(catalog, variationCatalog = emptyVariationCatalog) {
   const openingById = new Map(catalog.openings.map((opening) => [opening.id, opening]));
   const openingIds = new Set(openingById.keys());
   return [
@@ -568,7 +595,7 @@ export function buildAnalogyGroups(catalog) {
   });
 }
 
-export function buildMapData(catalog, variationCatalog = { variations: [] }, catalogRevision = buildCatalogRevision(catalog, variationCatalog)) {
+export function buildMapData(catalog, variationCatalog = emptyVariationCatalog, catalogRevision = buildCatalogRevision(catalog, variationCatalog)) {
   const items = catalog.openings;
   const nodes = items.map((item) => ({
     ...(() => {
@@ -745,7 +772,7 @@ export function buildVariationNotes(catalog, catalogRevision = buildCatalogRevis
   };
 }
 
-export function buildExplorerData(catalog, variationCatalog = { variations: [] }, catalogRevision = buildCatalogRevision(catalog, variationCatalog)) {
+export function buildExplorerData(catalog, variationCatalog = emptyVariationCatalog, catalogRevision = buildCatalogRevision(catalog, variationCatalog)) {
   return {
     schema_version: schemaVersion,
     catalog_revision: catalogRevision,

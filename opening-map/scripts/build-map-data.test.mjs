@@ -3,7 +3,7 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { Chess } from "chess.js";
-import { buildCatalogRevision, buildExplorerData, buildMapData, buildOpeningDetails, buildVariationNotes, sanMoves } from "./build-map-data.mjs";
+import { buildCatalogRevision, buildCatalogRevisionContent, buildExplorerData, buildMapData, buildOpeningDetails, buildVariationNotes, sanMoves } from "./build-map-data.mjs";
 
 const catalog = JSON.parse(await readFile(resolve("..", "openings.yaml"), "utf8"));
 const variationCatalog = JSON.parse(await readFile(resolve("..", "variations.json"), "utf8"));
@@ -146,6 +146,20 @@ test("catalog revision is deterministic and changes with source content", () => 
   const changedCatalog = structuredClone(catalog);
   changedCatalog.openings[0].title_zh += "測試";
   assert.notEqual(buildCatalogRevision(changedCatalog, variationCatalog), revision);
+
+  const generated = buildCatalogRevisionContent(catalog, variationCatalog);
+  assert.equal(buildCatalogRevision(catalog, variationCatalog, generated), revision);
+  for (const mutate of [
+    (content) => { content.map.nodes[0].title_zh += "測試"; },
+    (content) => { content.details.edges.family[0].weight += 1; },
+    (content) => { content.explorers.transpositionGroups[0].summary += "測試"; },
+    (content) => { content.explorers.analogyGroups[0].summary += "測試"; },
+    (content) => { content.variationNotes.notes[0][0] += "測試"; },
+  ]) {
+    const changedGenerated = structuredClone(generated);
+    mutate(changedGenerated);
+    assert.notEqual(buildCatalogRevision(catalog, variationCatalog, changedGenerated), revision);
+  }
 });
 
 test("relationship edges are unique, symmetric and never self-referential", () => {
